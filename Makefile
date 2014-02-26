@@ -4,11 +4,11 @@ RM=rm -f
 #CPPFLAGS=-g $(shell root-config --cflags)
 #LDFLAGS=-g $(shell root-config --ldflags)
 #LDLIBS=$(shell root-config --libs)
-CPPFLAGS=-g
+CPPFLAGS=-g -I/usr/local/include/SDL2 -std=c++0x
 LDFLAGS=-g
 LDLIBS=-lSDL2
 
-SRCS=*.cpp
+SRCS=$(wildcard *.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: SDL_test
