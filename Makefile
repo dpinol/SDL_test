@@ -1,19 +1,23 @@
 CC=gcc
 CXX=g++
 RM=rm -f
-CPPFLAGS=-g $(shell root-config --cflags)
+#CPPFLAGS=-g $(shell root-config --cflags)
 #LDFLAGS=-g $(shell root-config --ldflags)
 #LDLIBS=$(shell root-config --libs)
+CPPFLAGS=-g
 LDFLAGS=-g
-LDLIBS=
+LDLIBS=-lSDL2
 
 SRCS=*.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
 
-all: tool
+all: SDL_test
 
 SDL_test: $(OBJS)
 	g++ $(LDFLAGS) -o SDL_test $(OBJS) $(LDLIBS)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 depend: .depend
 
