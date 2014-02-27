@@ -5,12 +5,11 @@ CONFIG -= qt
 
 INCLUDEPATH=/usr/local/include/SDL2
 
-SOURCES += *.cpp \
-    Game.cpp
+SOURCES += *.cpp
 
 OTHER_FILES += \
     Makefile
 
 HEADERS += \
-    Game.h
+    *.h
 

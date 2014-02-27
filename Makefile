@@ -1,5 +1,5 @@
 CC=gcc-4.9
-CXX=g++-4.9
+CXX=/usr/local/bin/g++-4.9
 RM=rm -f
 #CPPFLAGS=-g $(shell root-config --cflags)
 #LDFLAGS=-g $(shell root-config --ldflags)
