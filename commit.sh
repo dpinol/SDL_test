@@ -1,2 +1,2 @@
 #!/bin/bash
-git commit assets/* *.xml *.sh  *.cpp *.h Makefile *.pro*
+git commit *2 assets/* *.xml *.sh  *.cpp *.h Makefile *.pro*

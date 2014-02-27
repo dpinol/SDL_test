@@ -1,19 +1,23 @@
-CC=gcc-4.9
-CXX=/usr/local/bin/g++-4.9
+CC=clang
+# sanitizer works, but c++11 does not https://trac.macports.org/ticket/41033
+#CXX=/usr/local/bin/g++-4.9
+CXX=clang++
 RM=rm -f
 #CPPFLAGS=-g $(shell root-config --cflags)
 #LDFLAGS=-g $(shell root-config --ldflags)
 #LDLIBS=$(shell root-config --libs)
 CPPFLAGS=-g -I/usr/local/include/SDL2 -std=c++0x
-LDFLAGS=-g -ltinyxml -lz
-LDLIBS=-lSDL2_mixer -lSDL2_image -lSDL2
+LDFLAGS=-g
+LDLIBS=-lSDL2_mixer -lSDL2_image -lSDL2 -ltinyxml -lz
 
 #release
 #CPPFLAGS=$(CPPFLAGS) -DNDEBUG -O3 -mssse3
 
 #debug
-CPPFLAGS:=$(CPPFLAGS) -fsanitize=address
-LDFLAGS:=$(LDFLAGS) -fsanitize=address
+CPPFLAGS:=$(CPPFLAGS)
+#-fsanitize=address
+LDFLAGS:=$(LDFLAGS)
+#-fsanitize=address
 
 SRCS=$(wildcard *.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
