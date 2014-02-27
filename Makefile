@@ -1,5 +1,5 @@
-CC=gcc
-CXX=g++
+CC=gcc-4.9
+CXX=g++-4.9
 RM=rm -f
 #CPPFLAGS=-g $(shell root-config --cflags)
 #LDFLAGS=-g $(shell root-config --ldflags)
@@ -8,16 +8,23 @@ CPPFLAGS=-g -I/usr/local/include/SDL2 -std=c++0x
 LDFLAGS=-g
 LDLIBS=-lSDL2
 
+#release
+#CPPFLAGS=$(CPPFLAGS) -DNDEBUG -O3 -mssse3
+
+#debug
+CPPFLAGS:=$(CPPFLAGS) -fsanitize=address
+LDFLAGS:=$(LDFLAGS) -fsanitize=address
+
 SRCS=$(wildcard *.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: SDL_test
 
 SDL_test: $(OBJS)
-	g++ $(LDFLAGS) -o SDL_test $(OBJS) $(LDLIBS)
+	$(CXX) $(LDFLAGS) -o SDL_test $(OBJS) $(LDLIBS)
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CXX) $(CFLAGS) $(CPPFLAGS) -c $<
 
 depend: .depend
 

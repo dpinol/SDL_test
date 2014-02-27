@@ -3,8 +3,14 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += *.cpp
+INCLUDEPATH=/usr/local/include/SDL2
+
+SOURCES += *.cpp \
+    Game.cpp
 
 OTHER_FILES += \
     Makefile
+
+HEADERS += \
+    Game.h
 
