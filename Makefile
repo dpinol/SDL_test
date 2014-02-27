@@ -5,8 +5,8 @@ RM=rm -f
 #LDFLAGS=-g $(shell root-config --ldflags)
 #LDLIBS=$(shell root-config --libs)
 CPPFLAGS=-g -I/usr/local/include/SDL2 -std=c++0x
-LDFLAGS=-g
-LDLIBS=-lSDL2
+LDFLAGS=-g -ltinyxml -lz
+LDLIBS=-lSDL2_mixer -lSDL2_image -lSDL2
 
 #release
 #CPPFLAGS=$(CPPFLAGS) -DNDEBUG -O3 -mssse3

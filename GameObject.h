@@ -11,6 +11,7 @@
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
+#include "LoaderParams.h"
 #include "Vector2D.h"
 #include <string>
 #include <memory>
@@ -26,7 +27,7 @@ public:
     virtual ~GameObject() {}
     
     // load from file - int x, int y, int width, int height, std::string textureID, int numFrames, int callbackID = 0, int animSpeed = 0
-    //virtual void load(std::unique_ptr<LoaderParams> const &pParams)=0;
+    virtual void load(std::unique_ptr<LoaderParams> const &pParams)=0;
     
     // draw the object
     virtual void draw()=0;

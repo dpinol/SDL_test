@@ -9,20 +9,20 @@
 #include "MenuButton.h"
 #include "InputHandler.h"
 
-MenuButton::MenuButton() : PlatformerObject(), m_callback(0), m_bReleased(true)
+MenuButton::MenuButton() : JewelObject(), m_callback(0), m_bReleased(true)
 {
 }
 
 void MenuButton::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-    PlatformerObject::load(std::move(pParams));
+    JewelObject::load(std::move(pParams));
     m_callbackID = pParams->getCallbackID();
     m_currentFrame = MOUSE_OUT;
 }
 
 void MenuButton::draw()
 {
-    PlatformerObject::draw();
+    JewelObject::draw();
 }
 
 void MenuButton::update()
@@ -57,5 +57,5 @@ void MenuButton::update()
 
 void MenuButton::clean()
 {
-    PlatformerObject::clean();
+    JewelObject::clean();
 }
