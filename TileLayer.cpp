@@ -10,7 +10,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 #include "InputHandler.h"
-//#include "Camera.h"
+#include "Camera.h"
 
 TileLayer::TileLayer(int tileSize, int mapWidth, int mapHeight, const std::vector<Tileset>& tilesets) : m_tileSize(tileSize), m_tilesets(tilesets), m_position(0,0), m_velocity(0,0)
 {
@@ -38,7 +38,6 @@ void TileLayer::render()
     {
         for(int j = 0; j < m_numColumns; j++)
         {
-          /*
             int id = m_tileIDs[i + y][j + x];
             
             if(id == 0)
@@ -58,7 +57,6 @@ void TileLayer::render()
             
             
             TheTextureManager::Instance()->drawTile(tileset.name, tileset.margin, tileset.spacing, ((j * m_tileSize) - x2) - TheCamera::Instance()->getPosition().m_x, ((i * m_tileSize) - y2), m_tileSize, m_tileSize, (id - (tileset.firstGridID - 1)) / tileset.numColumns, (id - (tileset.firstGridID - 1)) % tileset.numColumns, TheGame::Instance()->getRenderer());
-            */
         }
     }
 }
