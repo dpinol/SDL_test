@@ -6,6 +6,21 @@ RM=rm -f
 CPPFLAGS:=$(shell pkg-config --cflags sdl2)
 LDFLAGS:=-g $(shell pkg-config --libs sdl2)
 
+CPPFLAGS:=$(CPPFLAGS) -Wall -Wextra -Wno-ignored-qualifiers -Wno-sign-compare -Wno-reorder
+CPPFLAGS:=$(CPPFLAGS) -Werror=address -Werror=array-bounds  -Werror=c++0x-compat -Werror=char-subscripts
+CPPFLAGS:=$(CPPFLAGS) -Werror=enum-compare -Werror=implicit-int -Werror=implicit-function-declaration -Werror=comment -Werror=conversion-null -Werror=div-by-zero
+CPPFLAGS:=$(CPPFLAGS) -Werror=format -Werror=format-security -Werror=format-extra-args -Werror=init-self  -Werror=int-to-pointer-cast -Werror=missing-braces  -Werror=missing-field-initializers -Werror=return-type -Werror=nonnull
+CPPFLAGS:=$(CPPFLAGS) -Werror=overloaded-virtual
+CPPFLAGS:=$(CPPFLAGS) -Werror=parentheses -Werror=pointer-arith -Werror=pointer-sign  -Werror=return-type -Werror=sequence-point -Werror=strict-overflow=1
+CPPFLAGS:=$(CPPFLAGS) -Werror=trigraphs -Werror=type-limits -Werror=unused-value -Werror=volatile-register-var -fdiagnostics-show-option
+CPPFLAGS:=$(CPPFLAGS) -Werror=overflow -Werror=uninitialized
+CPPFLAGS:=$(CPPFLAGS) -Wshadow
+ifeq ($(CXX),clang++)
+  CPPFLAGS:=$(CPPFLAGS) -Wno-constant-logical-operand -Werror=string-plus-int
+endif
+
+
+
 #-I$(CURDIR) would allow <utils/..> , but would override system headers. And OSX is case insenstive!
 CPPFLAGS:=$(CPPFLAGS) -std=c++0x
 LDFLAGS:=$(LDFLAGS)
@@ -30,7 +45,8 @@ SDL_test: $(OBJS)
 	$(CXX) -o SDL_test $(OBJS) $(LDFLAGS) $(LDLIBS)
 
 %.o: %.cpp
-	$(CXX) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+	@echo "compiling $<"
+	@$(CXX) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 depend: .depend
 

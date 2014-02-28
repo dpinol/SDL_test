@@ -54,6 +54,7 @@ public:
     // scroll along with tile map
     void scroll(float scrollSpeed)
     {
+      (void) scrollSpeed;
 //        if(type() != std::string("Player")) // player is never scrolled
 //        {
 //            m_position.setX(m_position.getX() - scrollSpeed);

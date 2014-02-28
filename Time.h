@@ -15,10 +15,18 @@
 class Time
 {
   Uint32 _nextTime;
+  Uint32 const _periodMs;
+
 public:
   Time(Uint32 periodMs)
-    : _nextTime(SDL_GetTicks() + periodMs)
+    : _nextTime(SDL_GetTicks() + periodMs),
+      _periodMs(periodMs)
   {
+  }
+
+  void restart()
+  {
+    _nextTime = SDL_GetTicks() + _periodMs;
   }
 
   bool isTime() const

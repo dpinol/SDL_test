@@ -42,7 +42,7 @@ public:
     GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
     
     void setPlayerLives(int lives) { m_playerLives = lives; }
-    int getPlayerLives() { return m_playerLives; }
+    const int getPlayerLives() { return m_playerLives; }
     
     void setCurrentLevel(int currentLevel);
     const int getCurrentLevel() { return m_currentLevel; }
