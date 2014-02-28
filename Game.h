@@ -12,6 +12,7 @@
 //#include "SDL_mixer.h"
 #include "Vector2D.h"
 #include <vector>
+#include <atomic>
 
 class Game
 {

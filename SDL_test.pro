@@ -5,11 +5,13 @@ CONFIG -= qt
 
 INCLUDEPATH=/usr/local/include/SDL2
 
-SOURCES += *.cpp
+SOURCES += *.cpp \
+    utils/utils.cpp
 
 OTHER_FILES += \
     Makefile
 
 HEADERS += \
-    *.h
+    *.h \
+    utils/utils.h
 

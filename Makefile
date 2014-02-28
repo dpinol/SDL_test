@@ -1,14 +1,14 @@
 CC=clang
 # sanitizer works, but c++11 does not https://trac.macports.org/ticket/41033
-#CXX=/usr/local/bin/g++-4.9
+#CXX=g++-4.9
 CXX=clang++
 RM=rm -f
-#CPPFLAGS=-g $(shell root-config --cflags)
-#LDFLAGS=-g $(shell root-config --ldflags)
+CPPFLAGS:=$(shell pkg-config --cflags sdl2)
+LDFLAGS:=-g $(shell pkg-config --libs sdl2)
 #LDLIBS=$(shell root-config --libs)
-CPPFLAGS=-g -I/usr/local/include/SDL2 -std=c++0x
-LDFLAGS=-g
-LDLIBS=-lSDL2_mixer -lSDL2_image -lSDL2 -ltinyxml -lz
+CPPFLAGS:=$(CPPFLAGS) -g -std=c++0x
+LDFLAGS:=$(LDFLAGS) -g
+LDLIBS=-lSDL2_mixer -lSDL2_image $(LDFLAGS) -ltinyxml -lz
 
 #release
 #CPPFLAGS=$(CPPFLAGS) -DNDEBUG -O3 -mssse3
@@ -19,16 +19,17 @@ CPPFLAGS:=$(CPPFLAGS)
 LDFLAGS:=$(LDFLAGS)
 #-fsanitize=address
 
-SRCS=$(wildcard *.cpp)
+
+SRCS=$(wildcard *.cpp) $(wildcard utils/*.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: SDL_test
 
 SDL_test: $(OBJS)
-	$(CXX) $(LDFLAGS) -o SDL_test $(OBJS) $(LDLIBS)
+	$(CXX) -o SDL_test $(OBJS) $(LDFLAGS) $(LDLIBS)
 
 %.o: %.cpp
-	$(CXX) $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CXX) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 depend: .depend
 
