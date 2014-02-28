@@ -9,11 +9,11 @@
 #define DANI_UTILS_H
 
 #ifdef WIN32
-#define ROS_LIKELY(x)       (x)
-#define ROS_UNLIKELY(x)     (x)
+#define DANI_LIKELY(x)       (x)
+#define DANI_UNLIKELY(x)     (x)
 #else
-#define ROS_LIKELY(x)       __builtin_expect((x),1)
-#define ROS_UNLIKELY(x)     __builtin_expect((x),0)
+#define DANI_LIKELY(x)       __builtin_expect((x),1)
+#define DANI_UNLIKELY(x)     __builtin_expect((x),0)
 #endif
 
 namespace dani {

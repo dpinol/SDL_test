@@ -5,13 +5,35 @@
 **   To protect a percent sign, use '%'.
 **************************************************************************/
 
-#ifndef LOG_H
-#define LOG_H
+#ifndef DANI_LOG_H
+#define DANI_LOG_H
+#include <sstream>
 
-class log
-{
-public:
-  log();
-};
+namespace dani {
+  enum
+  {
+    DEBUG = 0,
+    INFO = 1,
+    ERROR
+  };
 
+  class log
+  {
+  public:
+    static bool shouldLog();
+    static void print(std::string const & msg);
+  };
+#define DANI_LOG(palLevel, args) \
+  do \
+  { \
+  std::stringstream ss; \
+  ss << args; \
+  print(palLevel, "%s", ss.str().c_str()); \
+} while (0)
+
+#define LOG_DEBUG(args) DANI_LOG(dani::DEBUG, args)
+#define LOG_INFO(args) DANI_LOG(dani::INFO, args)
+#define LOG_ERROR(args) DANI_LOG(dani::ERROR, args)
+
+}
 #endif // LOG_H

@@ -5,13 +5,26 @@
 **   To protect a percent sign, use '%'.
 **************************************************************************/
 
-#ifndef TIME_H
-#define TIME_H
+#ifndef PAL_TIME_H
+#define PAL_TIME_H
+
+#include <SDL_stdinc.h>
+#include <SDL_timer.h>
+#include "utils/utils.h"
 
 class Time
 {
+  Uint32 _nextTime;
 public:
-  Time();
+  Time(Uint32 periodMs)
+    : _nextTime(SDL_GetTicks() + periodMs)
+  {
+  }
+
+  bool isTime() const
+  {
+    return  DANI_UNLIKELY(SDL_TICKS_PASSED(SDL_GetTicks(), _nextTime));
+  }
 };
 
 #endif // TIME_H

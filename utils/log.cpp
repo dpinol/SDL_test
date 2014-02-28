@@ -6,7 +6,18 @@
 **************************************************************************/
 
 #include "log.h"
+#include <iostream>
+namespace dani {
 
-log::log()
-{
+  static bool _shouldLog = true;
+
+  bool log::shouldLog()
+  {
+    return _shouldLog;
+  }
+
+  void log(std::string const & msg)
+  {
+    std::cout << msg << std::endl;
+  }
 }
