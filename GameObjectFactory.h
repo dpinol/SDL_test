@@ -13,6 +13,7 @@
 #include <map>
 #include <iostream>
 #include "GameObject.h"
+#include <stdexcept>
 
 class BaseCreator
 {
@@ -58,6 +59,7 @@ public:
         if(it == m_creators.end())
         {
             std::cout << "could not find type: " << typeID << "\n";
+            //throw std::runtime_error(("could not find type: " + typeID).c_str() );
             return NULL;
         }
     

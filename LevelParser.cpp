@@ -130,7 +130,8 @@ void LevelParser::parseObjectLayer(TiXmlElement* pObjectElement, std::vector<Lay
             
             type = e->Attribute("type");
             GameObject* pGameObject = TheGameObjectFactory::Instance()->create(type);
-            
+            if (!pGameObject)
+              continue;
             // get the property values
             for(TiXmlElement* properties = e->FirstChildElement(); properties != NULL; properties = properties->NextSiblingElement())
             {
