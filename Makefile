@@ -42,7 +42,7 @@ OBJS=$(subst .cpp,.o,$(SRCS))
 all: SDL_test
 
 SDL_test: $(OBJS)
-	$(CXX) -o SDL_test $(OBJS) $(LDFLAGS) $(LDLIBS)
+	$(CXX) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
 
 %.o: %.cpp
 	@echo "compiling $<"

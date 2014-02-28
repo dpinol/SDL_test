@@ -54,7 +54,7 @@ bool GameOverState::onEnter()
 {
     // parse the state
     StateParser stateParser;
-    stateParser.parseState("assets/conan.xml", s_gameOverID, &m_gameObjects, &m_textureIDList);
+    stateParser.parseState("assets/SDL_test.xml", s_gameOverID, &m_gameObjects, &m_textureIDList);
     
     m_callbacks.push_back(0);
     m_callbacks.push_back(s_gameOverToMain);
