@@ -5,18 +5,19 @@ CXX=clang++
 RM=rm -f
 CPPFLAGS:=$(shell pkg-config --cflags sdl2)
 LDFLAGS:=-g $(shell pkg-config --libs sdl2)
-#LDLIBS=$(shell root-config --libs)
-CPPFLAGS:=$(CPPFLAGS) -g -std=c++0x
-LDFLAGS:=$(LDFLAGS) -g
-LDLIBS=-lSDL2_mixer -lSDL2_image $(LDFLAGS) -ltinyxml -lz
+
+#-I$(CURDIR) would allow <utils/..> , but would override system headers. And OSX is case insenstive!
+CPPFLAGS:=$(CPPFLAGS) -std=c++0x
+LDFLAGS:=$(LDFLAGS)
+LDLIBS:=-lSDL2_mixer -lSDL2_image $(LDLIBS) -ltinyxml -lz
 
 #release
 #CPPFLAGS=$(CPPFLAGS) -DNDEBUG -O3 -mssse3
 
 #debug
-CPPFLAGS:=$(CPPFLAGS)
+CPPFLAGS:=$(CPPFLAGS) -g
 #-fsanitize=address
-LDFLAGS:=$(LDFLAGS)
+LDFLAGS:=$(LDFLAGS) -g
 #-fsanitize=address
 
 

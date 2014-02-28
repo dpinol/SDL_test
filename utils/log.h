@@ -8,27 +8,34 @@
 #ifndef DANI_LOG_H
 #define DANI_LOG_H
 #include <sstream>
+#include "utils.h"
 
 namespace dani {
-  enum
-  {
-    DEBUG = 0,
-    INFO = 1,
-    ERROR
-  };
 
   class log
   {
   public:
-    static bool shouldLog();
-    static void print(std::string const & msg);
+    enum Level
+    {
+      DEBUG = 0,
+      INFO = 1,
+      ERROR
+    };
+
+
+    static bool shouldLog(Level callLevel);
+    static void print(const char *format ,std::string const & msg);
+    static Level getLevel();
   };
-#define DANI_LOG(palLevel, args) \
+#define DANI_LOG(callLevel, args) \
   do \
   { \
-  std::stringstream ss; \
-  ss << args; \
-  print(palLevel, "%s", ss.str().c_str()); \
+  if (DANI_UNLIKELY(shouldLog(callLevel)) \
+  { \
+    std::stringstream ss; \
+    ss << args; \
+    print(palLevel, "%s", ss.str().c_str()); \
+  } \
 } while (0)
 
 #define LOG_DEBUG(args) DANI_LOG(dani::DEBUG, args)

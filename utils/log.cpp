@@ -9,15 +9,20 @@
 #include <iostream>
 namespace dani {
 
-  static bool _shouldLog = true;
+  static log::Level _level = log::DEBUG;
 
-  bool log::shouldLog()
+  log::Level log::getLevel()
   {
-    return _shouldLog;
+    return _level;
   }
 
-  void log(std::string const & msg)
+  bool log::shouldLog(Level callLevel)
   {
-    std::cout << msg << std::endl;
+    return callLevel >= _level;
+  }
+
+  void log::print(char const *format, std::string const & msg)
+  {
+    printf(format, msg.c_str());
   }
 }
