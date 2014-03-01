@@ -90,24 +90,33 @@ void LevelParser::parseTextures(TiXmlElement* pTextureRoot)
 }
 
 template <class T>
-void parseAttribute(TiXmlElement &pTilesetRoot, const char* attName, T& val)
+const char* parseAttribute(TiXmlElement &pTilesetRoot, const char* attName, T& val)
 {
   const char* valStr = pTilesetRoot.Attribute(attName, &val);
+  if (dani::log::getLevel() > dani::log::WARN )
+    return valStr;
+  static const char ANONYMOUS[] = "ANONYMOUS";
+  const char *name = pTilesetRoot.Attribute("name");
+  if (!name)
+    name = ANONYMOUS;
   if (!valStr)
   {
-    LOG_WARN("no val found for attribute " << attName << " of " << pTilesetRoot.Attribute("name") << "Assigning to " << T());
+    LOG_WARN("no val found for attribute " << attName << " of element" << name << ". Assigning to " << T());
     val = T();
   }
   else
-   LOG_DEBUG("val " << valStr << " found for attribute " << attName << " of " << pTilesetRoot.Attribute("name"));
+   LOG_DEBUG("val " << valStr << " found for attribute " << attName << " of element" << name);
+  return valStr;
 }
 
 void LevelParser::parseTilesets(TiXmlElement* pTilesetRoot, std::vector<Tileset>* pTilesets)
 {
 	std::string assetsTag = "assets/";
     // first add the tileset to texture manager
-    LOG_INFO( "adding texture " << pTilesetRoot->FirstChildElement()->Attribute("source") << " with ID " << pTilesetRoot->Attribute("name"));
-    TheTextureManager::Instance()->load(assetsTag.append(pTilesetRoot->FirstChildElement()->Attribute("source")), pTilesetRoot->Attribute("name"), TheGame::Instance()->getRenderer());
+    const char* sourceFile = pTilesetRoot->FirstChildElement()->Attribute("source");
+    const char* name = pTilesetRoot->Attribute("name");
+    LOG_INFO( "adding texture " << sourceFile << " with ID " << name);
+    TheTextureManager::Instance()->load(assetsTag.append(sourceFile), name, TheGame::Instance()->getRenderer());
     
     // create a tileset object
     Tileset tileset;

@@ -35,7 +35,7 @@ namespace dani {
   { \
     std::stringstream ss; \
     ss << args; \
-    dani::log::print(callLevel, "%s", ss.str().c_str()); \
+    dani::log::print(callLevel, "%s\n", ss.str().c_str()); \
   } \
 } while (0)
 

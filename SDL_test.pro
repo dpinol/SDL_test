@@ -14,7 +14,8 @@ SOURCES += *.cpp \
 OTHER_FILES += \
     Makefile \
     assets/SDL_test.xml \
-    assets/map1.tmx
+    assets/map1.tmx \
+    assets/board.tmx
 
 HEADERS += \
     *.h \

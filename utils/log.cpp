@@ -24,5 +24,6 @@ namespace dani {
   void log::print(Level , char const *format, std::string const & msg)
   {
     printf(format, msg.c_str());
+    fflush(stdout);
   }
 }
