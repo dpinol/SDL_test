@@ -33,32 +33,12 @@ void MainMenuState::s_exitFromMenu()
 
 void MainMenuState::update()
 {
-    if(m_loadingComplete && !m_gameObjects.empty() && !m_exiting)
-    {
-        for(int i = 0; i < m_gameObjects.size(); i++)
-        {
-            m_gameObjects[i]->update();
-        }
-        
-        //        if(TheInputHandler::Instance()->getButtonState(0, 8))
-        //        {
-        //            s_menuToPlay();
-        //        }
-    }
+    if(!m_exiting)
+      MenuState::update();
 }
 
-void MainMenuState::render()
-{
-    if(m_loadingComplete && !m_gameObjects.empty())
-    {
-        for(int i = 0; i < m_gameObjects.size(); i++)
-        {
-            m_gameObjects[i]->draw();
-        }
-    }
-}
 
-bool MainMenuState::onEnter()
+bool MainMenuState::onEnterImpl()
 {
     // parse the state
     StateParser stateParser;
@@ -71,8 +51,6 @@ bool MainMenuState::onEnter()
     // set the callbacks for menu items
     setCallbacks(m_callbacks);
     
-    m_loadingComplete = true;
-    std::cout << "entering MenuState\n";
     return true;
 }
 

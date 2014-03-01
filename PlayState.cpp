@@ -48,11 +48,16 @@ void PlayState::render()
 {
     if(m_loadingComplete)
     {
+      GameState::render();
+
         if(pLevel != 0)
         {
             pLevel->render();
         }
-        
+
+        TheTextureManager::Instance()->drawFrame("background", 0,0,
+                                                 TheGame::Instance()->getGameWidth(), TheGame::Instance()->getGameHeight());
+
         for(int i = 0; i < TheGame::Instance()->getPlayerLives(); i++)
         {
             TheTextureManager::Instance()->drawFrame("lives", i * 30, 0, 32, 30, 0, 0, TheGame::Instance()->getRenderer(), 0.0, 255);
@@ -60,7 +65,7 @@ void PlayState::render()
     }
 }
 
-bool PlayState::onEnter()
+bool PlayState::onEnterImpl()
 {
     TheGame::Instance()->setPlayerLives(3);
     
@@ -71,6 +76,7 @@ bool PlayState::onEnter()
     {
         m_loadingComplete = true;
     }
+    TheTextureManager::Instance()->load("assets/BackGround.jpg", "background", TheGame::Instance()->getRenderer());
     
     std::cout << "entering PlayState\n";
     return true;

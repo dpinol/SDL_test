@@ -34,10 +34,10 @@ public:
         return s_pInstance;
     }
     
-    bool load(std::string fileName, std::string id, sound_type type);
+    bool load(std::string fileName, std::string const &id, sound_type type);
     
-    void playSound(std::string id, int loop);
-    void playMusic(std::string id, int loop);
+    void playSound(std::string const &id, int loop);
+    void playMusic(std::string const &id, int loop);
     
 private:
     

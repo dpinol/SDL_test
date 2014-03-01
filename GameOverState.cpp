@@ -50,7 +50,7 @@ void GameOverState::render()
     }
 }
 
-bool GameOverState::onEnter()
+bool GameOverState::onEnterImpl()
 {
     // parse the state
     StateParser stateParser;

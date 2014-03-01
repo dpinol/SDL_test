@@ -24,7 +24,7 @@ public:
     virtual void update();
     virtual void render();
     
-    virtual bool onEnter();
+    virtual bool onEnterImpl();
     virtual bool onExit();
     
     virtual std::string getStateID() const { return s_pauseID; }
@@ -38,7 +38,6 @@ private:
     
     static const std::string s_pauseID;
     
-    std::vector<GameObject*> m_gameObjects;
 };
 
 

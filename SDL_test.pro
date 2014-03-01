@@ -8,7 +8,8 @@ INCLUDEPATH=/usr/local/include/SDL2
 SOURCES += *.cpp \
     utils/utils.cpp \
     Time.cpp \
-    utils/log.cpp
+    utils/log.cpp \
+    GameState.cpp
 
 OTHER_FILES += \
     Makefile

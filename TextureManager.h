@@ -29,28 +29,32 @@ public:
         return s_pInstance;
     }
     
-    bool load(std::string fileName, std::string id, SDL_Renderer* pRenderer);
+    bool load(std::string fileName, std::string const &id, SDL_Renderer* pRenderer);
     
     void clearTextureMap();
-    void clearFromTextureMap(std::string id);
+    void clearFromTextureMap(std::string const &id);
     
-    void draw(std::string id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    /**
+     * @brief draw
+     * @param id
+     * @param pRenderer
+     * @param flip
+     */
+    void draw(std::string const &id, int x, int y, int width, int height, SDL_Renderer* pRenderer = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
     /**
      * @brief drawFrame
      * @param id
-     * @param x
-     * @param y
-     * @param width
-     * @param height
      * @param currentRow row within the sprite sheet
      * @param currentFrame frame with the row
-     * @param pRenderer
+     * @param pRenderer by default, the general one
      * @param angle
      * @param alpha
      * @param flip
      */
-    void drawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* pRenderer, double angle, int alpha, SDL_RendererFlip flip = SDL_FLIP_NONE);
-    void drawTile(std::string id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer);
+    void drawFrame(std::string const &id, int x, int y, int width, int height, int currentRow = 0, int currentFrame = 0,
+                   SDL_Renderer* pRenderer = 0, double angle = 0, int alpha = 255, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    void drawTile(std::string const &id, int margin, int spacing, int x, int y, int width, int height,
+                  int currentRow, int currentFrame, SDL_Renderer *pRenderer);
     
     std::map<std::string, SDL_Texture*> getTextureMap() { return m_textureMap; }
     

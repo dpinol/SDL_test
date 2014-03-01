@@ -19,13 +19,13 @@ public:
     
     virtual ~MainMenuState() {}
 
-    virtual void update();
-    virtual void render();
+    void update() override;
+    //virtual void render();
     
-    virtual bool onEnter(); 
-    virtual bool onExit(); 
+    virtual bool onEnterImpl() override;
+    virtual bool onExit() override;
     
-    virtual std::string getStateID() const { return s_menuID; }
+    virtual std::string getStateID() const override { return s_menuID; }
     
 private:
     
@@ -37,7 +37,6 @@ private:
     
     static const std::string s_menuID;
     
-    std::vector<GameObject*> m_gameObjects;
 };
 
 #endif /* defined(__SDL_Game_Programming_Book__MenuState__) */

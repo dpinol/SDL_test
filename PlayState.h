@@ -27,7 +27,7 @@ public:
     virtual void update();
     virtual void render();
     
-    virtual bool onEnter();
+    virtual bool onEnterImpl();
     virtual bool onExit();
     
     virtual std::string getStateID() const { return s_playID; }
@@ -38,7 +38,6 @@ private:
     
   //  CollisionManager m_collisionManager;
     
-    std::vector<GameObject*> m_gameObjects;
     
     Level* pLevel;
 };

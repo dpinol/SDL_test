@@ -20,7 +20,7 @@ SoundManager::~SoundManager()
     Mix_CloseAudio();
 }
 
-bool SoundManager::load(std::string fileName, std::string id, sound_type type)
+bool SoundManager::load(std::string fileName, std::string const &id, sound_type type)
 {
     if(type == SOUND_MUSIC)
     {
@@ -49,12 +49,12 @@ bool SoundManager::load(std::string fileName, std::string id, sound_type type)
     return false;
 }
 
-void SoundManager::playMusic(std::string id, int loop)
+void SoundManager::playMusic(std::string const &id, int loop)
 {
     Mix_PlayMusic(m_music[id], loop);
 }
 
-void SoundManager::playSound(std::string id, int loop)
+void SoundManager::playSound(std::string const &id, int loop)
 {
     Mix_PlayChannel(-1, m_sfxs[id], loop);
 }

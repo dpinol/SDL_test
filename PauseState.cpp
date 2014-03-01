@@ -49,7 +49,7 @@ void PauseState::render()
     }
 }
 
-bool PauseState::onEnter()
+bool PauseState::onEnterImpl()
 {
     StateParser stateParser;
     stateParser.parseState("assets/SDL_test.xml", s_pauseID, &m_gameObjects, &m_textureIDList);
