@@ -10,7 +10,7 @@
 #define SDL_Game_Programming_Book_PlayState_h
 
 #include "GameState.h"
-//#include "CollisionManager.h"
+#include "CollisionManager.h"
 #include "Level.h"
 #include <vector>
 
@@ -36,7 +36,7 @@ private:
     
     static const std::string s_playID;
     
-  //  CollisionManager m_collisionManager;
+   CollisionManager m_collisionManager;
     
     
     Level* pLevel;

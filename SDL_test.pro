@@ -12,7 +12,9 @@ SOURCES += *.cpp \
     GameState.cpp
 
 OTHER_FILES += \
-    Makefile
+    Makefile \
+    assets/SDL_test.xml \
+    assets/map1.tmx
 
 HEADERS += \
     *.h \

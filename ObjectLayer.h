@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 #include "Layer.h"
-//#include "CollisionManager.h"
+#include "CollisionManager.h"
 
 class GameObject;
 
@@ -30,7 +30,8 @@ public:
     std::vector<GameObject*>* getGameObjects() { return &m_gameObjects; }
     
 private:
-    
+    // check for collisions between game objects
+    CollisionManager m_collisionManager;
 
     // a list of game objects
     std::vector<GameObject*> m_gameObjects;

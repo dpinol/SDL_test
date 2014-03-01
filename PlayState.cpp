@@ -55,8 +55,8 @@ void PlayState::render()
             pLevel->render();
         }
 
-        TheTextureManager::Instance()->drawFrame("background", 0,0,
-                                                 TheGame::Instance()->getGameWidth(), TheGame::Instance()->getGameHeight());
+        TheTextureManager::Instance()->draw("background", 1024 -755,0,
+                                                 755, 600);
 
         for(int i = 0; i < TheGame::Instance()->getPlayerLives(); i++)
         {

@@ -24,7 +24,7 @@ ObjectLayer::~ObjectLayer()
 void ObjectLayer::update(Level* pLevel)
 {
 
-  //    m_collisionManager.checkPlayerEnemyCollision(pLevel->getPlayer(), (const std::vector<GameObject*>&)m_gameObjects);
+      //m_collisionManager.checkPlayerEnemyCollision(pLevel->getPlayer(), (const std::vector<GameObject*>&)m_gameObjects);
 
   // iterate through the objects
 

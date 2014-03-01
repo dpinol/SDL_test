@@ -21,7 +21,7 @@ namespace dani {
     return callLevel >= _level;
   }
 
-  void log::print(char const *format, std::string const & msg)
+  void log::print(Level , char const *format, std::string const & msg)
   {
     printf(format, msg.c_str());
   }

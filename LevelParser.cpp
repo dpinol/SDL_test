@@ -16,6 +16,7 @@
 #include "base64.h"
 #include "zlib.h"
 #include "Level.h"
+#include "utils/log.h"
 
 Level* LevelParser::parseLevel(const char *levelFile)
 {
@@ -70,13 +71,13 @@ Level* LevelParser::parseLevel(const char *levelFile)
             else if(e->FirstChildElement()->Value() == std::string("data") ||
                     (e->FirstChildElement()->NextSiblingElement() != 0 && e->FirstChildElement()->NextSiblingElement()->Value() == std::string("data")))
             {
-                parseTileLayer(e, pLevel->getLayers(), pLevel->getTilesets(), NULL/*pLevel->getCollisionLayers()*/);
+                parseTileLayer(e, pLevel->getLayers(), pLevel->getTilesets(), pLevel->getCollisionLayers());
             }
         }
     }
     
     // set the players collision layer
-   // pLevel->getPlayer()->setCollisionLayers(pLevel->getCollisionLayers());
+    //pLevel->getPlayer()->setCollisionLayers(pLevel->getCollisionLayers());
     
     return pLevel;
 }
@@ -88,22 +89,35 @@ void LevelParser::parseTextures(TiXmlElement* pTextureRoot)
     TheTextureManager::Instance()->load(pTextureRoot->Attribute("value"), pTextureRoot->Attribute("name"), TheGame::Instance()->getRenderer());
 }
 
+template <class T>
+void parseAttribute(TiXmlElement &pTilesetRoot, const char* attName, T& val)
+{
+  const char* valStr = pTilesetRoot.Attribute(attName, &val);
+  if (!valStr)
+  {
+    LOG_WARN("no val found for attribute " << attName << " of " << pTilesetRoot.Attribute("name") << "Assigning to " << T());
+    val = T();
+  }
+  else
+   LOG_DEBUG("val " << valStr << " found for attribute " << attName << " of " << pTilesetRoot.Attribute("name"));
+}
+
 void LevelParser::parseTilesets(TiXmlElement* pTilesetRoot, std::vector<Tileset>* pTilesets)
 {
 	std::string assetsTag = "assets/";
     // first add the tileset to texture manager
-    std::cout << "adding texture " << pTilesetRoot->FirstChildElement()->Attribute("source") << " with ID " << pTilesetRoot->Attribute("name") << std::endl;
+    LOG_INFO( "adding texture " << pTilesetRoot->FirstChildElement()->Attribute("source") << " with ID " << pTilesetRoot->Attribute("name"));
     TheTextureManager::Instance()->load(assetsTag.append(pTilesetRoot->FirstChildElement()->Attribute("source")), pTilesetRoot->Attribute("name"), TheGame::Instance()->getRenderer());
     
     // create a tileset object
     Tileset tileset;
-    pTilesetRoot->FirstChildElement()->Attribute("width", &tileset.width);
-    pTilesetRoot->FirstChildElement()->Attribute("height", &tileset.height);
-    pTilesetRoot->Attribute("firstgid", &tileset.firstGridID);
-    pTilesetRoot->Attribute("tilewidth", &tileset.tileWidth);
-    pTilesetRoot->Attribute("tileheight", &tileset.tileHeight);
-    pTilesetRoot->Attribute("spacing", &tileset.spacing);
-    pTilesetRoot->Attribute("margin", &tileset.margin);
+    parseAttribute(*pTilesetRoot->FirstChildElement(), "width", tileset.width);
+    parseAttribute(*pTilesetRoot->FirstChildElement(), "height", tileset.height);
+    parseAttribute(*pTilesetRoot, "firstgid", tileset.firstGridID);
+    parseAttribute(*pTilesetRoot, "tilewidth", tileset.tileWidth);
+    parseAttribute(*pTilesetRoot, "tileheight", tileset.tileHeight);
+    parseAttribute(*pTilesetRoot, "spacing", tileset.spacing);
+    parseAttribute(*pTilesetRoot, "margin", tileset.margin);
     tileset.name = pTilesetRoot->Attribute("name");
     
     tileset.numColumns = tileset.width / (tileset.tileWidth + tileset.spacing);
@@ -251,11 +265,11 @@ void LevelParser::parseTileLayer(TiXmlElement* pTileElement, std::vector<Layer*>
     
     pTileLayer->setTileIDs(data);
     
-   /* if(collidable)
+    if(collidable)
     {
         pCollisionLayers->push_back(pTileLayer);
     }
-    */
+
     pLayers->push_back(pTileLayer);
 }
 

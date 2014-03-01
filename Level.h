@@ -13,6 +13,7 @@
 #include <vector>
 #include "Layer.h"
 #include "LevelParser.h"
+#include "CollisionManager.h"
 
 class TileLayer;
 
@@ -40,7 +41,9 @@ public:
     
     std::vector<Tileset>* getTilesets() { return &m_tilesets; }
     std::vector<Layer*>* getLayers() { return &m_layers; }    
-
+    std::vector<TileLayer*>* getCollisionLayers() { return &m_collisionLayers; }
+    
+    const std::vector<TileLayer*>& getCollidableLayers() { return m_collisionLayers; }
     
 private:
     
@@ -51,6 +54,7 @@ private:
     
     std::vector<Layer*> m_layers;
     std::vector<Tileset> m_tilesets;
- };
+    std::vector<TileLayer*> m_collisionLayers;
+};
 
 #endif /* defined(__SDL_Game_Programming_Book__Map__) */

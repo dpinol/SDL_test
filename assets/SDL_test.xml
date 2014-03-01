@@ -15,8 +15,6 @@
     <PLAY>
         <TEXTURES>
             <texture filename="assets/BackGround.jpg" ID="background"/>
-            <texture filename="assets/helicopter.png" ID="helicopter"/>
-            <texture filename="assets/helicopter2.png" ID="helicopter2"/>
         </TEXTURES>
         
         <OBJECTS>

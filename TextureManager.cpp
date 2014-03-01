@@ -49,6 +49,7 @@ void TextureManager::draw(std::string const &id, int x, int y, int width, int he
     
     srcRect.x = 0;
     srcRect.y = 0;
+    //@todo get size automatic when 0
     srcRect.w = destRect.w = width;
     srcRect.h = destRect.h = height;
     destRect.x = x;
