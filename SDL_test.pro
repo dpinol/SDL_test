@@ -9,7 +9,8 @@ SOURCES += *.cpp \
     utils/utils.cpp \
     Time.cpp \
     utils/log.cpp \
-    GameState.cpp
+    GameState.cpp \
+    JewelSwap.cpp
 
 OTHER_FILES += \
     Makefile \
@@ -21,5 +22,6 @@ HEADERS += \
     *.h \
     utils/utils.h \
     Time.h \
-    utils/log.h
+    utils/log.h \
+    JewelSwap.h
 

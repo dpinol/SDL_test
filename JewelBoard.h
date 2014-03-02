@@ -42,10 +42,12 @@ public:
     };
     /**
      * @brief swap swaps jewels at specified positions
+     * but only if final position achieves a strike
      * @param pos1
      * @param pos2
+     * @return whether they could be swap
      */
-    void swap(Position const pos1, Position const pos2);
+    bool swap(Position const pos1, Position const pos2);
     /**
      * @brief getJewel
      * @param row 0 to SIZE

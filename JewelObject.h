@@ -32,7 +32,7 @@ public:
 
 
 protected:
-  COLOR _color;
+  COLOR const _color;
   JewelObject();
   friend class JewelBoard;
 
