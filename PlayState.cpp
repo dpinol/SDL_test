@@ -15,8 +15,14 @@
 #include "LevelParser.h"
 #include "Level.h"
 #include "TextureManager.h"
+#include "JewelBoard.h"
 
 const std::string PlayState::s_playID = "PLAY";
+
+PlayState::PlayState()
+{
+    m_jewelBoard = new JewelBoard();
+}
 
 void PlayState::update()
 {
@@ -41,6 +47,8 @@ void PlayState::update()
     {
       pLevel->update();
     }
+
+    m_jewelBoard->update();
   }
 }
 
@@ -63,6 +71,8 @@ void PlayState::render()
       TheTextureManager::Instance()->drawFrame("lives", i * 30, 0, 32, 30, 0, 0, TheGame::Instance()->getRenderer(), 0.0, 255);
     }
   }
+
+  m_jewelBoard->draw();
 }
 
 bool PlayState::onEnterImpl()

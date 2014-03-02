@@ -29,11 +29,11 @@ public:
 
   virtual std::string type() { return "Jewel"; }
 
-
+    Vector2D & getPosition();
 
 protected:
-  COLOR _color;
-  JewelObject();
+  COLOR m_color;
+  JewelObject(COLOR color);
   friend class JewelBoard;
 
   bool checkCollideTile(Vector2D newPos);

@@ -9,7 +9,7 @@
 #include "MenuButton.h"
 #include "InputHandler.h"
 
-MenuButton::MenuButton() : JewelObject(), m_callback(0), m_bReleased(true)
+MenuButton::MenuButton() : JewelObject(4), m_callback(0), m_bReleased(true)
 {
 }
 

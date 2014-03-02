@@ -17,6 +17,7 @@
 class GameObject;
 class SDLGameObject;
 class Level;
+class JewelBoard;
 
 class PlayState : public GameState
 {
@@ -32,9 +33,13 @@ public:
     
     virtual std::string getStateID() const { return s_playID; }
     
+    PlayState();
+
 private:
     
     static const std::string s_playID;
+
+    JewelBoard* m_jewelBoard;
     
    CollisionManager m_collisionManager;
     

@@ -33,11 +33,13 @@ public:
      * @param col
      * @return
      */
-    JewelObject& getJewel(int row, int col);
-    JewelObject const& getJewel(int row, int col) const;
+    JewelObject* getJewel(int row, int col);
+    JewelObject const* getJewel(int row, int col) const;
 
 private:
     
+    static unsigned kJewelsColors;
+
     int m_scrollSpeed;
     
     int count;
@@ -56,7 +58,9 @@ private:
     int m_destRect2Width;
     constexpr static int SIZE = 8;
     //extra row is for falling new jewels
-    JewelObject _jewels[SIZE + 1][ SIZE];
+    JewelObject* m_jewels[SIZE + 1][ SIZE];
+
+    void createInialJewelsBoard();
 };
 
 class JewelBoardCreator : public BaseCreator

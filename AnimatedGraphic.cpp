@@ -10,7 +10,7 @@
 
 using namespace std;
 
-AnimatedGraphic::AnimatedGraphic() : JewelObject()
+AnimatedGraphic::AnimatedGraphic() : JewelObject(4)
 {
     
 }
