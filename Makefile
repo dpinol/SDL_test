@@ -18,7 +18,7 @@ CPPFLAGS:=$(CPPFLAGS) -Wshadow
 ifeq ($(CXX),clang++)
   CPPFLAGS:=$(CPPFLAGS) -Wno-constant-logical-operand -Werror=string-plus-int
 endif
-
+CPPFLAGS:=$(CPPFLAGS) -ftrapv
 
 
 #-I$(CURDIR) would allow <utils/..> , but would override system headers. And OSX is case insenstive!

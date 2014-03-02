@@ -40,6 +40,17 @@ void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
     m_srcRect2.h = m_destRect2.h = m_height;
 }
 
+JewelObject& JewelBoard::getJewel(int row, int col)
+{
+  return _jewels[row][col];
+}
+
+JewelObject const& JewelBoard::getJewel(int row, int col) const
+{
+  return _jewels[row][col];
+}
+
+
 void JewelBoard::draw()
 {
     // draw first rect

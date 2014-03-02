@@ -20,74 +20,74 @@ const std::string PlayState::s_playID = "PLAY";
 
 void PlayState::update()
 {
-    if(m_loadingComplete && !m_exiting)
+  if(m_loadingComplete && !m_exiting)
+  {
+    if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
     {
-        if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
-        {
-            TheGame::Instance()->getStateMachine()->pushState(new PauseState());
-        }
-        
-//        if(TheInputHandler::Instance()->getButtonState(0, 8))
-//        {
-//            TheGame::Instance()->getStateMachine()->pushState(new PauseState());
-//        }
-        
-        if(TheGame::Instance()->getPlayerLives() == 0)
-        {
-            TheGame::Instance()->getStateMachine()->changeState(new GameOverState());
-        }
-        
-        if(pLevel != 0)
-        {
-            pLevel->update();
-        }
+      TheGame::Instance()->getStateMachine()->pushState(new PauseState());
     }
+
+    //        if(TheInputHandler::Instance()->getButtonState(0, 8))
+    //        {
+    //            TheGame::Instance()->getStateMachine()->pushState(new PauseState());
+    //        }
+
+    if(TheGame::Instance()->getPlayerLives() == 0)
+    {
+      TheGame::Instance()->getStateMachine()->changeState(new GameOverState());
+    }
+
+    if(pLevel != 0)
+    {
+      pLevel->update();
+    }
+  }
 }
 
 void PlayState::render()
 {
-    if(m_loadingComplete)
+  if(m_loadingComplete)
+  {
+    GameState::render();
+
+ /*   if(pLevel != 0)
     {
-      GameState::render();
-
-        if(pLevel != 0)
-        {
-            pLevel->render();
-        }
-
-        TheTextureManager::Instance()->draw("background", 1024 -755,0,
-                                                 755, 600);
-
-        for(int i = 0; i < TheGame::Instance()->getPlayerLives(); i++)
-        {
-            TheTextureManager::Instance()->drawFrame("lives", i * 30, 0, 32, 30, 0, 0, TheGame::Instance()->getRenderer(), 0.0, 255);
-        }
+      pLevel->render();
     }
+*/
+    TheTextureManager::Instance()->draw("background", 1024 -755,0,
+                                        755, 600);
+
+    for(int i = 0; i < TheGame::Instance()->getPlayerLives(); i++)
+    {
+      TheTextureManager::Instance()->drawFrame("lives", i * 30, 0, 32, 30, 0, 0, TheGame::Instance()->getRenderer(), 0.0, 255);
+    }
+  }
 }
 
 bool PlayState::onEnterImpl()
 {
-    TheGame::Instance()->setPlayerLives(3);
-    
-    LevelParser levelParser;
-    pLevel = levelParser.parseLevel(TheGame::Instance()->getLevelFiles()[TheGame::Instance()->getCurrentLevel() - 1].c_str());
-    
-    if(pLevel != 0)
-    {
-        m_loadingComplete = true;
-    }
-    TheTextureManager::Instance()->load("assets/BackGround.jpg", "background", TheGame::Instance()->getRenderer());
-    
-    std::cout << "entering PlayState\n";
-    return true;
+  TheGame::Instance()->setPlayerLives(3);
+
+  LevelParser levelParser;
+  pLevel = levelParser.parseLevel(TheGame::Instance()->getLevelFiles()[TheGame::Instance()->getCurrentLevel() - 1].c_str());
+
+  if(pLevel != 0)
+  {
+    m_loadingComplete = true;
+  }
+  TheTextureManager::Instance()->load("assets/BackGround.jpg", "background", TheGame::Instance()->getRenderer());
+
+  std::cout << "entering PlayState\n";
+  return true;
 }
 
 bool PlayState::onExit()
 {
-    m_exiting = true;
-    
-    TheInputHandler::Instance()->reset();
-    
-    std::cout << "exiting PlayState\n";
-    return true;
+  m_exiting = true;
+
+  TheInputHandler::Instance()->reset();
+
+  std::cout << "exiting PlayState\n";
+  return true;
 }

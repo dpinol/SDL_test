@@ -12,6 +12,7 @@
 #include <iostream>
 #include "GameObjectFactory.h"
 #include "BoardObject.h"
+#include "JewelObject.h"
 
 class JewelBoard : public BoardObject
 {
@@ -25,7 +26,16 @@ public:
     virtual void clean();
     
     virtual void load(std::unique_ptr<LoaderParams> const &pParams);
-    
+
+    /**
+     * @brief getJewel
+     * @param row 0 to SIZE
+     * @param col
+     * @return
+     */
+    JewelObject& getJewel(int row, int col);
+    JewelObject const& getJewel(int row, int col) const;
+
 private:
     
     int m_scrollSpeed;
@@ -44,6 +54,9 @@ private:
     
     int m_destRect1Width;
     int m_destRect2Width;
+    constexpr static int SIZE = 8;
+    //extra row is for falling new jewels
+    JewelObject _jewels[SIZE + 1][ SIZE];
 };
 
 class JewelBoardCreator : public BaseCreator
