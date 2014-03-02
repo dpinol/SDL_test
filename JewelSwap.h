@@ -9,6 +9,8 @@
 #define JEWELSWAP_H
 
 #include "JewelBoard.h"
+#include "model/BoardPos.h"
+#include <vector>
 /**
  * @brief The JewelSwap class swaps two adjacent jewels
  * If the game had more types of moves, it could inherit from a JewelMove
@@ -17,9 +19,24 @@
 class JewelSwap
 {
 public:
-  JewelSwap(const JewelBoard::Position pos1, const JewelBoard::Position pos2);
+  JewelSwap(const BoardPos pos1, const BoardPos pos2);
+  void setBoard(JewelBoard &board);
   bool isValid() const;
-  void run();
+  /**
+   * @brief run will try to perform the move. If not possible (because
+   * it does not cause an strike), it will revert to previous position
+   * @return whether the swap is possible
+   */
+  bool run();
+private:
+  BoardPos const m_positions[2];
+  JewelBoard *m_board;
+  mutable bool m_validated;
+  bool findMatch(int posIndex) const;
+  /**
+   * @brief m_strike has the
+   */
+  mutable std::vector<BoardPos> m_strike;
 };
 
 #endif // JEWELSWAP_H

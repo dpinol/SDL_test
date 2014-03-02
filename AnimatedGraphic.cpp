@@ -10,20 +10,20 @@
 
 using namespace std;
 
-AnimatedGraphic::AnimatedGraphic() : GameObjectImpl()
+AnimatedGraphic::AnimatedGraphic() : BoardObject()
 {
     
 }
 
 void AnimatedGraphic::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-    GameObjectImpl::load(pParams);
+    BoardObject::load(pParams);
     m_animSpeed = pParams->getAnimSpeed();
 }
 
 void AnimatedGraphic::draw()
 {
-    GameObjectImpl::draw();
+    BoardObject::draw();
 }
 
 void AnimatedGraphic::update()
@@ -33,5 +33,5 @@ void AnimatedGraphic::update()
 
 void AnimatedGraphic::clean()
 {
-    GameObjectImpl::clean();
+    BoardObject::clean();
 }

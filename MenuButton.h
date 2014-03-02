@@ -9,10 +9,10 @@
 #ifndef __SDL_Game_Programming_Book__MenuObject__
 #define __SDL_Game_Programming_Book__MenuObject__
 
-#include "GameObjectImpl.h"
+#include "BoardObject.h"
 #include "GameObjectFactory.h"
 
-class MenuButton : public GameObjectImpl
+class MenuButton : public BoardObject
 {
 public:
     

@@ -10,10 +10,11 @@
 #define __SDL_Game_Programming_Book__SDLGameObject__
 
 #include <SDL.h>
-#include "GameObjectImpl.h"
+#include "BoardObject.h"
+#include "JewelMove.h"
 
 class JewelBoard;
-class JewelObject : public GameObjectImpl
+class JewelObject : public BoardObject
 {
 public:
   typedef unsigned char COLOR;
@@ -29,20 +30,18 @@ public:
 
   virtual std::string type() { return "Jewel"; }
 
-
+  Vector2D & getPosition();
+  void setMovement(JewelMove const &m);
 
 protected:
-  COLOR const _color;
-  JewelObject();
+  COLOR const m_color;
+  JewelObject(COLOR color);
   friend class JewelBoard;
 
   bool checkCollideTile(Vector2D newPos);
 
   void doDyingAnimation();
 
-  int m_bulletFiringSpeed;
-  int m_bulletCounter;
-  int m_moveSpeed;
 
   // how long the death animation takes, along with a counter
   int m_dyingTime;
@@ -53,17 +52,6 @@ protected:
 
   bool m_bFlipped;
 
-  bool m_bMoveLeft;
-  bool m_bMoveRight;
-  bool m_bRunning;
-
-  bool m_bFalling;
-  bool m_bJumping;
-  bool m_bCanJump;
-
-  Vector2D m_lastSafePos;
-
-  int m_jumpHeight;
 };
 
 #endif /* defined(__SDL_Game_Programming_Book__SDLGameObject__) */

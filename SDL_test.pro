@@ -10,7 +10,9 @@ SOURCES += *.cpp \
     Time.cpp \
     utils/log.cpp \
     GameState.cpp \
-    JewelSwap.cpp
+    JewelSwap.cpp \
+    JewelMove.cpp \
+    model/BoardPos.cpp
 
 OTHER_FILES += \
     Makefile \
@@ -23,5 +25,7 @@ HEADERS += \
     utils/utils.h \
     Time.h \
     utils/log.h \
-    JewelSwap.h
+    JewelSwap.h \
+    JewelMove.h \
+    model/BoardPos.h
 

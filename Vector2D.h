@@ -12,6 +12,10 @@
 #include <iostream>
 #include <math.h>
 
+/**
+ * @brief The Vector2D class
+ * @todo change to Board position?
+ */
 class Vector2D
 {
 public:

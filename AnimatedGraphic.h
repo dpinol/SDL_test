@@ -11,9 +11,9 @@
 
 #include <iostream>
 #include "GameObjectFactory.h"
-#include "GameObjectImpl.h"
+#include "BoardObject.h"
 
-class AnimatedGraphic : public GameObjectImpl
+class AnimatedGraphic : public BoardObject
 {
 public:
     

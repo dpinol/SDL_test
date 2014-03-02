@@ -7,15 +7,32 @@
 //
 
 #include "JewelBoard.h"
+#include "JewelObject.h"
 #include "TextureManager.h"
 #include "Game.h"
+
+unsigned JewelBoard::kJewelsColors = 5;
 
 JewelBoard::JewelBoard() : BoardObject()
 {
     count = 0;
     maxcount = 10;
+
+    TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
+
+    createInialJewelsBoard();
 }
 
+void JewelBoard::createInialJewelsBoard()
+{
+    for (unsigned i = 1 ; i < SIZE ; ++i)
+    {
+        for (unsigned j = 0 ; j < SIZE ; ++j)
+        {
+            m_jewels[i][j] = new JewelObject(rand() % kJewelsColors);
+        }
+    }
+}
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
 {
@@ -42,14 +59,14 @@ void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
 }
 
 /******* Model *******/
-JewelObject& JewelBoard::getJewel(Position const pos)
+JewelObject& JewelBoard::getJewel(BoardPos const pos)
 {
-  return *_jewels[pos.m_row][pos.m_col];
+  return *m_jewels[pos.m_row][pos.m_col];
 }
 
-JewelObject const& JewelBoard::getJewel(Position const pos) const
+JewelObject const& JewelBoard::getJewel(BoardPos const pos) const
 {
-  return *_jewels[pos.m_row][pos.m_col];
+  return *m_jewels[pos.m_row][pos.m_col];
 }
 
 
@@ -66,6 +83,16 @@ void JewelBoard::draw()
     
     // draw second rect
     SDL_RenderCopyEx(TheGame::Instance()->getRenderer(), TheTextureManager::Instance()->getTextureMap()[m_textureID], &m_srcRect2, &m_destRect2, 0, 0, SDL_FLIP_NONE);
+
+    for (unsigned i = 1 ; i < SIZE ; ++i)
+    {
+        for (unsigned j = 0 ; j < SIZE ; ++j)
+        {
+            m_jewels[i][j]->getPosition().setX(i);
+            m_jewels[i][j]->getPosition().setY(j);
+            m_jewels[i][j]->draw();
+        }
+    }
 }
 
 void JewelBoard::update()
@@ -105,9 +132,25 @@ void JewelBoard::update()
     }
     
     count++;
+
+    for (unsigned i = 1 ; i < SIZE ; ++i)
+    {
+        for (unsigned j = 0 ; j < SIZE ; ++j)
+        {
+            m_jewels[i][j]->update();
+        }
+    }
 }
 
 void JewelBoard::clean()
 {
+    for (unsigned i = 1 ; i < SIZE ; ++i)
+    {
+        for (unsigned j = 0 ; j < SIZE ; ++j)
+        {
+            m_jewels[i][j]->clean();
+        }
+    }
+
     BoardObject::clean();
 }

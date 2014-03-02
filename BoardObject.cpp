@@ -12,17 +12,10 @@
 #include "TileLayer.h"
 
 BoardObject::BoardObject() :    GameObject(),
-                                    m_moveSpeed(0),
                                     m_dyingTime(0),
                                     m_dyingCounter(0),
-                                    m_bPlayedDeathSound(false),
+                                   m_bPlayedDeathSound(false),
                                     m_bFlipped(false),
-                                    m_bMoveLeft(false),
-                                    m_bMoveRight(false),
-                                    m_bRunning(false),
-                                    m_bFalling(false),
-                                    m_bJumping(false),
-                                    m_bCanJump(false),
                                     m_lastSafePos(0,0)
 {
 }

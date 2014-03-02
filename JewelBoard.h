@@ -12,6 +12,7 @@
 #include <iostream>
 #include "GameObjectFactory.h"
 #include "BoardObject.h"
+#include "model/BoardPos.h"
 
 class JewelObject;
 class JewelBoard : public BoardObject
@@ -27,19 +28,8 @@ public:
     
     virtual void load(std::unique_ptr<LoaderParams> const &pParams);
 
-    typedef unsigned char ROW;
-    typedef unsigned char COL;
 
-    struct Position
-    {
-      Position(ROW row, COL col)
-        :m_row(row),  m_col(col)
-      {
-      }
 
-      ROW m_row;
-      COL m_col;
-    };
     /**
      * @brief swap swaps jewels at specified positions
      * but only if final position achieves a strike
@@ -47,18 +37,20 @@ public:
      * @param pos2
      * @return whether they could be swap
      */
-    bool swap(Position const pos1, Position const pos2);
+    bool swap(BoardPos const pos1, BoardPos const pos2);
     /**
      * @brief getJewel
      * @param row 0 to SIZE
      * @param col
      * @return
      */
-    JewelObject& getJewel(Position const pos);
-    JewelObject const& getJewel(Position const pos) const;
+    JewelObject& getJewel(BoardPos const pos);
+    JewelObject const& getJewel(BoardPos const pos) const;
 
 private:
     
+    static unsigned kJewelsColors;
+
     int m_scrollSpeed;
     
     int count;
@@ -77,14 +69,16 @@ private:
     int m_destRect2Width;
     constexpr static int SIZE = 8;
     //extra row is for falling new jewels
-    JewelObject* _jewels[SIZE + 1][ SIZE];
+    JewelObject* m_jewels[SIZE + 1][ SIZE];
+
+    void createInialJewelsBoard();
 };
 
 class JewelBoardCreator : public BaseCreator
 {
 public:
     
-    virtual GameObject* createGameObject() const
+    virtual JewelBoard* createGameObject() const
     {
         return new JewelBoard();
     }
