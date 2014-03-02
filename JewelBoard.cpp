@@ -15,8 +15,6 @@
 
 JewelBoard::JewelBoard() : BoardObject()
 {
-  count = 0;
-  maxcount = 10;
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
 
@@ -25,7 +23,7 @@ JewelBoard::JewelBoard() : BoardObject()
 
 void JewelBoard::createInialJewelsBoard()
 {
-  for (unsigned i = 1 ; i < BoardPos::BoardPos::SIZE ; ++i)
+  for (unsigned i = 0 ; i <= BoardPos::BoardPos::SIZE ; ++i)
   {
     for (unsigned j = 0 ; j < BoardPos::BoardPos::SIZE ; ++j)
     {
@@ -36,27 +34,7 @@ void JewelBoard::createInialJewelsBoard()
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-  BoardObject::load(std::move(pParams));
-  m_scrollSpeed = pParams->getAnimSpeed();
-
-  m_scrollSpeed = 1;
-
-  m_srcRect1.x = 0;
-  m_destRect1.x = m_pixel.getX();
-  m_srcRect1.y = 0;
-  m_destRect1.y = m_pixel.getY();
-
-  m_srcRect1.w = m_destRect1.w = m_srcRect2Width = m_destRect1Width = m_width;
-  m_srcRect1.h = m_destRect1.h = m_height;
-
-  m_srcRect2.x = 0;
-  m_destRect2.x = m_pixel.getX() + m_width;
-  m_srcRect2.y = 0;
-  m_destRect2.y = m_pixel.getY();
-
-  m_srcRect2.w = m_destRect2.w = m_srcRect2Width = m_destRect2Width = 0;
-  m_srcRect2.h = m_destRect2.h = m_height;
-}
+  }
 
 /******* Model *******/
 #ifdef NDEBUG
@@ -92,11 +70,6 @@ JewelObject const& JewelBoard::getJewel(BoardPos const pos) const
 
 void JewelBoard::draw()
 {
-  // draw first rect
-  SDL_RenderCopyEx(TheGame::Instance()->getRenderer(), TheTextureManager::Instance()->getTextureMap()[m_textureID], &m_srcRect1, &m_destRect1, 0, 0, SDL_FLIP_NONE);
-
-  // draw second rect
-  SDL_RenderCopyEx(TheGame::Instance()->getRenderer(), TheTextureManager::Instance()->getTextureMap()[m_textureID], &m_srcRect2, &m_destRect2, 0, 0, SDL_FLIP_NONE);
   forAll([&](JewelObject &jewel)
   {
     jewel.draw();
@@ -104,60 +77,18 @@ void JewelBoard::draw()
 }
 void JewelBoard::update()
 {
-  if(count == maxcount)
+  forAll([&](JewelObject &jewel)
   {
-    // make first rectangle smaller
-    m_srcRect1.x += m_scrollSpeed;
-    m_srcRect1.w -= m_scrollSpeed;
-    m_destRect1.w -= m_scrollSpeed;
-
-    // make second rectangle bigger
-    m_srcRect2.w += m_scrollSpeed;
-    m_destRect2.w += m_scrollSpeed;
-    m_destRect2.x -= m_scrollSpeed;
-
-    // reset and start again
-    if(m_destRect2.w >= m_width)
-    {
-      m_srcRect1.x = 0;
-      m_destRect1.x = m_pixel.getX();
-      m_srcRect1.y = 0;
-      m_destRect1.y = m_pixel.getY();
-
-      m_srcRect1.w = m_destRect1.w = m_srcRect2Width = m_destRect1Width = m_width;
-      m_srcRect1.h = m_destRect1.h = m_height;
-
-      m_srcRect2.x = 0;
-      m_destRect2.x = m_pixel.getX() + m_width;
-      m_srcRect2.y = 0;
-      m_destRect2.y = m_pixel.getY();
-
-      m_srcRect2.w = m_destRect2.w = m_srcRect2Width = m_destRect2Width = 0;
-      m_srcRect2.h = m_destRect2.h = m_height;
-    }
-    count = 0;
-  }
-
-  count++;
-
-  for (unsigned i = 1 ; i < BoardPos::BoardPos::SIZE ; ++i)
-  {
-    for (unsigned j = 0 ; j < BoardPos::BoardPos::SIZE ; ++j)
-    {
-      m_jewels[i][j]->update();
-    }
-  }
+    jewel.update();
+  });
 }
 
 void JewelBoard::clean()
 {
-  for (unsigned i = 1 ; i < BoardPos::BoardPos::SIZE ; ++i)
+  forAll([&](JewelObject &jewel)
   {
-    for (unsigned j = 0 ; j < BoardPos::BoardPos::SIZE ; ++j)
-    {
-      m_jewels[i][j]->clean();
-    }
-  }
+    jewel.clean();
+  });
 
   BoardObject::clean();
 }
