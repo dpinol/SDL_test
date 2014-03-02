@@ -9,20 +9,20 @@
 #include "MenuButton.h"
 #include "InputHandler.h"
 
-MenuButton::MenuButton() : JewelObject(), m_callback(0), m_bReleased(true)
+MenuButton::MenuButton() : GameObjectImpl(), m_callback(0), m_bReleased(true)
 {
 }
 
 void MenuButton::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-    JewelObject::load(std::move(pParams));
+    GameObjectImpl::load(std::move(pParams));
     m_callbackID = pParams->getCallbackID();
     m_currentFrame = MOUSE_OUT;
 }
 
 void MenuButton::draw()
 {
-    JewelObject::draw();
+    GameObjectImpl::draw();
 }
 
 void MenuButton::update()
@@ -57,5 +57,5 @@ void MenuButton::update()
 
 void MenuButton::clean()
 {
-    JewelObject::clean();
+    GameObjectImpl::clean();
 }

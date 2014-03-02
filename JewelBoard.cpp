@@ -16,6 +16,7 @@ JewelBoard::JewelBoard() : BoardObject()
     maxcount = 10;
 }
 
+
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
 {
     BoardObject::load(std::move(pParams));
@@ -40,16 +41,22 @@ void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
     m_srcRect2.h = m_destRect2.h = m_height;
 }
 
-JewelObject& JewelBoard::getJewel(int row, int col)
+JewelObject& JewelBoard::getJewel(Position const pos)
 {
-  return _jewels[row][col];
+  return *_jewels[pos.m_row][pos.m_col];
 }
 
-JewelObject const& JewelBoard::getJewel(int row, int col) const
+JewelObject const& JewelBoard::getJewel(Position const pos) const
 {
-  return _jewels[row][col];
+  return *_jewels[pos.m_row][pos.m_col];
 }
 
+void JewelBoard::swap(Position const pos1, Position const pos2)
+{
+  JewelObject *j1 = &getJewel(pos1);
+  JewelObject *j2 = &getJewel(pos2);
+
+}
 
 void JewelBoard::draw()
 {

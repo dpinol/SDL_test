@@ -9,17 +9,17 @@
 #include "SDL_image.h"
 #include "SDL.h"
 #include "Game.h"
+#include <stdexcept>
 
 TextureManager* TextureManager::s_pInstance = 0;
 
-bool TextureManager::load(std::string fileName, std::string const &id, SDL_Renderer* pRenderer)
+void TextureManager::load(std::string const &fileName, std::string const &id, SDL_Renderer* pRenderer)
 {
     SDL_Surface* pTempSurface = IMG_Load(fileName.c_str());
     
     if(pTempSurface == 0)
     {
-		std::cout << IMG_GetError();
-        return false;
+      throw std::runtime_error(IMG_GetError());
     }
     
     SDL_Texture* pTexture = SDL_CreateTextureFromSurface(pRenderer, pTempSurface);
@@ -29,10 +29,9 @@ bool TextureManager::load(std::string fileName, std::string const &id, SDL_Rende
     if(pTexture != 0)
     {
         m_textureMap[id] = pTexture;
-        return true;
     }
     
-    return false;
+    throw std::runtime_error(SDL_GetError());
 }
 static SDL_Renderer* getRenderer(SDL_Renderer* pRenderer)
 {

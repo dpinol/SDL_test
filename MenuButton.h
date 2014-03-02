@@ -9,10 +9,10 @@
 #ifndef __SDL_Game_Programming_Book__MenuObject__
 #define __SDL_Game_Programming_Book__MenuObject__
 
-#include "JewelObject.h"
+#include "GameObjectImpl.h"
 #include "GameObjectFactory.h"
 
-class MenuButton : public JewelObject
+class MenuButton : public GameObjectImpl
 {
 public:
     

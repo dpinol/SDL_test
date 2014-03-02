@@ -29,7 +29,14 @@ public:
         return s_pInstance;
     }
     
-    bool load(std::string fileName, std::string const &id, SDL_Renderer* pRenderer);
+    /**
+     * @brief load an image from disk so that it can be later drawn
+     * @param fileName
+     * @param id to be used to draw it
+     * @param pRenderer
+     * @return
+     */
+    void load(std::string const &fileName, std::string const &id, SDL_Renderer* pRenderer);
     
     void clearTextureMap();
     void clearFromTextureMap(std::string const &id);
