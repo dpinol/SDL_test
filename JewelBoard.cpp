@@ -55,7 +55,8 @@ void JewelBoard::swap(Position const pos1, Position const pos2)
 {
   JewelObject *j1 = &getJewel(pos1);
   JewelObject *j2 = &getJewel(pos2);
-
+  _jewels[pos1.m_row][pos1.m_col] = j2;
+  _jewels[pos2.m_row][pos2.m_col] = j1;
 }
 
 void JewelBoard::draw()

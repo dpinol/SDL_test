@@ -30,8 +30,8 @@ void TextureManager::load(std::string const &fileName, std::string const &id, SD
     {
         m_textureMap[id] = pTexture;
     }
-    
-    throw std::runtime_error(SDL_GetError());
+    else
+      throw std::runtime_error("Error loading " + fileName + ": " + SDL_GetError());
 }
 static SDL_Renderer* getRenderer(SDL_Renderer* pRenderer)
 {
