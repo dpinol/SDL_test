@@ -9,8 +9,8 @@
 #ifndef SDL_Game_Programming_Book_GameObject_h
 #define SDL_Game_Programming_Book_GameObject_h
 
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
+//#include <boost/archive/xml_oarchive.hpp>
+//#include <boost/archive/xml_iarchive.hpp>
 #include "LoaderParams.h"
 #include "Vector2D.h"
 #include <string>

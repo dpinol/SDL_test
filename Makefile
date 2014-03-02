@@ -3,8 +3,8 @@ CC=clang
 #CXX=g++-4.9
 CXX=clang++
 RM=rm -f
-CPPFLAGS:=$(shell pkg-config --cflags sdl2)
-LDFLAGS:=-g $(shell pkg-config --libs sdl2)
+CPPFLAGS:=$(shell /usr/local/bin/pkg-config --cflags sdl2)
+LDFLAGS:=-g $(shell /usr/local/bin/pkg-config --libs sdl2)
 
 CPPFLAGS:=$(CPPFLAGS) -Wall -Wextra -Wno-ignored-qualifiers -Wno-sign-compare -Wno-reorder
 CPPFLAGS:=$(CPPFLAGS) -Werror=address -Werror=array-bounds  -Werror=c++0x-compat -Werror=char-subscripts
