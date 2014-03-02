@@ -10,20 +10,20 @@
 
 using namespace std;
 
-AnimatedGraphic::AnimatedGraphic() : JewelObject(4)
+AnimatedGraphic::AnimatedGraphic() : GameObjectImpl()
 {
     
 }
 
 void AnimatedGraphic::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-    JewelObject::load(pParams);
+    GameObjectImpl::load(pParams);
     m_animSpeed = pParams->getAnimSpeed();
 }
 
 void AnimatedGraphic::draw()
 {
-    JewelObject::draw();
+    GameObjectImpl::draw();
 }
 
 void AnimatedGraphic::update()
@@ -33,5 +33,5 @@ void AnimatedGraphic::update()
 
 void AnimatedGraphic::clean()
 {
-    JewelObject::clean();
+    GameObjectImpl::clean();
 }

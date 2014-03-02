@@ -11,9 +11,9 @@
 
 #include <iostream>
 #include "GameObjectFactory.h"
-#include "JewelObject.h"
+#include "GameObjectImpl.h"
 
-class AnimatedGraphic : public JewelObject
+class AnimatedGraphic : public GameObjectImpl
 {
 public:
     

@@ -6,18 +6,17 @@
 //  Copyright (c) 2013 shaun mitchell. All rights reserved.
 //
 
-#ifndef __SDL_Game_Programming_Book__SDLGameObject__
-#define __SDL_Game_Programming_Book__SDLGameObject__
+#ifndef __SDL_Game_Programming_Book__SDLGameObjectImpl__
+#define __SDL_Game_Programming_Book__SDLGameObjectImpl__
 
 #include <SDL.h>
-#include "GameObjectImpl.h"
+#include "GameObject.h"
 
 class JewelBoard;
-class JewelObject : public GameObjectImpl
+class GameObjectImpl : public GameObject
 {
 public:
-  typedef unsigned char COLOR;
-  virtual ~JewelObject() {}
+  virtual ~GameObjectImpl() {}
 
   virtual void load(std::unique_ptr<LoaderParams> const &pParams);
 
@@ -29,12 +28,10 @@ public:
 
   virtual std::string type() { return "Jewel"; }
 
-    Vector2D & getPosition();
+
 
 protected:
-  COLOR m_color;
-  JewelObject(COLOR color);
-  friend class JewelBoard;
+  GameObjectImpl();
 
   bool checkCollideTile(Vector2D newPos);
 

@@ -12,8 +12,8 @@
 #include <iostream>
 #include "GameObjectFactory.h"
 #include "BoardObject.h"
-#include "JewelObject.h"
 
+class JewelObject;
 class JewelBoard : public BoardObject
 {
 public:
@@ -27,14 +27,33 @@ public:
     
     virtual void load(std::unique_ptr<LoaderParams> const &pParams);
 
+    typedef unsigned char ROW;
+    typedef unsigned char COL;
+
+    struct Position
+    {
+      Position(ROW row, COL col)
+        :m_row(row),  m_col(col)
+      {
+      }
+
+      ROW m_row;
+      COL m_col;
+    };
+    /**
+     * @brief swap swaps jewels at specified positions
+     * @param pos1
+     * @param pos2
+     */
+    void swap(Position const pos1, Position const pos2);
     /**
      * @brief getJewel
      * @param row 0 to SIZE
      * @param col
      * @return
      */
-    JewelObject* getJewel(int row, int col);
-    JewelObject const* getJewel(int row, int col) const;
+    JewelObject& getJewel(Position const pos);
+    JewelObject const& getJewel(Position const pos) const;
 
 private:
     
