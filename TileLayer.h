@@ -37,9 +37,9 @@ public:
     
     Tileset getTilesetByID(int tileID);
     
-    const Vector2D getPosition() { return m_position; }
+    const Vector2D getPixel() { return m_pixel; }
     
-    void setPosition(Vector2D position) { m_position = position; }
+    void setPosition(Vector2D position) { m_pixel = position; }
     
     
 private:
@@ -50,7 +50,7 @@ private:
     
     int m_mapWidth;
     
-    Vector2D m_position;
+    Vector2D m_pixel;
     Vector2D m_velocity;
     Vector2D m_acceleration;
     

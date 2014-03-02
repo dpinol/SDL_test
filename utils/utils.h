@@ -8,6 +8,7 @@
 #ifndef DANI_UTILS_H
 #define DANI_UTILS_H
 
+#include <sstream>
 #ifdef WIN32
 #define DANI_LIKELY(x)       (x)
 #define DANI_UNLIKELY(x)     (x)
@@ -18,5 +19,12 @@
 
 namespace dani {
 
+  template<class T>
+  inline std::string toString(T const &o)
+  {
+    std::stringstream ss;
+    ss << o;
+    return ss.str();
+  }
 }
 #endif // DANI_UTILS_H

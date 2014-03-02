@@ -12,7 +12,7 @@
 #include "InputHandler.h"
 #include "Camera.h"
 
-TileLayer::TileLayer(int tileSize, int mapWidth, int mapHeight, const std::vector<Tileset>& tilesets) : m_tileSize(tileSize), m_tilesets(tilesets), m_position(0,0), m_velocity(0,0)
+TileLayer::TileLayer(int tileSize, int mapWidth, int mapHeight, const std::vector<Tileset>& tilesets) : m_tileSize(tileSize), m_tilesets(tilesets), m_pixel(0,0), m_velocity(0,0)
 {
     m_numColumns = mapWidth;
     m_numRows = mapHeight;
@@ -28,11 +28,11 @@ void TileLayer::render()
 {
     int x, y, x2, y2 = 0;
     
-    x = m_position.getX() / m_tileSize;
-    y = m_position.getY() / m_tileSize;
+    x = m_pixel.getX() / m_tileSize;
+    y = m_pixel.getY() / m_tileSize;
     
-    x2 = int(m_position.getX()) % m_tileSize;
-    y2 = int(m_position.getY()) % m_tileSize;
+    x2 = int(m_pixel.getX()) % m_tileSize;
+    y2 = int(m_pixel.getY()) % m_tileSize;
     
     for(int i = 0; i < m_numRows; i++)
     {
@@ -45,7 +45,7 @@ void TileLayer::render()
                 continue;
             }
             
-            if(((j * m_tileSize) - x2) - TheCamera::Instance()->getPosition().m_x < -m_tileSize || ((j * m_tileSize) - x2) - TheCamera::Instance()->getPosition().m_x > TheGame::Instance()->getGameWidth())
+            if(((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().m_x < -m_tileSize || ((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().m_x > TheGame::Instance()->getGameWidth())
             {
                 continue;
             }
@@ -56,7 +56,7 @@ void TileLayer::render()
             
             
             
-            TheTextureManager::Instance()->drawTile(tileset.name, tileset.margin, tileset.spacing, ((j * m_tileSize) - x2) - TheCamera::Instance()->getPosition().m_x, ((i * m_tileSize) - y2), m_tileSize, m_tileSize, (id - (tileset.firstGridID - 1)) / tileset.numColumns, (id - (tileset.firstGridID - 1)) % tileset.numColumns, TheGame::Instance()->getRenderer());
+            TheTextureManager::Instance()->drawTile(tileset.name, tileset.margin, tileset.spacing, ((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().m_x, ((i * m_tileSize) - y2), m_tileSize, m_tileSize, (id - (tileset.firstGridID - 1)) / tileset.numColumns, (id - (tileset.firstGridID - 1)) % tileset.numColumns, TheGame::Instance()->getRenderer());
         }
     }
 }

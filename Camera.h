@@ -29,9 +29,9 @@ public:
     void update(Vector2D velocity);
     
     void setTarget(Vector2D* target) { m_pTarget = target; }
-    void setPosition(const Vector2D& position) { m_position = position; }
+    void setPosition(const Vector2D& position) { m_pixel = position; }
     
-    const Vector2D getPosition() const;
+    const Vector2D getPixel() const;
     
     
     
@@ -44,7 +44,7 @@ private:
     Vector2D* m_pTarget;
     
     // the camera's position
-    Vector2D m_position;
+    Vector2D m_pixel;
     
     static Camera* s_pCamera;
 };

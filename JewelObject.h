@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 #include "BoardObject.h"
+#include "model/BoardPos.h"
 #include "JewelMove.h"
 
 class JewelBoard;
@@ -30,28 +31,23 @@ public:
 
   virtual std::string type() { return "Jewel"; }
 
-  Vector2D & getPosition();
+  COLOR getColor() const { return m_color;}
+  BoardPos const getBoardPos() const { return m_boardPos;}
   void setMovement(JewelMove const &m);
+  void kill();
 
 protected:
-  COLOR const m_color;
+
   JewelObject(COLOR color);
   friend class JewelBoard;
 
   bool checkCollideTile(Vector2D newPos);
 
-  void doDyingAnimation();
+  COLOR const m_color;
+  BoardPos m_boardPos;
 
 
-  // how long the death animation takes, along with a counter
-  int m_dyingTime;
-  int m_dyingCounter;
-
-  // has the explosion sound played?
-  bool m_bPlayedDeathSound;
 
   bool m_bFlipped;
-
 };
-
 #endif /* defined(__SDL_Game_Programming_Book__SDLGameObject__) */

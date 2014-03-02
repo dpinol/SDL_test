@@ -6,26 +6,19 @@ CONFIG -= qt
 INCLUDEPATH=/usr/local/include/SDL2
 
 SOURCES += *.cpp \
-    utils/utils.cpp \
-    Time.cpp \
-    utils/log.cpp \
-    GameState.cpp \
-    JewelSwap.cpp \
-    JewelMove.cpp \
-    model/BoardPos.cpp
+    utils/*.cpp \
+    model/*.cpp
+
 
 OTHER_FILES += \
     Makefile \
-    assets/SDL_test.xml \
-    assets/map1.tmx \
-    assets/board.tmx
+    assets/*.xml \
+    assets/*.tmx \
+    assets/*.png
 
 HEADERS += \
     *.h \
-    utils/utils.h \
-    Time.h \
-    utils/log.h \
-    JewelSwap.h \
-    JewelMove.h \
+    utils/*.h \
+    model/*.h \
     model/BoardPos.h
 

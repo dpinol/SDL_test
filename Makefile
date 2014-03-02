@@ -36,7 +36,7 @@ LDFLAGS:=$(LDFLAGS) -g
 #-fsanitize=address
 
 
-SRCS=$(wildcard *.cpp) $(wildcard utils/*.cpp)
+SRCS=$(wildcard *.cpp) $(wildcard utils/*.cpp) $(wildcard model/*.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: SDL_test

@@ -7,18 +7,15 @@
 //
 
 #include "JewelObject.h"
+
 #include "TextureManager.h"
 #include "Game.h"
 #include "TileLayer.h"
 
-JewelObject::JewelObject(COLOR color) :    BoardObject(),
-                                    m_dyingTime(0),
-                                    m_dyingCounter(0),
-                                    m_bPlayedDeathSound(false),
-                                    m_bFlipped(false),
+JewelObject::JewelObject(COLOR color) :    m_boardPos(-1, -1),
                                     m_color(color)
 {
-    m_position = Vector2D(0,0);
+    m_pixel = Vector2D(0,0);
     m_currentRow = 0;
     m_currentFrame = m_color;
 
@@ -31,7 +28,7 @@ JewelObject::JewelObject(COLOR color) :    BoardObject(),
 void JewelObject::load(std::unique_ptr<LoaderParams> const &pParams)
 {
     // get position
-    m_position = Vector2D(pParams->getX(),pParams->getY());
+    m_pixel = Vector2D(pParams->getX(),pParams->getY());
 
     // get drawing variables
     m_width = pParams->getWidth();
@@ -43,7 +40,7 @@ void JewelObject::load(std::unique_ptr<LoaderParams> const &pParams)
 // draw the object to the screen
 void JewelObject::draw()
 {
-    TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_position.getX(), (Uint32)m_position.getY(),
+    TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
                                           m_width, m_height, m_currentRow, m_currentFrame, TheGame::Instance()->getRenderer(), m_angle, m_alpha);
 }
 
@@ -52,25 +49,12 @@ void JewelObject::update()
 {
 }
 
-Vector2D & JewelObject::getPosition()
-{
-    return m_position;
-}
+
 void JewelObject::setMovement(JewelMove const &m)
 {
 
 }
 
-void JewelObject::doDyingAnimation()
-{
-    m_currentFrame = int(((SDL_GetTicks() / (1000/ 10)) % m_numFrames));
-    
-    if(m_dyingCounter == m_dyingTime)
-    {
-        m_bDead = true;
-    }
-    m_dyingCounter++;
-}
 
 bool JewelObject::checkCollideTile(Vector2D newPos)
 {
@@ -85,7 +69,7 @@ bool JewelObject::checkCollideTile(Vector2D newPos)
             TileLayer* pTileLayer = (*it);
             std::vector<std::vector<int>> tiles = pTileLayer->getTileIDs();
             
-            Vector2D layerPos = pTileLayer->getPosition();
+            Vector2D layerPos = pTileLayer->getPixel();
             
             int x, y, tileColumn, tileRow, tileid = 0;
             
@@ -118,3 +102,9 @@ bool JewelObject::checkCollideTile(Vector2D newPos)
         
     }
 }
+
+void JewelObject::kill()
+{
+  m_bDying = true;
+}
+

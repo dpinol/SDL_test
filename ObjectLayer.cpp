@@ -30,7 +30,7 @@ void ObjectLayer::update(Level* pLevel)
 
   for(std::vector<GameObject*>::iterator it = m_gameObjects.begin(); it != m_gameObjects.end();)
   {
-    if((*it)->getPosition().getY() +  (*it)->getHeight() > 0) //TheGame::Instance()->getGameWidth())
+    if((*it)->getPixel().getY() +  (*it)->getHeight() > 0) //TheGame::Instance()->getGameWidth())
     {
       (*it)->setUpdating(true);
       (*it)->update();
@@ -43,7 +43,7 @@ void ObjectLayer::update(Level* pLevel)
     }
 
     // check if dead or off screen
-    if((*it)->dead() || (*it)->getPosition().m_y > TheGame::Instance()->getGameHeight())
+    if((*it)->dead() || (*it)->getPixel().m_y > TheGame::Instance()->getGameHeight())
     {
       std::cout << "deleting";
       delete * it;

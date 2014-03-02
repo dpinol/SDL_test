@@ -7,6 +7,11 @@
 
 #include "BoardPos.h"
 
-BoardPos::BoardPos()
+
+BoardPos const BoardPos::m_directions[4] = {{0,1}, {0, -1}, {-1, 0}, {1,0}};
+
+std::ostream& operator<<(std::ostream& os, const BoardPos& obj)
 {
+  os << "(" << obj.m_col << "," << obj.m_row << ")";
+  return os;
 }

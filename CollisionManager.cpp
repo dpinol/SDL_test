@@ -14,8 +14,8 @@
 void CollisionManager::checkPlayerEnemyCollision(Player* pPlayer, const std::vector<GameObject*> &objects)
 {
     SDL_Rect pRect1;
-    pRect1.x = pPlayer->getPosition().getX();
-    pRect1.y = pPlayer->getPosition().getY();
+    pRect1.x = pPlayer->getPixel().getX();
+    pRect1.y = pPlayer->getPixel().getY();
     pRect1.w = pPlayer->getWidth();
     pRect1.h = pPlayer->getHeight();
 
@@ -28,8 +28,8 @@ void CollisionManager::checkPlayerEnemyCollision(Player* pPlayer, const std::vec
             continue;
         }
         
-        pRect2.x = objects[i]->getPosition().getX();
-        pRect2.y = objects[i]->getPosition().getY();
+        pRect2.x = objects[i]->getPixel().getX();
+        pRect2.y = objects[i]->getPixel().getY();
         pRect2.w = objects[i]->getWidth();
         pRect2.h = objects[i]->getHeight();
         

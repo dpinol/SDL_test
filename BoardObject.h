@@ -38,9 +38,6 @@ protected:
   void doDyingAnimation();
 
 
-  // how long the death animation takes, along with a counter
-  int m_dyingTime;
-  int m_dyingCounter;
 
   // has the explosion sound played?
   bool m_bPlayedDeathSound;

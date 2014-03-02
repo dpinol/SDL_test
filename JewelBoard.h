@@ -13,6 +13,7 @@
 #include "GameObjectFactory.h"
 #include "BoardObject.h"
 #include "model/BoardPos.h"
+#include <functional>
 
 class JewelObject;
 class JewelBoard : public BoardObject
@@ -47,9 +48,19 @@ public:
     JewelObject& getJewel(BoardPos const pos);
     JewelObject const& getJewel(BoardPos const pos) const;
 
+    //using template more efficient than std::function
+    template<class F>
+    void forAll(F const &funct)
+    {
+      BoardPos pos(-1, -1);
+      for (pos.m_row = 1; pos.m_row <= BoardPos::BoardPos::SIZE ; ++pos.m_row)
+          for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::SIZE ; ++pos.m_col)
+            funct(getJewel(pos));
+    }
+
 private:
     
-    static unsigned kJewelsColors;
+    static constexpr short kJewelsColors = 5;
 
     int m_scrollSpeed;
     
@@ -67,9 +78,8 @@ private:
     
     int m_destRect1Width;
     int m_destRect2Width;
-    constexpr static int SIZE = 8;
     //extra row is for falling new jewels
-    JewelObject* m_jewels[SIZE + 1][ SIZE];
+    JewelObject* m_jewels[BoardPos::SIZE + 1][ BoardPos::SIZE];
 
     void createInialJewelsBoard();
 };

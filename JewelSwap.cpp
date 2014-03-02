@@ -16,14 +16,47 @@ JewelSwap::JewelSwap(BoardPos const pos1, BoardPos const pos2)
 {
 
 }
+/*
+void JewelSwap::kill(BoardPos const pos)
+{
+ JewelObject &j =  m_board->getJewel(pos);
+ j.kill();
+}*/
 
 bool JewelSwap::findMatch(int posIndex) const
 {
+  bool match = false;
+  //newJewel will be at posIndex
   JewelObject &newJewel = m_board->getJewel(m_positions[ 1 - posIndex]);
+  JewelObject &otherJewel = m_board->getJewel(m_positions[ posIndex]);
+
   BoardPos const pos = m_positions[posIndex];
 
-//  for (JewelBoard::COL y =  pos.m_col - 1 )
-  return true;
+  for(int d=0; d < 4; d++)
+  {
+    BoardPos const &dir = BoardPos::m_directions[d];
+    BoardPos cur = pos + dir;
+    if(cur == otherJewel.getBoardPos())
+      continue;
+    short len = 0;
+    while (cur.isValid() )
+    {
+      if (m_board->getJewel(cur).getColor() != newJewel.getColor())
+        break;
+      len++;
+      cur += dir;
+    }
+    if (len >= MIN_STRIKE_LEN)
+    {
+      for (short l = len; l > 0; l--)
+      {
+        m_board->getJewel(cur).kill();
+        cur -= dir;
+      }
+      match = true;
+    }
+  }
+  return match;
 }
 
 bool JewelSwap::isValid() const

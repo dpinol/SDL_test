@@ -15,10 +15,16 @@
  * @brief The JewelSwap class swaps two adjacent jewels
  * If the game had more types of moves, it could inherit from a JewelMove
  * interface to implement a Command Patter (optionally allowing undo)
+ * A strike is when 3 or more jewels are aligned with same color
  */
 class JewelSwap
 {
 public:
+  /**
+   * @brief MIN_STRIKE_LEN minimum len to be a strike
+   */
+  constexpr static short MIN_STRIKE_LEN = 3;
+
   JewelSwap(const BoardPos pos1, const BoardPos pos2);
   void setBoard(JewelBoard &board);
   bool isValid() const;

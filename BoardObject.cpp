@@ -12,10 +12,7 @@
 #include "TileLayer.h"
 
 BoardObject::BoardObject() :    GameObject(),
-                                    m_dyingTime(0),
-                                    m_dyingCounter(0),
-                                   m_bPlayedDeathSound(false),
-                                    m_bFlipped(false),
+                                    m_bPlayedDeathSound(false),
                                     m_lastSafePos(0,0)
 {
 }
@@ -23,7 +20,7 @@ BoardObject::BoardObject() :    GameObject(),
 void BoardObject::load(std::unique_ptr<LoaderParams> const &pParams)
 {
     // get position
-    m_position = Vector2D(pParams->getX(),pParams->getY());
+    m_pixel = Vector2D(pParams->getX(),pParams->getY());
     
     // get drawing variables
     m_width = pParams->getWidth();
@@ -35,27 +32,31 @@ void BoardObject::load(std::unique_ptr<LoaderParams> const &pParams)
 // draw the object to the screen
 void BoardObject::draw()
 {
-    TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_position.getX(), (Uint32)m_position.getY(),
+    TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
                                           m_width, m_height, m_currentRow, m_currentFrame, TheGame::Instance()->getRenderer(), m_angle, m_alpha);
 }
 
 // apply velocity to current position
 void BoardObject::update()
 {
-    m_position += m_velocity;
+    m_pixel += m_velocity;
     m_currentFrame = int(((SDL_GetTicks() / (1000 / 3)) % m_numFrames));
+    if (m_bDying)
+      doDyingAnimation();
 }
 
 void BoardObject::doDyingAnimation()
 {
     m_currentFrame = int(((SDL_GetTicks() / (1000/ 10)) % m_numFrames));
-    
+
     if(m_dyingCounter == m_dyingTime)
     {
         m_bDead = true;
+        m_bDying = false;
     }
     m_dyingCounter++;
 }
+
 
 bool BoardObject::checkCollideTile(Vector2D newPos)
 {
@@ -70,7 +71,7 @@ bool BoardObject::checkCollideTile(Vector2D newPos)
             TileLayer* pTileLayer = (*it);
             std::vector<std::vector<int>> tiles = pTileLayer->getTileIDs();
             
-            Vector2D layerPos = pTileLayer->getPosition();
+            Vector2D layerPos = pTileLayer->getPixel();
             
             int x, y, tileColumn, tileRow, tileid = 0;
             

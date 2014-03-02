@@ -11,7 +11,7 @@
 
 Camera* Camera::s_pCamera = new Camera();
 
-Camera::Camera() : m_pTarget(0), m_position(0,0)
+Camera::Camera() : m_pTarget(0), m_pixel(0,0)
 {
     
 }
@@ -21,7 +21,7 @@ Camera::~Camera()
     delete m_pTarget;
 }
 
-const Vector2D Camera::getPosition() const
+const Vector2D Camera::getPixel() const
 {
     if(m_pTarget != 0)
     {
@@ -35,7 +35,7 @@ const Vector2D Camera::getPosition() const
         return pos;
     }
     
-    return m_position;
+    return m_pixel;
     
     
     
@@ -64,11 +64,11 @@ const Vector2D Camera::getPosition() const
 
 void Camera::update(Vector2D velocity)
 {
-    m_position += velocity;
+    m_pixel += velocity;
     
-    if(m_position.m_x < 0)
+    if(m_pixel.m_x < 0)
     {
-        m_position.m_x = 0;
+        m_pixel.m_x = 0;
     }
 }
 

@@ -45,8 +45,10 @@ public:
     virtual std::string type() = 0;
     
     // getters for common variables
-    Vector2D& getPosition() { return m_position; }
+    Vector2D& getPixel() { return m_pixel; }
+    Vector2D const& getPixel() const { return m_pixel; }
     Vector2D& getVelocity() { return m_velocity; }
+    Vector2D const& getVelocity() const { return m_velocity; }
     
     int getWidth() { return m_width; }
     int getHeight() { return m_height; }
@@ -56,7 +58,7 @@ public:
     {
         if(type() != std::string("Player")) // player is never scrolled
         {
-            m_position.setX(m_position.getX() - scrollSpeed);
+            m_pixel.setX(m_pixel.getX() - scrollSpeed);
         }
     }
     
@@ -77,7 +79,7 @@ public:
 protected:
     
     // constructor with default initialisation list
-    GameObject() :  m_position(0,0),
+    GameObject() :  m_pixel(0,0),
                     m_velocity(0,0),
                     m_acceleration(0,0),
                     m_width(0),
@@ -87,13 +89,15 @@ protected:
                     m_bUpdating(false),
                     m_bDead(false),
                     m_bDying(false),
+                    m_dyingTime(0),
+                    m_dyingCounter(0),
                     m_angle(0),
                     m_alpha(255)
     {
     }
 
     // movement variables
-    Vector2D m_position;
+    Vector2D m_pixel;
     Vector2D m_velocity;
     Vector2D m_acceleration;
     
@@ -111,7 +115,10 @@ protected:
     bool m_bUpdating;
     bool m_bDead;
     bool m_bDying;
-    
+    // how long the death animation takes, along with a counter
+    int m_dyingTime;
+    int m_dyingCounter;
+
     // rotation
     double m_angle;
     
