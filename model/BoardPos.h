@@ -8,10 +8,21 @@
 #ifndef BOARDPOS_H
 #define BOARDPOS_H
 
-class BoardPos
+struct BoardPos
 {
-public:
-  BoardPos();
+  typedef unsigned char ROW;
+  typedef unsigned char COL;
+
+  //BoardPos(BoardPos const&);
+  BoardPos(COL col, ROW row)
+    :m_col(col), m_row(row)
+  {
+  }
+  BoardPos operator+(const BoardPos& v2) const { return BoardPos(m_col + v2.m_col, m_row + v2.m_row); }
+  BoardPos& operator+=(const BoardPos& v2) { m_col += v2.m_col; m_row += v2.m_row; return *this;}
+
+  COL m_col;
+  ROW m_row;
 };
 
 #endif // BOARDPOS_H
