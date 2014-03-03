@@ -17,6 +17,9 @@ JewelStrike::JewelStrike(Board &board, BoardCallback * callback)
 
 bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ignorePos) const
 {
+  //@bug remove when jewels falling implemented
+  if (newColor == Jewel::NO_COLOR)
+    return false;
   bool match = false;
   //newJewel will be at posIndex
   //Jewel &newJewel = m_board.getJewel(m_positions[ 1 - posIndex]);
@@ -24,7 +27,7 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ign
 
   //  BoardPos const pos = m_positions[posIndex];
 
-  BoardPos directions[] = {{0,1}, {1,0}};
+  BoardPos const directions[] = {{0,1}, {1,0}};
   for(int d=0; d < 2; d++)
   {
     BoardPos dir = directions[d];
@@ -50,7 +53,8 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ign
     {
       if (m_callback)
       {
-        for (short l = -len[1]; l < len[0]; l++)
+        cur += directions[d];
+        for (short l = 0; l < len[0] + len[1]; l++)
         {
           m_callback->kill(cur);
           cur += directions[d];
