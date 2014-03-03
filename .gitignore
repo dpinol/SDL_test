@@ -3,6 +3,9 @@
 *.lo
 *.o
 
+#Makefile dependencies
+*.d
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -15,5 +18,6 @@
 .DS_Store
 .depend
 CON
+model_test
 SDL_test
 Thumbs.db

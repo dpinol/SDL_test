@@ -39,14 +39,20 @@ LDFLAGS:=$(LDFLAGS) -g
 SRCS=$(wildcard *.cpp) $(wildcard utils/*.cpp) $(wildcard model/*.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 
-TEST_SRCS=$(wildcard model/test/*.cpp) $(wildcard utils/*.cpp) $(wildcard model/*.cpp)
-TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 
+MODEL_TEST_SRCS=$(wildcard model/test/*.cpp) $(wildcard utils/*.cpp) $(wildcard model/*.cpp)
+MODEL_TEST_OBJS=$(subst .cpp,.o,$(MODEL_TEST_SRCS))
+
+FULL_SRCS=$(wildcard *.cpp) $(MODEL_TEST_SRCS)
+FULL_OBJS=$(subst .cpp,.o,$(FULL_SRCS))
+clean_list += $(MODEL_TEST_OBJS) SDL_test test
 
 all: SDL_test
 
-test: $(TEST_OBJS)
-	$(CXX) -o $@ $(TEST_OBJS) $(LDFLAGS) $(LDLIBS)
+tests: model_test
+
+model_test: $(MODEL_TEST_OBJS)
+	$(CXX) -o $@ $(MODEL_TEST_OBJS) $(LDFLAGS) $(LDLIBS)
 
 
 SDL_test: $(OBJS)
@@ -58,14 +64,18 @@ SDL_test: $(OBJS)
 
 depend: .depend
 
-.depend: $(SRCS)
-	rm -f ./.depend
-	$(CXX) $(CPPFLAGS) -MM $^>>./.depend;
+# Generate dependencies for all files in project
+%.d: $(FULL_SRCS)
+	@$(CXX) $(CPPFLAGS) -MM $*.cpp | sed -e 's@^\(.*\)\.o:@\1.d \1.o:@' > $@
 
+clean_list += ${FULL_SRCS:.cpp=.d}
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(clean_list)
 
 dist-clean: clean
 	$(RM) *~ .dependtool
 
-include .depend
+ifneq "$(MAKECMDGOALS)" "clean"
+# Include the list of dependancies generated for each object file
+-include ${FULL_SRCS:.cpp=.d}
+endif
