@@ -51,7 +51,8 @@ void JewelDrag::drag()
     else
       return;
     m_toPos = m_fromPos + shiftPos;
-    m_board.swap(m_fromPos, m_toPos);
+    if (m_toPos.isValid())
+      m_board.swap(m_fromPos, m_toPos);
   }
 }
 

@@ -47,6 +47,7 @@ struct BoardPos
   inline BoardPos& operator-=(const BoardPos& v2) { m_col -= v2.m_col; m_row -= v2.m_row; return *this;}
   inline bool operator==(const BoardPos& v2) { return m_col == v2.m_col && m_row == v2.m_row;}
 
+  inline BoardPos operator-() const { return BoardPos(-m_col, -m_row);}
   /**
    * @brief isDirection
    * @return whether represents a single vertical or horizontal shift

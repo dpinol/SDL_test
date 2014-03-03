@@ -21,28 +21,34 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor) const
   //Jewel &newJewel = m_board.getJewel(m_positions[ 1 - posIndex]);
   //Jewel &otherJewel = m_board.getJewel(m_positions[ posIndex]);
 
-//  BoardPos const pos = m_positions[posIndex];
+  //  BoardPos const pos = m_positions[posIndex];
 
-  for(int d=0; d < 4; d++)
+  BoardPos directions[] = {{0,1}, {1,0}};
+  for(int d=0; d < 2; d++)
   {
-    BoardPos const &dir = BoardPos::m_directions[d];
-    BoardPos cur = newPos + dir;
-    //if(cur == otherJewel.getBoardPos())
-    //  continue;
-    short len = 1;
-    while (cur.isValid() )
+    BoardPos dir = directions[d];
+    //length on each sense
+    short len[2] = {1, 0};
+    BoardPos cur;
+    //first count on one sense, then on the other
+    for(int sense = 0; sense  < 2; sense++)
     {
-      if (m_board.getJewel(cur).getColor() != newColor)
-        break;
-      len++;
-      cur += dir;
+      cur = newPos + dir;
+      while (cur.isValid() )
+      {
+        if (m_board.getJewel(cur).getColor() != newColor)
+          break;
+        len[sense]++;
+        cur += dir;
+      }
+      dir = - dir;
     }
-    if (len >= MIN_LEN)
+    if (len[0] + len[1] >= MIN_LEN)
     {
-      for (short l = len; l > 0; l--)
+      for (short l = -len[1]; l < len[0]; l++)
       {
         m_board.kill(cur);
-        cur -= dir;
+        cur += directions[d];
       }
       match = true;
     }
