@@ -8,10 +8,11 @@
 #include "JewelStrike.h"
 #include "Jewel.h"
 
-JewelStrike::JewelStrike(Board &board)
-  :m_board(board)
+JewelStrike::JewelStrike(Board &board, BoardCallback * callback)
+  :m_board(board), m_callback(callback)
 {
 }
+
 
 
 bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ignorePos) const
@@ -47,10 +48,13 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ign
     }
     if (len[0] + len[1] >= MIN_LEN)
     {
-      for (short l = -len[1]; l < len[0]; l++)
+      if (m_callback)
       {
-        m_board.kill(cur);
-        cur += directions[d];
+        for (short l = -len[1]; l < len[0]; l++)
+        {
+          m_callback->kill(cur);
+          cur += directions[d];
+        }
       }
       match = true;
     }

@@ -23,9 +23,15 @@ public:
    */
   constexpr static short MIN_LEN = 3;
 
-  JewelStrike(Board &board);
   /**
-   * @brief findMatch
+   * @brief JewelStrike
+   * @param board
+   * @param callback
+   */
+  JewelStrike(Board &board, BoardCallback * callback = NULL);
+
+  /**
+   * @brief findMatch if callback, its kill() will be called for detected strikes
    * @param newPos
    * @param newColor
    * @param ignorePos in case of a swap, don't check the position color, as for sure it does
@@ -35,7 +41,8 @@ public:
   bool findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ignorePos = BoardPos()) const;
 
 private:
-  Board &m_board;
+  Board& m_board;
+  BoardCallback* m_callback;
 };
 
 #endif // JEWELSTRIKE_H

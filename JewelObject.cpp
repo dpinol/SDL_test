@@ -46,6 +46,7 @@ void JewelObject::load(std::unique_ptr<LoaderParams> const &pParams)
 // draw the object to the screen
 void JewelObject::draw()
 {
+    if(getModel().getColor() != Jewel::NO_COLOR)
     TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
                                           m_width, m_height, m_currentRow, getModel().getColor());
                                           //TheGame::Instance()->getRenderer(), m_angle, m_alpha);

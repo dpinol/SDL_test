@@ -47,7 +47,7 @@ void JewelBoard::createInitialJewelsBoard()
 
 void JewelBoard::kill(BoardPos pos)
 {
-
+  getJewel(pos).getModel().setColor(Jewel::NO_COLOR);
 }
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)

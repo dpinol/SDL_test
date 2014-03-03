@@ -25,7 +25,6 @@ public:
    */
   Board(BoardCallback &callback);
 
-
   template<class F>
   inline void forAllPos(F const &funct)
   {
