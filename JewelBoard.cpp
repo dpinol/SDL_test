@@ -13,23 +13,27 @@
 #include "utils/utils.h"
 #include <assert.h>
 
-JewelBoard::JewelBoard() : BoardObject(), m_model(*this)
+JewelBoard::JewelBoard() : BoardObject(),
+  m_model(*this),
+  m_offset(350, 100)
 {
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
 
-  createInialJewelsBoard();
+  createInitialJewelsBoard();
 }
 
-void JewelBoard::createInialJewelsBoard()
+void JewelBoard::createInitialJewelsBoard()
 {
   for (unsigned i = 0 ; i <= BoardPos::BoardPos::SIZE ; ++i)
   {
     for (unsigned j = 0 ; j < BoardPos::BoardPos::SIZE ; ++j)
     {
       Jewel &jewel = m_model.getJewel(BoardPos(j, i));
-      jewel.setColor(rand() % kJewelsColors);
-      m_jewels[i][j] = new JewelObject(jewel);
+      JewelObject *jo = new JewelObject(jewel);
+      m_jewels[i][j] = jo;
+      jo->getPixel().setX(m_offset.getX() + jo->getWidth() * j);
+      jo->getPixel().setY(m_offset.getY() + jo->getHeight() * i);
     }
   }
 }
@@ -41,7 +45,7 @@ void JewelBoard::kill(BoardPos pos)
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-  }
+}
 
 /******* Model *******/
 #ifdef NDEBUG
@@ -79,7 +83,8 @@ void JewelBoard::draw()
 {
   forAll([&](JewelObject &jewel)
   {
-    jewel.draw();
+    if (jewel.getPixel().getY() +  jewel.getHeight() >= m_offset.getY())
+      jewel.draw();
   });
 }
 void JewelBoard::update()

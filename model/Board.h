@@ -19,7 +19,34 @@ struct BoardCallback
 class Board : public BoardCallback
 {
 public:
+  /**
+   * @brief Board
+   * @param callback
+   */
   Board(BoardCallback &callback);
+
+
+  template<class F>
+  inline void forAllPos(F const &funct)
+  {
+    BoardPos pos(-1, -1);
+    for (pos.m_row = 1; pos.m_row <= BoardPos::BoardPos::SIZE ; ++pos.m_row)
+        for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::SIZE ; ++pos.m_col)
+          funct(pos);
+  }
+
+  template<class F>
+  inline void forAll(F const &funct)
+  {
+    forAllPos([&](BoardPos const &pos)
+    {
+       funct(getJewel(pos));
+    });
+  }
+  /**
+   * @brief randomize assigns random colors so that there are no strikes
+   */
+  void randomize();
 
   Jewel &getJewel(BoardPos pos);
   Jewel const &getJewel(BoardPos pos) const;

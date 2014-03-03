@@ -6,11 +6,25 @@
 **************************************************************************/
 
 #include "Board.h"
+#include "JewelStrike.h"
 #include "utils/utils.h"
 
 Board::Board(BoardCallback &callback)
   :m_callback(callback)
 {
+  randomize();
+}
+void Board::randomize()
+{
+  JewelStrike strike(*this);
+  forAllPos([&](BoardPos const &pos)
+  {
+    Jewel& jewel = getJewel(pos);
+    do
+    {
+      jewel.setColor(rand() % Jewel::NUM_COLORS);
+    } while (!strike.findMatch(pos, jewel.getColor()));
+  });
 }
 #ifdef NDEBUG
 inline void assertBoardPos(BoardPos const)

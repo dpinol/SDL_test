@@ -39,7 +39,15 @@ LDFLAGS:=$(LDFLAGS) -g
 SRCS=$(wildcard *.cpp) $(wildcard utils/*.cpp) $(wildcard model/*.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 
+TEST_SRCS=$(wildcard model/test/*.cpp) $(wildcard utils/*.cpp) $(wildcard model/*.cpp)
+TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
+
+
 all: SDL_test
+
+test: $(TEST_OBJS)
+	$(CXX) -o $@ $(TEST_OBJS) $(LDFLAGS) $(LDLIBS)
+
 
 SDL_test: $(OBJS)
 	$(CXX) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)

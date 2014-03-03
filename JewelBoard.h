@@ -61,14 +61,18 @@ public:
             funct(getJewel(pos));
     }
 
+    /**
+     * @brief _offset where board is painted
+     */
+    Vector2D const m_offset;
+
 private:
     
-    static constexpr short kJewelsColors = 5;
 
     //extra row is for falling new jewels
     JewelObject* m_jewels[BoardPos::SIZE + 1][ BoardPos::SIZE];
 
-    void createInialJewelsBoard();
+    void createInitialJewelsBoard();
     Board m_model;
 };
 

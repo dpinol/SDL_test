@@ -39,7 +39,7 @@ public:
 
 protected:
 
-  friend class JewelBoard;
+  //friend class JewelBoard;
   Jewel *m_model;
   bool checkCollideTile(Vector2D newPos);
 

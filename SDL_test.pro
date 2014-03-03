@@ -10,7 +10,9 @@ SOURCES += *.cpp \
     model/*.cpp \
     model/JewelStrike.cpp \
     model/Jewel.cpp \
-    model/Board.cpp
+    model/Board.cpp \
+    model/test/JewelStrikeTest.cpp \
+    model/test/main.cpp
 
 
 OTHER_FILES += \
@@ -26,5 +28,6 @@ HEADERS += \
     model/BoardPos.h \
     model/JewelStrike.h \
     model/Jewel.h \
-    model/Board.h
+    model/Board.h \
+    model/test/JewelStrikeTest.h
 
