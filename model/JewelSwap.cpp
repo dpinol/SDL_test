@@ -12,7 +12,8 @@
 
 JewelSwap::JewelSwap(Board &board)
   :m_board(board),
-    m_validated(false)
+    m_validated(false),
+    m_valid(false)
 
 {
 
@@ -33,12 +34,14 @@ void JewelSwap::kill(BoardPos const pos)
 
 bool JewelSwap::isValid() const
 {
+  if (m_validated)
+    return m_valid;
   JewelStrike strike(m_board);
-  bool valid = strike.findMatch(m_positions[0], m_board.getJewel(m_positions[1]).getColor());
+  m_valid = strike.findMatch(m_positions[0], m_board.getJewel(m_positions[1]).getColor());
   //order important to avoid shortcut
-  valid = strike.findMatch(m_positions[1], m_board.getJewel(m_positions[0]).getColor()) || valid;
+  m_valid = strike.findMatch(m_positions[1], m_board.getJewel(m_positions[0]).getColor()) || m_valid;
   m_validated = true;
-  return valid;
+  return m_valid;
 }
 
 

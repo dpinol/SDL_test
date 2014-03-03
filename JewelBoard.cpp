@@ -10,12 +10,16 @@
 #include "JewelObject.h"
 #include "TextureManager.h"
 #include "Game.h"
+#include <model/JewelSwap.h>
 #include "utils/utils.h"
 #include <assert.h>
 
+#include <SDL_events.h>
+
 JewelBoard::JewelBoard() : BoardObject(),
   m_model(*this),
-  m_offset(350, 100)
+  m_offset(350, 100),
+  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH, JewelObject::HEIGHT) * BoardPos::SIZE )
 {
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
@@ -55,7 +59,7 @@ inline void assertBoardPos(BoardPos const)
 #else
 inline void assertBoardPos(BoardPos const pos)
 {
-  if (!pos.isValid())
+  if (!pos.isValid(true))
     throw std::runtime_error("BoardPos " + dani::toString(pos) + "is not valid");
 }
 #endif
@@ -87,8 +91,45 @@ void JewelBoard::draw()
       jewel.draw();
   });
 }
+
+BoardPos JewelBoard::getJewelAt(SDL_MouseButtonEvent const &ev) const
+{
+  Vector2D v(ev.x, ev.y);
+  if (!v.isInside(m_offset, m_bottomDown))
+    return BoardPos();
+  return BoardPos((v.getX() - m_offset.getX()) / JewelObject::WIDTH,
+                  (v.getY() - m_offset.getY()) / JewelObject::HEIGHT);
+}
+
+bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
+{
+  JewelSwap sw(m_model);
+  sw.setPositions(pos1, pos2);
+  return sw.run();
+}
+
 void JewelBoard::update()
 {
+  SDL_Event event;
+  while(SDL_PollEvent(&event))
+  {
+    switch (event.type)
+    {
+    case SDL_MOUSEBUTTONDOWN:
+      m_dragging = getJewelAt(event.button);
+      break;
+    case SDL_MOUSEBUTTONUP:
+      BoardPos const dropping = getJewelAt(event.button);
+      if (m_dragging.isValid()
+          && dropping.isValid() && dropping.isDirection())
+      {
+        swap(m_dragging, dropping);
+      }
+      break;
+
+    }
+  }
+
   forAll([&](JewelObject &jewel)
   {
     jewel.update();

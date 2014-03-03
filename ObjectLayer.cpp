@@ -43,7 +43,7 @@ void ObjectLayer::update(Level* pLevel)
     }
 
     // check if dead or off screen
-    if((*it)->dead() || (*it)->getPixel().m_y > TheGame::Instance()->getGameHeight())
+    if((*it)->dead() || (*it)->getPixel().getY() > TheGame::Instance()->getGameHeight())
     {
       std::cout << "deleting";
       delete * it;

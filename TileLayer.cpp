@@ -45,7 +45,7 @@ void TileLayer::render()
                 continue;
             }
             
-            if(((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().m_x < -m_tileSize || ((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().m_x > TheGame::Instance()->getGameWidth())
+            if(((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().getX() < -m_tileSize || ((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().getX() > TheGame::Instance()->getGameWidth())
             {
                 continue;
             }
@@ -56,7 +56,7 @@ void TileLayer::render()
             
             
             
-            TheTextureManager::Instance()->drawTile(tileset.name, tileset.margin, tileset.spacing, ((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().m_x, ((i * m_tileSize) - y2), m_tileSize, m_tileSize, (id - (tileset.firstGridID - 1)) / tileset.numColumns, (id - (tileset.firstGridID - 1)) % tileset.numColumns, TheGame::Instance()->getRenderer());
+            TheTextureManager::Instance()->drawTile(tileset.name, tileset.margin, tileset.spacing, ((j * m_tileSize) - x2) - TheCamera::Instance()->getPixel().getX(), ((i * m_tileSize) - y2), m_tileSize, m_tileSize, (id - (tileset.firstGridID - 1)) / tileset.numColumns, (id - (tileset.firstGridID - 1)) % tileset.numColumns, TheGame::Instance()->getRenderer());
         }
     }
 }

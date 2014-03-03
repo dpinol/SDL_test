@@ -37,11 +37,13 @@ public:
   void setMovement(JewelMove const &m);
   void kill();
 
+  static constexpr short WIDTH = 35;
+  static constexpr short HEIGHT = 35;
+
 protected:
 
   //friend class JewelBoard;
   Jewel *m_model;
-  bool checkCollideTile(Vector2D newPos);
 
 };
 #endif /* defined(__SDL_Game_Programming_Book__SDLGameObject__) */

@@ -42,10 +42,25 @@ struct BoardPos
   inline BoardPos& operator-=(const BoardPos& v2) { m_col -= v2.m_col; m_row -= v2.m_row; return *this;}
   inline bool operator==(const BoardPos& v2) { return m_col == v2.m_col && m_row == v2.m_row;}
 
-  inline bool isValid() const
+  /**
+   * @brief isDirection
+   * @return whether represents a single vertical or horizontal shift
+   */
+  inline bool isDirection() const
+  {
+    return (m_col == 0 && (m_row == 1 || m_row == -1))
+        || (m_row == 0 && (m_col == 1 || m_col == -1));
+  }
+  /**
+   * @brief isValid a position displayed on the board
+   * @return false for the first hidden row
+   */
+  inline bool isValid(bool includingHiddenRow = false) const
   {
     return m_col >= 0 && m_col < SIZE
-        && m_row >= 0 && m_row <= SIZE;
+        &&
+        ((includingHiddenRow && m_row >= 0) || (!includingHiddenRow && m_row > 0))
+        && m_row <= SIZE;
   }
 
   COL m_col;

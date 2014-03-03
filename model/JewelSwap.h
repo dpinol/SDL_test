@@ -33,6 +33,7 @@ private:
   BoardPos m_positions[2];
   Board &m_board;
   mutable bool m_validated;
+  mutable bool m_valid;
   /**
    * @brief m_strike has the
    */

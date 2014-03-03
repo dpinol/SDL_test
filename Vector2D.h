@@ -27,28 +27,28 @@ public:
     
     Vector2D(float x, float y): m_x(x), m_y(y) {}
     
-    float getX() const { return m_x; }
-    float getY() const { return m_y; }
+    inline float getX() const { return m_x; }
+    inline float getY() const { return m_y; }
     
     void setX(float x) { m_x = x; }
     void setY(float y) { m_y = y; }
     
     int length() { return sqrt(m_x * m_x + m_y * m_y); }
     
-    Vector2D operator+(const Vector2D& v2) const { return Vector2D(m_x + v2.m_x, m_y + v2.m_y); }
+    Vector2D operator+(const Vector2D& v2) const { return Vector2D(m_x + v2.getX(), m_y + v2.getY()); }
     friend Vector2D& operator+=(Vector2D& v1, const Vector2D& v2)
     {
-        v1.m_x += v2.m_x;
-        v1.m_y += v2.m_y;
+        v1.m_x += v2.getX();
+        v1.m_y += v2.getY();
         
         return v1;
     }
     
-    Vector2D operator-(const Vector2D& v2) const { return Vector2D(m_x - v2.m_x, m_y - v2.m_y); }
+    Vector2D operator-(const Vector2D& v2) const { return Vector2D(m_x - v2.getX(), m_y - v2.getY()); }
     friend Vector2D& operator-=(Vector2D& v1, const Vector2D& v2)
     {
-        v1.m_x -= v2.m_x;
-        v1.m_y -= v2.m_y;
+        v1.m_x -= v2.getX();
+        v1.m_y -= v2.getY();
         
         return v1;
     }
@@ -80,6 +80,17 @@ public:
         return *this;
     }
 
+    /**
+    * @brief isInside
+    * @param topLeft
+    * @param bottomDown
+    * @return whether this lies within the rectangle (excluding bottomDown.getX and bottomDown.getY)
+    */
+   inline bool isInside(const Vector2D &topLeft, const Vector2D &bottomDown)
+   {
+     return topLeft.getX() <= getX() && topLeft.getY() <= getY()
+         && bottomDown.getX() > getX() && bottomDown.getY() > getY();
+   }
     
     void normalize()
     {
@@ -89,7 +100,7 @@ public:
             (*this) *= 1 / l;
         }
     }
-    
+private:
     float m_x;
     float m_y;
 };

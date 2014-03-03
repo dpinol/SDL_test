@@ -17,6 +17,7 @@
 #include <functional>
 
 class JewelObject;
+struct SDL_MouseButtonEvent;
 class JewelBoard : public BoardObject, BoardCallback
 {
 public:
@@ -65,15 +66,24 @@ public:
      * @brief _offset where board is painted
      */
     Vector2D const m_offset;
-
+    Vector2D const m_bottomDown;
 private:
-    
+    /**
+     * @brief getJewelAt
+     * @param ev
+     * @return not valid board if not withn board
+     */
+    BoardPos getJewelAt(SDL_MouseButtonEvent const &ev) const;
+
 
     //extra row is for falling new jewels
     JewelObject* m_jewels[BoardPos::SIZE + 1][ BoardPos::SIZE];
 
     void createInitialJewelsBoard();
     Board m_model;
+    /** Contains jewel being dragged*/
+    BoardPos m_dragging;
+    BoardPos m_selected;
 };
 
 class JewelBoardCreator : public BaseCreator

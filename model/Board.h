@@ -48,6 +48,12 @@ public:
    */
   void randomize();
 
+  /**
+   * @brief getJewel
+   * @param pos
+   * @return
+   * @throw if trying to get jewel from row 0
+   */
   Jewel &getJewel(BoardPos pos);
   Jewel const &getJewel(BoardPos pos) const;
 

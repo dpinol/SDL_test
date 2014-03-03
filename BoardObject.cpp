@@ -60,7 +60,7 @@ void BoardObject::doDyingAnimation()
 
 bool BoardObject::checkCollideTile(Vector2D newPos)
 {
-    if(newPos.m_y + m_height >= TheGame::Instance()->getGameHeight() - 32)
+    if(newPos.getY() + m_height >= TheGame::Instance()->getGameHeight() - 32)
     {
         return false;
     }
@@ -79,13 +79,13 @@ bool BoardObject::checkCollideTile(Vector2D newPos)
             y = layerPos.getY() / pTileLayer->getTileSize();
             
             Vector2D startPos = newPos;
-            startPos.m_x += 15;
-            startPos.m_y += 20;
-            Vector2D endPos(newPos.m_x + (m_width - 15), (newPos.m_y) + m_height - 4);
+            startPos.setX(startPos.getX() + 15);
+            startPos.setY(startPos.getY() + 20);
+            Vector2D endPos(newPos.getX() + (m_width - 15), (newPos.getY()) + m_height - 4);
             
-            for(int i = startPos.m_x; i < endPos.m_x; i++)
+            for(int i = startPos.getX(); i < endPos.getX(); i++)
             {
-                for(int j = startPos.m_y; j < endPos.m_y; j++)
+                for(int j = startPos.getY(); j < endPos.getY(); j++)
                 {
                     tileColumn = i / pTileLayer->getTileSize();
                     tileRow = j / pTileLayer->getTileSize();

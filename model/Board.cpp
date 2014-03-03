@@ -38,7 +38,7 @@ inline void assertBoardPos(BoardPos const)
 #else
 inline void assertBoardPos(BoardPos const pos)
 {
-  if (!pos.isValid())
+  if (!pos.isValid(false))
     throw std::runtime_error("BoardPos " + dani::toString(pos) + "is not valid");
 }
 #endif

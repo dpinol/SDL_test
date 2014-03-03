@@ -25,11 +25,11 @@ const Vector2D Camera::getPixel() const
 {
     if(m_pTarget != 0)
     {
-        Vector2D pos(m_pTarget->m_x - (TheGame::Instance()->getGameWidth() / 2), 0);
+        Vector2D pos(m_pTarget->getX() - (TheGame::Instance()->getGameWidth() / 2), 0);
         
-        if(pos.m_x < 0)
+        if(pos.getX() < 0)
         {
-            pos.m_x = 0;
+            pos.setX(0);
         }
         
         return pos;
@@ -66,9 +66,9 @@ void Camera::update(Vector2D velocity)
 {
     m_pixel += velocity;
     
-    if(m_pixel.m_x < 0)
+    if(m_pixel.getX() < 0)
     {
-        m_pixel.m_x = 0;
+        m_pixel.setX(0);
     }
 }
 
