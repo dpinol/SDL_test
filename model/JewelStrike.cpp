@@ -29,7 +29,7 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor) const
     BoardPos cur = newPos + dir;
     //if(cur == otherJewel.getBoardPos())
     //  continue;
-    short len = 0;
+    short len = 1;
     while (cur.isValid() )
     {
       if (m_board.getJewel(cur).getColor() != newColor)
