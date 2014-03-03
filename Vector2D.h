@@ -86,7 +86,7 @@ public:
     * @param bottomDown
     * @return whether this lies within the rectangle (excluding bottomDown.getX and bottomDown.getY)
     */
-   inline bool isInside(const Vector2D &topLeft, const Vector2D &bottomDown)
+   inline bool isInside(const Vector2D &topLeft, const Vector2D &bottomDown) const
    {
      return topLeft.getX() <= getX() && topLeft.getY() <= getY()
          && bottomDown.getX() > getX() && bottomDown.getY() > getY();

@@ -27,10 +27,11 @@ void MenuButton::draw()
 
 void MenuButton::update()
 {
-    Vector2D* pMousePos = TheInputHandler::Instance()->getMousePosition();
-    
-    if(pMousePos->getX() < (m_pixel.getX() + m_width) && pMousePos->getX() > m_pixel.getX()
-       && pMousePos->getY() < (m_pixel.getY() + m_height) && pMousePos->getY() > m_pixel.getY())
+    Vector2D const &pMousePos = TheInputHandler::Instance()->getMousePosition();
+
+    //@todo implement isInside
+    if(pMousePos.getX() < (m_pixel.getX() + m_width) && pMousePos.getX() > m_pixel.getX()
+       && pMousePos.getY() < (m_pixel.getY() + m_height) && pMousePos.getY() > m_pixel.getY())
     {
         if(TheInputHandler::Instance()->getMouseButtonState(LEFT) && m_bReleased)
         {

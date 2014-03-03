@@ -9,6 +9,7 @@
 #include "Board.h"
 #include "Jewel.h"
 #include "JewelStrike.h"
+#include <utils/log.h>
 
 JewelSwap::JewelSwap(Board &board)
   :m_board(board),
@@ -41,6 +42,8 @@ bool JewelSwap::isValid() const
   //order important to avoid shortcut
   m_valid = strike.findMatch(m_positions[1], m_board.getJewel(m_positions[0]).getColor()) || m_valid;
   m_validated = true;
+  if (!m_valid)
+    LOG_DEBUG("Swap not valid because it would not form a strike");
   return m_valid;
 }
 

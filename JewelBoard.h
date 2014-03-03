@@ -73,7 +73,7 @@ private:
      * @param ev
      * @return not valid board if not withn board
      */
-    BoardPos getJewelAt(SDL_MouseButtonEvent const &ev) const;
+    BoardPos getJewelAt(const Vector2D &pixel) const;
 
 
     //extra row is for falling new jewels
