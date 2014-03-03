@@ -27,7 +27,7 @@ void Board::randomize()
     }
     do
     {
-      jewel.setColor(rand() % Jewel::NUM_COLORS);
+      jewel.setColor(random() % Jewel::NUM_COLORS);
     } while (strike.findMatch(pos, jewel.getColor()));
   });
 }

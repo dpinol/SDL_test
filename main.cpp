@@ -1,168 +1,17 @@
-/*
- Shaun Mitchell
- SDL Game Programming part 1
- 
- Initial set up
- 
- 
- 
- #include <SDL.h>
- 
- SDL_Window* g_pWindow = 0;
- SDL_Renderer* g_pRenderer = 0;
- 
- int main()
- {
- // initialise SDL
- if(SDL_Init(SDL_INIT_EVERYTHING) >= 0)
- {
- // if succeeded create our window
- g_pWindow = SDL_CreateWindow("Chapter 1: Setting up SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
- 
- // if the window creation succeeded create our renderer
- if(g_pWindow != 0)
- {
- g_pRenderer = SDL_CreateRenderer(g_pWindow, -1, 0);
- }
- }
- else
- {
- return 1; // sdl could not initialise
- }
- 
- // everything succeeded lets draw the window
- 
- // set to black
- SDL_SetRenderDrawColor(g_pRenderer, 0, 0, 0, 255);
- 
- // clear the window to black
- SDL_RenderClear(g_pRenderer);
- 
- // show the window
- SDL_RenderPresent(g_pRenderer);
- 
- // set a delay before quitting
- SDL_Delay(5000);
- 
- // clean up SDL
- SDL_Quit();
- 
- return 0;
- }
- */
-
-/*
- Shaun Mitchell
- SDL Game programming part 2
- 
- separating the code
- 
- #include <SDL.h>
- 
- SDL_Window* g_pWindow = 0;
- SDL_Renderer* g_pRenderer = 0;
- 
- bool g_bRunning = false;
- 
- bool init(const char* title, int xpos, int ypos, int height, int width, int flags)
- {
- // initialise SDL
- if(SDL_Init(SDL_INIT_EVERYTHING) >= 0)
- {
- // if succeeded create our window
- g_pWindow = SDL_CreateWindow(title, xpos, ypos, height, width, flags);
- 
- // if the window creation succeeded create our renderer
- if(g_pWindow != 0)
- {
- g_pRenderer = SDL_CreateRenderer(g_pWindow, -1, 0);
- }
- }
- else
- {
- return false; // sdl could not initialise
- }
- 
- return true;
- }
- 
- 
- void render()
- {
- // set to black
- SDL_SetRenderDrawColor(g_pRenderer, 0, 0, 0, 255);
- 
- // clear the window to black
- SDL_RenderClear(g_pRenderer);
- 
- // show the window
- SDL_RenderPresent(g_pRenderer);
- }
- 
- int main()
- {
- if(init("Chapter 1: Setting up SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN))
- {
- g_bRunning = true;
- }
- else
- {
- return 1; // something's wrong
- }
- 
- while(g_bRunning)
- {
- render();
- }
- 
- // clean up SDL
- SDL_Quit();
- 
- return 0;
- }
- */
-
-/*
- Part 3
- 
- 
- void init(){}
- void render(){}
- void update(){}
- void handleEvents(){}
- void clean(){}
- 
- bool g_bRunning = true;
- 
- int main()
- {
- init();
- 
- while(g_bRunning)
- {
- handleEvents();
- update();
- render();
- }
- 
- clean();
- }
- */
-
-/*
- Part 4
- 
- */
 
 #include "Game.h"
 //#include "windows.h"
 #include <iostream>
+#include <stdlib.h>
 
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 
 int main(int argc, char **argv)
 {
+    if (argc > 1 && strcmp(argv[1], "--randomize") == 0)
+      srandomdev();
+
 //	AllocConsole();
   //freopen("CON", "w", stdout);
     Uint32 frameStart, frameTime;
