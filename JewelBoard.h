@@ -10,11 +10,13 @@
 #define __SDL_Game_Programming_Book__JewelBoard__
 
 #include <iostream>
+#include "model/BoardPos.h"
 #include "GameObjectFactory.h"
 #include "BoardObject.h"
-#include "model/BoardPos.h"
+#include "JewelDrag.h"
 #include "model/Board.h"
 #include <functional>
+
 
 class JewelObject;
 struct SDL_MouseButtonEvent;
@@ -61,13 +63,6 @@ public:
           for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::SIZE ; ++pos.m_col)
             funct(getJewel(pos));
     }
-
-    /**
-     * @brief _offset where board is painted
-     */
-    Vector2D const m_offset;
-    Vector2D const m_bottomDown;
-private:
     /**
      * @brief getJewelAt
      * @param ev
@@ -75,15 +70,21 @@ private:
      */
     BoardPos getJewelAt(const Vector2D &pixel) const;
 
+private:
+
 
     //extra row is for falling new jewels
     JewelObject* m_jewels[BoardPos::SIZE + 1][ BoardPos::SIZE];
 
     void createInitialJewelsBoard();
     Board m_model;
-    /** Contains jewel being dragged*/
-    BoardPos m_dragging;
-    BoardPos m_selected;
+    /**
+     * @brief _offset where board is painted
+     */
+    Vector2D const m_offset;
+    Vector2D const m_bottomDown;
+    JewelDrag m_drag;
+
 };
 
 class JewelBoardCreator : public BaseCreator

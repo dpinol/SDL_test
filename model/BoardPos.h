@@ -36,6 +36,11 @@ struct BoardPos
   {
   }
 
+    inline void clear()
+    {
+      m_col = m_row = -1;
+    }
+
   inline BoardPos operator+(const BoardPos& v2) const { return BoardPos(m_col + v2.m_col, m_row + v2.m_row); }
   inline BoardPos& operator+=(const BoardPos& v2) { m_col += v2.m_col; m_row += v2.m_row; return *this;}
   inline BoardPos operator-(const BoardPos& v2) const { return BoardPos(m_col - v2.m_col, m_row - v2.m_row); }

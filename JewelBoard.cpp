@@ -21,7 +21,8 @@
 JewelBoard::JewelBoard() : BoardObject(),
   m_model(*this),
   m_offset(350, 100),
-  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH, JewelObject::HEIGHT) * BoardPos::SIZE )
+  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH, JewelObject::HEIGHT) * BoardPos::SIZE ),
+  m_drag(*this)
 {
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
@@ -109,49 +110,16 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
   return sw.run();
 }
 
+
+
 void JewelBoard::update()
 {
-  Vector2D const &pMousePos = TheInputHandler::Instance()->getMousePosition();
   bool clicked = TheInputHandler::Instance()->getMouseButtonState(LEFT);
   if (clicked)
-  {
-    if (!m_dragging.isValid())
-      m_dragging = getJewelAt(pMousePos);
-  }
+    m_drag.drag();
   else
-  {
-    if (m_dragging.isValid() && !TheInputHandler::Instance()->getMouseButtonState(LEFT))
-    {
-      BoardPos const dropping = getJewelAt(pMousePos);
-      if (dropping.isValid() && (m_dragging - dropping).isDirection())
-        swap(m_dragging, dropping);
-      else
-        LOG_DEBUG("Swap not valid because dropping outside grid or too far");
-    }
-    m_dragging = BoardPos();
-  }
+    m_drag.drop();
 
-  /*
-  SDL_Event event;
-  while(SDL_PollEvent(&event))
-  {
-    switch (event.type)
-    {
-    case SDL_MOUSEBUTTONDOWN:
-      m_dragging = getJewelAt(event.button);
-      break;
-    case SDL_MOUSEBUTTONUP:
-      BoardPos const dropping = getJewelAt(event.button);
-      if (m_dragging.isValid()
-          && dropping.isValid() && dropping.isDirection())
-      {
-        swap(m_dragging, dropping);
-      }
-      break;
-
-    }
-  }
-*/
   forAll([&](JewelObject &jewel)
   {
     jewel.update();
