@@ -39,9 +39,9 @@ bool JewelSwap::isValid() const
   if (m_validated)
     return m_valid;
   JewelStrike strike(m_board);
-  m_valid = strike.findMatch(m_positions[0], m_board.getJewel(m_positions[1]).getColor());
+  m_valid = strike.findMatch(m_positions[0], m_board.getJewel(m_positions[1]).getColor(), m_positions[1]);
   //order important to avoid shortcut (maybe 2 parallel strikes are formed)
-  m_valid = strike.findMatch(m_positions[1], m_board.getJewel(m_positions[0]).getColor()) || m_valid;
+  m_valid = strike.findMatch(m_positions[1], m_board.getJewel(m_positions[0]).getColor(), m_positions[0]) || m_valid;
   m_validated = true;
   if (!m_valid)
     LOG_DEBUG("Swap " << m_positions[0] << "-" << m_positions[1] <<" not valid because it would not form a strike");

@@ -29,10 +29,10 @@ public:
    * @param newPos
    * @param newColor
    * @param ignorePos in case of a swap, don't check the position color, as for sure it does
-   * not match
+   * not match. If invalid, argument is not taken into account
    * @return
    */
-  bool findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos *ignorePos = NULL) const;
+  bool findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ignorePos = BoardPos()) const;
 
 private:
   Board &m_board;
