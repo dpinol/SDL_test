@@ -12,18 +12,24 @@
 #include "Game.h"
 #include "TileLayer.h"
 
-JewelObject::JewelObject(COLOR color) :    m_boardPos(-1, -1),
-                                    m_color(color)
+JewelObject::JewelObject(Jewel::COLOR color) :    m_model()
 {
+    m_model.setColor(color);
     m_pixel = Vector2D(0,0);
     m_currentRow = 0;
-    m_currentFrame = m_color;
+    m_currentFrame = color;
 
     // get drawing variables
     m_width = 35;
     m_height = 35;
     m_textureID = "jewels";
 }
+
+Jewel& JewelObject::getModel()
+{
+  return m_model;
+}
+
 
 void JewelObject::load(std::unique_ptr<LoaderParams> const &pParams)
 {

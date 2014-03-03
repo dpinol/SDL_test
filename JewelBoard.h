@@ -13,10 +13,11 @@
 #include "GameObjectFactory.h"
 #include "BoardObject.h"
 #include "model/BoardPos.h"
+#include "model/Board.h"
 #include <functional>
 
 class JewelObject;
-class JewelBoard : public BoardObject
+class JewelBoard : public BoardObject, BoardCallback
 {
 public:
     
@@ -29,6 +30,8 @@ public:
     
     virtual void load(std::unique_ptr<LoaderParams> const &pParams);
 
+    //BoardCallback
+    void kill(BoardPos pos) override;
 
 
     /**
@@ -66,6 +69,7 @@ private:
     JewelObject* m_jewels[BoardPos::SIZE + 1][ BoardPos::SIZE];
 
     void createInialJewelsBoard();
+    Board m_model;
 };
 
 class JewelBoardCreator : public BaseCreator

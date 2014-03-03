@@ -27,10 +27,15 @@ struct BoardPos
    * @param col
    * @param row
    */
+  inline BoardPos()
+    :m_col(-1), m_row(-1)
+  {
+  }
   inline BoardPos(COL col, ROW row)
     :m_col(col), m_row(row)
   {
   }
+
   inline BoardPos operator+(const BoardPos& v2) const { return BoardPos(m_col + v2.m_col, m_row + v2.m_row); }
   inline BoardPos& operator+=(const BoardPos& v2) { m_col += v2.m_col; m_row += v2.m_row; return *this;}
   inline BoardPos operator-(const BoardPos& v2) const { return BoardPos(m_col - v2.m_col, m_row - v2.m_row); }

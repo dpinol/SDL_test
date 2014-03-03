@@ -13,7 +13,7 @@
 #include "utils/utils.h"
 #include <assert.h>
 
-JewelBoard::JewelBoard() : BoardObject()
+JewelBoard::JewelBoard() : BoardObject(), m_model(*this)
 {
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
@@ -30,6 +30,11 @@ void JewelBoard::createInialJewelsBoard()
       m_jewels[i][j] = new JewelObject(rand() % kJewelsColors);
     }
   }
+}
+
+void JewelBoard::kill(BoardPos pos)
+{
+
 }
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
