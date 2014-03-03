@@ -7,12 +7,8 @@ INCLUDEPATH=/usr/local/include/SDL2
 
 SOURCES += *.cpp \
     utils/*.cpp \
-    model/*.cpp \
-    model/JewelStrike.cpp \
-    model/Jewel.cpp \
-    model/Board.cpp \
-    model/test/JewelStrikeTest.cpp \
-    model/test/main.cpp
+    model/*.cpp
+    model/test/*.cpp
 
 
 OTHER_FILES += \
@@ -25,9 +21,5 @@ HEADERS += \
     *.h \
     utils/*.h \
     model/*.h \
-    model/BoardPos.h \
-    model/JewelStrike.h \
-    model/Jewel.h \
-    model/Board.h \
-    model/test/JewelStrikeTest.h
+    model/test/*.h
 

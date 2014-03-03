@@ -5,10 +5,8 @@
 **   To protect a percent sign, use '%'.
 **************************************************************************/
 
-#include "Jewel.h"
+#include "TestFixture.h"
 
-Jewel::Jewel():
-//  m_boardPos(-1, -1),
-  m_color(NO_COLOR)
+TestFixture::TestFixture()
 {
 }

@@ -5,10 +5,16 @@
 **   To protect a percent sign, use '%'.
 **************************************************************************/
 
-#include "Jewel.h"
+#ifndef BOARDTEST_H
+#define BOARDTEST_H
 
-Jewel::Jewel():
-//  m_boardPos(-1, -1),
-  m_color(NO_COLOR)
+#include "TestFixture.h"
+class BoardTest: public TestFixture
 {
-}
+public:
+  BoardTest();
+  void run();
+
+};
+
+#endif // BOARDTEST_H

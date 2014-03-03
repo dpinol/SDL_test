@@ -8,10 +8,12 @@
 #ifndef JEWELSTRIKETEST_H
 #define JEWELSTRIKETEST_H
 
-class JewelStrikeTest
+#include "TestFixture.h"
+class JewelStrikeTest : public TestFixture
 {
 public:
   JewelStrikeTest();
+  void run();
 };
 
 #endif // JEWELSTRIKETEST_H

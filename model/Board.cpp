@@ -20,6 +20,11 @@ void Board::randomize()
   forAllPos([&](BoardPos const &pos)
   {
     Jewel& jewel = getJewel(pos);
+    if (pos.m_row == 0)
+    {
+      jewel.setColor(Jewel::NO_COLOR);
+      return;
+    }
     do
     {
       jewel.setColor(rand() % Jewel::NUM_COLORS);

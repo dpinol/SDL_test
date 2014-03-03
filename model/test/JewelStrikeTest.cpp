@@ -10,3 +10,7 @@
 JewelStrikeTest::JewelStrikeTest()
 {
 }
+void JewelStrikeTest::run()
+{
+}
+

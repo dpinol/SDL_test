@@ -5,10 +5,23 @@
 **   To protect a percent sign, use '%'.
 **************************************************************************/
 
-#include "Jewel.h"
+#include "BoardTest.h"
+#include "model/Board.h"
 
-Jewel::Jewel():
-//  m_boardPos(-1, -1),
-  m_color(NO_COLOR)
+BoardTest::BoardTest()
 {
+}
+
+struct DummyBoardCallback : public BoardCallback
+{
+  void kill(BoardPos pos)
+  {
+
+  }
+};
+
+void BoardTest::run()
+{
+  DummyBoardCallback callback;
+  Board board(callback);
 }

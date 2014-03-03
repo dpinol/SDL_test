@@ -16,11 +16,11 @@ class Jewel
 public:
   typedef short COLOR;
   /**
-   * @brief Jewel by default it has color -1
+   * @brief Jewel by default it has color NO_COLOR
    */
   Jewel();
   static constexpr short NUM_COLORS = 5;
-
+  static constexpr COLOR NO_COLOR = -1;
 
   void setColor(COLOR color) { m_color = color;}
   COLOR getColor() const { return m_color;}
