@@ -12,12 +12,12 @@
 #include "Game.h"
 #include "TileLayer.h"
 
-JewelObject::JewelObject(Jewel::COLOR color) :    m_model()
+JewelObject::JewelObject(Jewel &jewel) :    m_model(&jewel)
 {
-    m_model.setColor(color);
     m_pixel = Vector2D(0,0);
     m_currentRow = 0;
-    m_currentFrame = color;
+    //we don't use it so far
+    m_currentFrame = -1; //jewel.getColor();
 
     // get drawing variables
     m_width = 35;
@@ -27,7 +27,7 @@ JewelObject::JewelObject(Jewel::COLOR color) :    m_model()
 
 Jewel& JewelObject::getModel()
 {
-  return m_model;
+  return *m_model;
 }
 
 
@@ -47,7 +47,8 @@ void JewelObject::load(std::unique_ptr<LoaderParams> const &pParams)
 void JewelObject::draw()
 {
     TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
-                                          m_width, m_height, m_currentRow, m_currentFrame, TheGame::Instance()->getRenderer(), m_angle, m_alpha);
+                                          m_width, m_height, m_currentRow, getModel().getColor(),
+                                          TheGame::Instance()->getRenderer(), m_angle, m_alpha);
 }
 
 // apply velocity to current position

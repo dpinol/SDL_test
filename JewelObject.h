@@ -18,7 +18,7 @@ class JewelBoard;
 class JewelObject : public BoardObject
 {
 public:
-  JewelObject(Jewel::COLOR color);
+  JewelObject(Jewel &jewel);
   virtual ~JewelObject() {}
 
   Jewel& getModel();
@@ -40,7 +40,7 @@ public:
 protected:
 
   friend class JewelBoard;
-  Jewel m_model;
+  Jewel *m_model;
   bool checkCollideTile(Vector2D newPos);
 
 };

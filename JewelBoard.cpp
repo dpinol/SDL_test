@@ -27,7 +27,9 @@ void JewelBoard::createInialJewelsBoard()
   {
     for (unsigned j = 0 ; j < BoardPos::BoardPos::SIZE ; ++j)
     {
-      m_jewels[i][j] = new JewelObject(rand() % kJewelsColors);
+      Jewel &jewel = m_model.getJewel(BoardPos(j, i));
+      jewel.setColor(rand() % kJewelsColors);
+      m_jewels[i][j] = new JewelObject(jewel);
     }
   }
 }
