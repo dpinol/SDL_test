@@ -14,7 +14,7 @@ JewelStrike::JewelStrike(Board &board)
 }
 
 
-bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor) const
+bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos *ignorePos) const
 {
   bool match = false;
   //newJewel will be at posIndex
@@ -36,6 +36,8 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor) const
       cur = newPos + dir;
       while (cur.isValid() )
       {
+        if (ignorePos && *ignorePos == cur)
+          break;
         if (m_board.getJewel(cur).getColor() != newColor)
           break;
         len[sense]++;

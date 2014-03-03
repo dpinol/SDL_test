@@ -21,7 +21,7 @@
 JewelBoard::JewelBoard() : BoardObject(),
   m_model(*this),
   m_offset(350, 100),
-  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH, JewelObject::HEIGHT) * BoardPos::SIZE ),
+  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH, JewelObject::HEIGHT) * (BoardPos::SIZE + 1) ),
   m_drag(*this)
 {
 

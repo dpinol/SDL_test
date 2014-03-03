@@ -24,7 +24,15 @@ public:
   constexpr static short MIN_LEN = 3;
 
   JewelStrike(Board &board);
-  bool findMatch(BoardPos newPos, Jewel::COLOR newColor) const;
+  /**
+   * @brief findMatch
+   * @param newPos
+   * @param newColor
+   * @param ignorePos in case of a swap, don't check the position color, as for sure it does
+   * not match
+   * @return
+   */
+  bool findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos *ignorePos = NULL) const;
 
 private:
   Board &m_board;
