@@ -46,13 +46,7 @@ public:
     
     void setCurrentLevel(int currentLevel);
     const int getCurrentLevel() { return m_currentLevel; }
-    
-    void setNextLevel(int nextLevel) { m_nextLevel = nextLevel; }
-    const int getNextLevel() { return m_nextLevel; }
-    
-    void setLevelComplete(bool levelComplete) { m_bLevelComplete = levelComplete; }
-    const bool getLevelComplete() { return m_bLevelComplete; }
-    
+
     bool running() { return m_bRunning; }
     
     void quit() { m_bRunning = false; }
@@ -60,7 +54,6 @@ public:
     int getGameWidth() const { return m_gameWidth; }
     int getGameHeight() const { return m_gameHeight; }
     
-    std::vector<std::string> getLevelFiles() { return m_levelFiles; }
     
 private:
     
@@ -81,7 +74,6 @@ private:
     int m_nextLevel;
     bool m_bLevelComplete;
     
-    std::vector<std::string> m_levelFiles;
     
     Game();
     ~Game();

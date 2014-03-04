@@ -26,10 +26,7 @@ m_bRunning(false),
 m_pGameStateMachine(0),
 m_playerLives(3),
 m_bLevelComplete(false)
-{
-    // add some level files to an array
-    m_levelFiles.push_back("assets/board.tmx");
-    
+{    
     // start at this level
     m_currentLevel = 1;
 }
