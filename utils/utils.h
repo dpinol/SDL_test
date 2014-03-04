@@ -26,5 +26,7 @@ namespace dani {
     ss << o;
     return ss.str();
   }
+
+  std::string getCallstack();
 }
 #endif // DANI_UTILS_H

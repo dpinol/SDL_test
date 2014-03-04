@@ -5,8 +5,8 @@
 **   To protect a percent sign, use '%'.
 **************************************************************************/
 
-#ifndef PAL_TIME_H
-#define PAL_TIME_H
+#ifndef DANI_TIME_H
+#define DANI_TIME_H
 
 #include <SDL_stdinc.h>
 #include <SDL_timer.h>

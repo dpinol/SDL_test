@@ -1,5 +1,6 @@
 
 #include "Game.h"
+#include <utils/init.h>
 //#include "windows.h"
 #include <iostream>
 #include <stdlib.h>
@@ -7,8 +8,9 @@
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 
-int main(int argc, char **argv)
+int main(int argc, char const **argv)
 {
+  dani::init::init(argc, argv);
     if (argc > 1 && strcmp(argv[1], "--randomize") == 0)
       srandomdev();
 

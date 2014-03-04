@@ -8,8 +8,9 @@ INCLUDEPATH=/usr/local/include/SDL2
 SOURCES += *.cpp \
     utils/*.cpp \
     model/*.cpp \
-    JewelDrag.cpp
-    model/test/*.cpp
+    JewelDrag.cpp \
+    model/test/*.cpp \
+    utils/init.cpp
 
 
 OTHER_FILES += \
@@ -23,5 +24,6 @@ HEADERS += \
     utils/*.h \
     model/*.h \
     model/test/*.h \
-    JewelDrag.h
+    JewelDrag.h \
+    utils/init.h
 

@@ -29,7 +29,7 @@ public:
   inline void forAllPos(F const &funct)
   {
     BoardPos pos(-1, -1);
-    for (pos.m_row = 0; pos.m_row <= BoardPos::BoardPos::SIZE ; ++pos.m_row)
+    for (pos.m_row = 1; pos.m_row <= BoardPos::BoardPos::SIZE ; ++pos.m_row)
         for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::SIZE ; ++pos.m_col)
           funct(pos);
   }
@@ -53,8 +53,8 @@ public:
    * @return
    * @throw if trying to get jewel from row 0
    */
-  Jewel &getJewel(BoardPos pos);
-  Jewel const &getJewel(BoardPos pos) const;
+  Jewel &getJewel(BoardPos pos, bool allowFirstRow = false);
+  Jewel const &getJewel(BoardPos pos, bool allowFirstRow = false) const;
 
   void kill(BoardPos pos) override;
 

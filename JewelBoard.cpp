@@ -36,7 +36,7 @@ void JewelBoard::createInitialJewelsBoard()
   {
     for (unsigned j = 0 ; j < BoardPos::BoardPos::SIZE ; ++j)
     {
-      Jewel &jewel = m_model.getJewel(BoardPos(j, i));
+      Jewel &jewel = m_model.getJewel(BoardPos(j, i), true);
       JewelObject *jo = new JewelObject(jewel);
       m_jewels[i][j] = jo;
       jo->getPixel().setX(m_offset.getX() + jo->getWidth() * j);
@@ -56,11 +56,11 @@ void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
 
 /******* Model *******/
 #ifdef NDEBUG
-inline void assertBoardPos(BoardPos const)
+inline static void assertBoardPos(BoardPos const)
 {
 }
 #else
-inline void assertBoardPos(BoardPos const pos)
+inline static void assertBoardPos(BoardPos const pos)
 {
   if (!pos.isValid(true))
     throw std::runtime_error("BoardPos " + dani::toString(pos) + "is not valid");

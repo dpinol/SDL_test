@@ -32,25 +32,25 @@ void Board::randomize()
   });
 }
 #ifdef NDEBUG
-inline void assertBoardPos(BoardPos const)
+inline static void assertBoardPos(BoardPos const, bool allowFirstRow = false)
 {
 }
 #else
-inline void assertBoardPos(BoardPos const pos)
+inline static void assertBoardPos(BoardPos const pos, bool allowFirstRow = false)
 {
-  if (!pos.isValid(false))
-    throw std::runtime_error("BoardPos " + dani::toString(pos) + "is not valid");
+  if (!pos.isValid(allowFirstRow))
+    throw std::runtime_error("BoardPos " + dani::toString(pos) + " is not valid");
 }
 #endif
-Jewel& Board::getJewel(BoardPos const pos)
+Jewel& Board::getJewel(BoardPos const pos, bool allowFirstRow)
 {
-  assertBoardPos(pos);
+  assertBoardPos(pos, allowFirstRow);
   return m_jewels[pos.m_row][pos.m_col];
 }
 
-Jewel const& Board::getJewel(BoardPos const pos) const
+Jewel const& Board::getJewel(BoardPos const pos, bool allowFirstRow) const
 {
-  assertBoardPos(pos);
+  assertBoardPos(pos, allowFirstRow);
   return m_jewels[pos.m_row][pos.m_col];
 }
 
