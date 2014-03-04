@@ -62,6 +62,7 @@ void JewelObject::update()
     if (m_dyingCounter == m_dyingTime)
     {
       m_bDead = true;
+      m_bDying = false;
     }
   } else if (isFalling())
   {
@@ -77,6 +78,10 @@ void JewelObject::setMovement(JewelMove const &m)
 }
 
 
+void JewelObject::resurrect()
+{
+  m_bDying = false;
+}
 
 void JewelObject::kill()
 {

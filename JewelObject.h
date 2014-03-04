@@ -39,6 +39,8 @@ public:
 
   void setMovement(JewelMove const &m);
   void kill();
+  void resurrect();
+
   virtual void doDyingAnimation() override;
   bool isFalling() const;
   bool isFallDone() const;

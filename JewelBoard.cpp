@@ -15,6 +15,9 @@
 #include "utils/utils.h"
 #include "utils/log.h"
 #include <assert.h>
+#include <algorithm>
+
+
 
 #include <SDL_events.h>
 
@@ -119,18 +122,21 @@ void JewelBoard::pureSwap(BoardPos pos, BoardPos pos2)
 {
   /*getJewel(BoardPos(pos.m_col, pos.m_row + 1)) = jo;
   getJewel(BoardPos(pos.m_col, pos.m_row)).resetFalling();*/
-
+  std::swap( m_jewels[pos.m_row][pos.m_col], m_jewels[pos2.m_row][pos2.m_col]);
 }
 
 void JewelBoard::shiftDown(BoardPos pos)
 {
-  JewelObject &jo = getJewel(pos);
+  //JewelObject &jo = getJewel(pos);
   assert(pos.m_row < BoardPos::NUM_ROWS);
   {
     BoardPos next = pos.getBelow();
     pureSwap(pos, next);
     //it will be set to falling again if lower jewel is detected to be empty
     getJewel(next).resetFalling();
+    //resurrect so that it will fall
+    if (pos.m_row == 0)
+      getJewel(pos).kill();
   }
 /*  else
   {
@@ -175,13 +181,14 @@ void JewelBoard::update()
     JewelObject &jo = getJewel(pos);
     if(jo.isFallDone())
       shiftDown(pos);
-    if (jo.isFalling() || jo.isDead())
+    if (pos.m_row > 0 && (jo.isFalling() || jo.isDead()))
     {
-      getJewel(BoardPos(pos.m_col, pos.m_row - 1)).fallStep();
+      JewelObject &upper = getJewel(BoardPos(pos.m_col, pos.m_row - 1));
+      upper.fallStep();
     }
     jo.update();
 
-  });
+  }, true);
 }
 
 void JewelBoard::clean()
