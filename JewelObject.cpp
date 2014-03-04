@@ -56,6 +56,12 @@ void JewelObject::draw()
 // apply velocity to current position
 void JewelObject::update()
 {
+  m_dyingCounter++;
+  if (m_dyingCounter == m_dyingTime)
+  {
+    getModel().setColor(Jewel::NO_COLOR);
+    setFalling(true);
+  }
 }
 
 
@@ -69,6 +75,9 @@ void JewelObject::setMovement(JewelMove const &m)
 void JewelObject::kill()
 {
   m_bDying = true;
+  m_dyingTime = 10;
+  m_dyingCounter = 0;
+
 }
 
 void JewelObject::doDyingAnimation()
