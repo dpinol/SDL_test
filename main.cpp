@@ -12,7 +12,7 @@ int main(int argc, char const **argv)
 {
   dani::init::init(argc, argv);
     if (argc > 1 && strcmp(argv[1], "--randomize") == 0)
-      srandomdev();
+      srandom(time(NULL));
 
 //	AllocConsole();
   //freopen("CON", "w", stdout);

@@ -8,6 +8,7 @@
 #include "Board.h"
 #include "JewelStrike.h"
 #include "utils/utils.h"
+#include <stdexcept>
 
 Board::Board(BoardCallback &callback)
   :m_callback(callback)
