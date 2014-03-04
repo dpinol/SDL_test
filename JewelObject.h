@@ -30,6 +30,7 @@ public:
   virtual void load(std::unique_ptr<LoaderParams> const &pParams) override;
 
   virtual void draw() override;
+  /** manages dying and dead states*/
   virtual void update() override;
 
   virtual void clean() override {}
@@ -40,12 +41,15 @@ public:
   void kill();
   virtual void doDyingAnimation() override;
   bool isFalling() const;
-  void setFalling(bool falling);
-  short getFallingStep() const;
+  bool isFallDone() const;
+  void resetFalling();
+  void fallStep();
 
 
   static constexpr short WIDTH = 35;
   static constexpr short HEIGHT = 35;
+  //in how many steps will it fall a single row
+  static constexpr short FALLING_STEPS = 100;
 
 protected:
 

@@ -119,7 +119,7 @@ void JewelBoard::shiftDown(BoardPos pos)
 {
   JewelObject &jo = getJewel(pos);
   //it will be reset to falling if lower jewel is detected to be empty
-  jo.setFalling(false);
+  jo.resetFalling();
   if (pos.m_row < BoardPos::NUM_ROWS)
     getJewel(BoardPos(pos.m_col, pos.m_row + 1)).getModel() = jo.getModel();
   else
@@ -149,17 +149,13 @@ void JewelBoard::update()
   forAllPos([&](BoardPos pos)
   {
     JewelObject &jo = getJewel(pos);
-    if(jo.getFallingStep() == 10)
+    if(jo.isFallDone())
       shiftDown(pos);
     if (jo.isFalling() || jo.isDead())
     {
-      getJewel(BoardPos(pos.m_col, pos.m_row - 1)).setFalling(true);
+      getJewel(BoardPos(pos.m_col, pos.m_row - 1)).fallStep();
     }
     jo.update();
-    if (jo.isFalling())
-    {
-      m_pixel.setY(m_pixel.getY() + m_height / 10.0); //jo.getFallingStep() *
-    }
 
   });
 }
