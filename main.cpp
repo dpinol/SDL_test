@@ -10,7 +10,7 @@ const int DELAY_TIME = 1000.0f / FPS;
 int main(int argc, char **argv)
 {
     if (argc > 1 && strcmp(argv[1], "--randomize") == 0)
-      srandomdev();
+      srandom(time(NULL));
 
 //	AllocConsole();
   //freopen("CON", "w", stdout);
