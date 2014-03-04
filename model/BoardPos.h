@@ -9,6 +9,7 @@
 #define BOARDPOS_H
 
 #include <ostream>
+#include <assert.h>
 
 /**
  * @brief The BoardPos struct
@@ -36,11 +37,16 @@ struct BoardPos
     :m_col(col), m_row(row)
   {
   }
+  BoardPos getBelow() const
+  {
+    assert(m_row < NUM_ROWS);
+    return BoardPos(m_col, m_row + 1);
+  }
 
-    inline void clear()
-    {
-      m_col = m_row = -1;
-    }
+  inline void clear()
+  {
+    m_col = m_row = -1;
+  }
 
   inline BoardPos operator+(const BoardPos& v2) const { return BoardPos(m_col + v2.m_col, m_row + v2.m_row); }
   inline BoardPos& operator+=(const BoardPos& v2) { m_col += v2.m_col; m_row += v2.m_row; return *this;}

@@ -80,6 +80,10 @@ public:
     Vector2D getJewelPixel(BoardPos pos) const;
 
 private:
+    /**
+     * Just swap the 2 pointers to the Jewels
+     */
+    void pureSwap(BoardPos pos, BoardPos pos2);
     /** Move jewel to next row*/
     void shiftDown(BoardPos pos);
 

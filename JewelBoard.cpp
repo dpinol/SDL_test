@@ -115,9 +115,32 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
   return sw.run();
 }
 
+void JewelBoard::pureSwap(BoardPos pos, BoardPos pos2)
+{
+  /*getJewel(BoardPos(pos.m_col, pos.m_row + 1)) = jo;
+  getJewel(BoardPos(pos.m_col, pos.m_row)).resetFalling();*/
+
+}
+
 void JewelBoard::shiftDown(BoardPos pos)
 {
   JewelObject &jo = getJewel(pos);
+  assert(pos.m_row < BoardPos::NUM_ROWS);
+  {
+    BoardPos next = pos.getBelow();
+    pureSwap(pos, next);
+    //it will be set to falling again if lower jewel is detected to be empty
+    getJewel(next).resetFalling();
+  }
+/*  else
+  {
+    BoardPos first(pos.m_col, 0);
+    pureSwap(pos, first);
+    jo.resetFalling();
+  }
+
+   m_jewels[fallPos.m_row][fallPos.m_col] = m_jewels[fallPos.m_row - 1][fallPos.m_col];*/
+/*  JewelObject &jo = getJewel(pos);
   //it will be reset to falling if lower jewel is detected to be empty
   jo.resetFalling();
   if (pos.m_row < BoardPos::NUM_ROWS)
@@ -134,6 +157,7 @@ void JewelBoard::shiftDown(BoardPos pos)
     m_jewels[0][fallPos.m_col] = &last;
     m_jewels[0][fallPos.m_col]->getModel().setColor(random() % Jewel::NUM_COLORS);
   }
+  */
 }
 
 
