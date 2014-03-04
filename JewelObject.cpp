@@ -10,7 +10,6 @@
 
 #include "TextureManager.h"
 #include "Game.h"
-#include "TileLayer.h"
 
 JewelObject::JewelObject(Jewel &jewel) :    m_model(&jewel)
 {

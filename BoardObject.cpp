@@ -9,7 +9,6 @@
 #include "BoardObject.h"
 #include "TextureManager.h"
 #include "Game.h"
-#include "TileLayer.h"
 
 BoardObject::BoardObject() :    GameObject(),
                                     m_bPlayedDeathSound(false),
@@ -58,49 +57,3 @@ void BoardObject::doDyingAnimation()
 }
 
 
-bool BoardObject::checkCollideTile(Vector2D newPos)
-{
-    if(newPos.getY() + m_height >= TheGame::Instance()->getGameHeight() - 32)
-    {
-        return false;
-    }
-    else
-    {
-        for(std::vector<TileLayer*>::iterator it = m_pCollisionLayers->begin(); it != m_pCollisionLayers->end(); ++it)
-        {
-            TileLayer* pTileLayer = (*it);
-            std::vector<std::vector<int>> tiles = pTileLayer->getTileIDs();
-            
-            Vector2D layerPos = pTileLayer->getPixel();
-            
-            int x, y, tileColumn, tileRow, tileid = 0;
-            
-            x = layerPos.getX() / pTileLayer->getTileSize();
-            y = layerPos.getY() / pTileLayer->getTileSize();
-            
-            Vector2D startPos = newPos;
-            startPos.setX(startPos.getX() + 15);
-            startPos.setY(startPos.getY() + 20);
-            Vector2D endPos(newPos.getX() + (m_width - 15), (newPos.getY()) + m_height - 4);
-            
-            for(int i = startPos.getX(); i < endPos.getX(); i++)
-            {
-                for(int j = startPos.getY(); j < endPos.getY(); j++)
-                {
-                    tileColumn = i / pTileLayer->getTileSize();
-                    tileRow = j / pTileLayer->getTileSize();
-                    
-                    tileid = tiles[tileRow + y][tileColumn + x];
-                    
-                    if(tileid != 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        
-        return false;
-        
-    }
-}

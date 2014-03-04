@@ -17,7 +17,6 @@
 #include <memory>
 #include <vector>
 
-class TileLayer;
 
 class GameObject
 {
@@ -38,8 +37,6 @@ public:
     // remove anything that needs to be deleted
     virtual void clean()=0;
     
-    // object has collided, handle accordingly
-    virtual void collision() = 0;
     
     // get the type of the object
     virtual std::string type() = 0;
@@ -74,7 +71,6 @@ public:
     // set whether to update the object or not
     void setUpdating(bool updating) { m_bUpdating = updating; }
     
-    void setCollisionLayers(std::vector<TileLayer*>* layers) { m_pCollisionLayers = layers; }
         
 protected:
     
@@ -125,7 +121,6 @@ protected:
     // blending
     int m_alpha;
     
-    std::vector<TileLayer*>* m_pCollisionLayers;
 };
 
 #endif

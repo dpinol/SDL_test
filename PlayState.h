@@ -10,20 +10,17 @@
 #define SDL_Game_Programming_Book_PlayState_h
 
 #include "GameState.h"
-#include "CollisionManager.h"
-#include "Level.h"
 #include <vector>
 
 class GameObject;
 class SDLGameObject;
-class Level;
 class JewelBoard;
 
 class PlayState : public GameState
 {
 public:
     
-    virtual ~PlayState() { delete pLevel; }
+    virtual ~PlayState() { }
     
     virtual void update();
     virtual void render();
@@ -41,10 +38,6 @@ private:
 
     JewelBoard* m_jewelBoard;
     
-   CollisionManager m_collisionManager;
-    
-    
-    Level* pLevel;
 };
 
 

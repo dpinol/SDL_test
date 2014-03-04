@@ -12,8 +12,6 @@
 #include "PauseState.h"
 #include "Game.h"
 #include "InputHandler.h"
-#include "LevelParser.h"
-#include "Level.h"
 #include "TextureManager.h"
 #include "JewelBoard.h"
 
@@ -43,10 +41,6 @@ void PlayState::update()
       TheGame::Instance()->getStateMachine()->changeState(new GameOverState());
     }
 
-    if(pLevel != 0)
-    {
-      pLevel->update();
-    }
 
     m_jewelBoard->update();
   }
@@ -79,13 +73,6 @@ bool PlayState::onEnterImpl()
 {
   TheGame::Instance()->setPlayerLives(3);
 
-  LevelParser levelParser;
-  pLevel = levelParser.parseLevel(TheGame::Instance()->getLevelFiles()[TheGame::Instance()->getCurrentLevel() - 1].c_str());
-
-  if(pLevel != 0)
-  {
-    m_loadingComplete = true;
-  }
   TheTextureManager::Instance()->load("assets/BackGround.jpg", "background", TheGame::Instance()->getRenderer());
 
   std::cout << "entering PlayState\n";
