@@ -13,7 +13,7 @@
 
 JewelObject::JewelObject(Jewel &jewel) :
   m_model(&jewel),
-  m_isFalling(false)
+  m_fallingStep(0)
 {
     m_pixel = Vector2D(0,0);
     m_currentRow = 0;
@@ -89,11 +89,19 @@ void JewelObject::doDyingAnimation()
 
 bool JewelObject::isFalling() const
 {
-  return m_isFalling;
+  return m_fallingStep != 0;
+}
+
+short JewelObject::getFallingStep() const
+{
+  return m_fallingStep;
 }
 
 void JewelObject::setFalling(bool falling)
 {
-  m_isFalling = falling;
+  if (falling)
+    m_fallingStep = 1;
+  else
+    m_fallingStep = 0;
 }
 

@@ -1,13 +1,13 @@
-//
-//  JewelBoard.h
-//  SDL Game Programming Book
-//
-//  Created by shaun mitchell on 26/03/2013.
-//  Copyright (c) 2013 shaun mitchell. All rights reserved.
-//
+/**************************************************************************
+** Qt Creator license header template
+**   Special keywords: dpinol 03/03/2014 2014
+**   Environment variables:
+**   To protect a percent sign, use '%'.
+**************************************************************************/
 
-#ifndef __SDL_Game_Programming_Book__JewelBoard__
-#define __SDL_Game_Programming_Book__JewelBoard__
+
+#ifndef JEWEL_BOARD
+#define JEWEL_BOARD
 
 #include <iostream>
 #include "model/BoardPos.h"
@@ -77,9 +77,11 @@ public:
      * @return not valid board if not withn board
      */
     BoardPos getJewelAt(const Vector2D &pixel) const;
+    Vector2D getJewelPixel(BoardPos pos) const;
 
 private:
-
+    /** Move jewel to next row*/
+    void shiftDown(BoardPos pos);
 
     //extra row is for falling new jewels
     JewelObject* m_jewels[BoardPos::NUM_ROWS + 1][ BoardPos::NUM_COLS];
@@ -105,4 +107,4 @@ public:
     }
 };
 
-#endif /* defined(__SDL_Game_Programming_Book__JewelBoard__) */
+#endif /* JEWEL_BOARD */

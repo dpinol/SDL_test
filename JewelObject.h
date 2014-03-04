@@ -1,13 +1,13 @@
-//
-//  SDLGameObject.h
-//  SDL Game Programming Book
-//
-//  Created by shaun mitchell on 19/01/2013.
-//  Copyright (c) 2013 shaun mitchell. All rights reserved.
-//
+/**************************************************************************
+** Qt Creator license header template
+**   Special keywords: dpinol 03/03/2014 2014
+**   Environment variables:
+**   To protect a percent sign, use '%'.
+**************************************************************************/
 
-#ifndef __SDL_Game_Programming_Book__SDLGameObject__
-#define __SDL_Game_Programming_Book__SDLGameObject__
+
+#ifndef JEWEL_OBJECT_H
+#define JEWEL_OBJECT_H
 
 #include <SDL.h>
 #include "BoardObject.h"
@@ -41,7 +41,7 @@ public:
   virtual void doDyingAnimation() override;
   bool isFalling() const;
   void setFalling(bool falling);
-
+  short getFallingStep() const;
 
 
   static constexpr short WIDTH = 35;
@@ -51,7 +51,7 @@ protected:
 
   //friend class JewelBoard;
   Jewel *m_model;
-  bool m_isFalling;
+  short m_fallingStep;
 
 };
-#endif /* defined(__SDL_Game_Programming_Book__SDLGameObject__) */
+#endif /* JEWEL_OBJECT_H */

@@ -46,8 +46,8 @@ bool JewelSwap::isValid() const
         m_valid = true;
   }
   m_validated = true;
-  if (!m_valid)
-    LOG_DEBUG("Swap " << m_positions[0] << "-" << m_positions[1] <<" not valid because it would not form a strike");
+  //if (!m_valid)
+  //  LOG_DEBUG("Swap " << m_positions[0] << "-" << m_positions[1] <<" not valid because it would not form a strike");
   return m_valid;
 }
 

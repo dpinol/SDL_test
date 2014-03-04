@@ -30,19 +30,17 @@ JewelBoard::JewelBoard() : BoardObject(),
   createInitialJewelsBoard();
 }
 
+
 void JewelBoard::createInitialJewelsBoard()
 {
-  for (unsigned y = 0 ; y <= BoardPos::BoardPos::NUM_ROWS ; ++y)
-  {
-    for (unsigned x = 0 ; x < BoardPos::BoardPos::NUM_COLS ; ++x)
+   forAllPos([&](BoardPos const pos)
     {
-      Jewel &jewel = m_model.getJewel(BoardPos(x, y), true);
+      Jewel &jewel = m_model.getJewel(pos, true);
       JewelObject *jo = new JewelObject(jewel);
-      m_jewels[y][x] = jo;
-      jo->getPixel().setX(m_offset.getX() + jo->getWidth() * x);
-      jo->getPixel().setY(m_offset.getY() + jo->getHeight() * y);
-    }
-  }
+      m_jewels[pos.m_row][pos.m_col] = jo;
+      Vector2D pixel = getJewelPixel(pos);
+      jo->getPixel() = pixel;
+    }, true);
 }
 
 void JewelBoard::kill(BoardPos pos)
@@ -96,6 +94,12 @@ void JewelBoard::draw()
   });
 }
 
+Vector2D JewelBoard::getJewelPixel(BoardPos pos) const
+{
+  return Vector2D(m_offset.getX() + JewelObject::WIDTH * pos.m_col,
+                m_offset.getY() + JewelObject::HEIGHT * pos.m_row);
+}
+
 BoardPos JewelBoard::getJewelAt(Vector2D const &v) const
 {
   if (!v.isInside(m_offset, m_bottomDown))
@@ -111,6 +115,26 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
   return sw.run();
 }
 
+void JewelBoard::shiftDown(BoardPos pos)
+{
+  JewelObject &jo = getJewel(pos);
+  //it will be reset to falling if lower jewel is detected to be empty
+  jo.setFalling(false);
+  if (pos.m_row < BoardPos::NUM_ROWS)
+    getJewel(BoardPos(pos.m_col, pos.m_row + 1)).getModel() = jo.getModel();
+  else
+  {
+    BoardPos fallPos(pos.m_col, BoardPos::NUM_ROWS);
+    JewelObject &last = getJewel(fallPos);
+    while(fallPos.m_row > 0)
+    {
+      m_jewels[fallPos.m_row][fallPos.m_col] = m_jewels[fallPos.m_row - 1][fallPos.m_col];
+      fallPos.m_row--;
+    }
+    m_jewels[0][fallPos.m_col] = &last;
+    m_jewels[0][fallPos.m_col]->getModel().setColor(random() % Jewel::NUM_COLORS);
+  }
+}
 
 
 void JewelBoard::update()
@@ -125,11 +149,18 @@ void JewelBoard::update()
   forAllPos([&](BoardPos pos)
   {
     JewelObject &jo = getJewel(pos);
-    if ((jo.isFalling() || jo.isDead()) && pos.m_row < BoardPos::NUM_ROWS)
+    if(jo.getFallingStep() == 10)
+      shiftDown(pos);
+    if (jo.isFalling() || jo.isDead())
     {
-      getJewel(BoardPos(pos.m_col, pos.m_row + 1)).setFalling(true);
+      getJewel(BoardPos(pos.m_col, pos.m_row - 1)).setFalling(true);
     }
     jo.update();
+    if (jo.isFalling())
+    {
+      m_pixel.setY(m_pixel.getY() + m_height / 10.0); //jo.getFallingStep() *
+    }
+
   });
 }
 
