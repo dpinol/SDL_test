@@ -63,10 +63,10 @@ public:
     bool updating() { return m_bUpdating; }
     
     // is the object dead?
-    bool dead() { return m_bDead; }
+    bool isDead() { return m_bDead; }
     
     // is the object doing a death animation?
-    bool dying() { return m_bDying; }
+    bool isDying() { return m_bDying; }
     
     // set whether to update the object or not
     void setUpdating(bool updating) { m_bUpdating = updating; }

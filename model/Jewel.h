@@ -24,7 +24,6 @@ public:
 
   void setColor(COLOR color) { m_color = color;}
   COLOR getColor() const { return m_color;}
-
   //BoardPos const getBoardPos() const { return m_boardPos;}
 
 private:

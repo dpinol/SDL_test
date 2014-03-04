@@ -43,7 +43,7 @@ namespace dani
                    << dani::getCallstack() << std::endl;
       //user interruption
       if (param == SIGINT)
-        abort();
+        exit(SIGINT);
     }
 
     void handleSignals()

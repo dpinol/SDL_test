@@ -16,7 +16,8 @@
  */
 struct BoardPos
 {
-  constexpr static short SIZE = 8;
+  constexpr static short NUM_COLS = 8;
+  constexpr static short NUM_ROWS = 8;
   /** unsigned are evil*/
   typedef short COL;
   typedef short ROW;
@@ -63,10 +64,10 @@ struct BoardPos
    */
   inline bool isValid(bool includingHiddenRow = false) const
   {
-    return m_col >= 0 && m_col < SIZE
+    return m_col >= 0 && m_col < NUM_COLS
         &&
         ((includingHiddenRow && m_row >= 0) || (!includingHiddenRow && m_row > 0))
-        && m_row <= SIZE;
+        && m_row <= NUM_ROWS;
   }
 
   COL m_col;

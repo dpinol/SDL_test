@@ -25,21 +25,25 @@ public:
    */
   Board(BoardCallback &callback);
 
+  /**
+   * loops upwards to quickly propagate falling
+   */
   template<class F>
-  inline void forAllPos(F const &funct)
+  inline void forAllPos(F const &funct, bool alsoFirstRow = false)
   {
-    BoardPos pos(-1, -1);
-    for (pos.m_row = 1; pos.m_row <= BoardPos::BoardPos::SIZE ; ++pos.m_row)
-        for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::SIZE ; ++pos.m_col)
+    BoardPos pos;
+    //for (pos.m_row = 1; pos.m_row <= BoardPos::BoardPos::SIZE ; ++pos.m_row)
+    for (pos.m_row = BoardPos::BoardPos::NUM_ROWS; pos.m_row >= (alsoFirstRow ? 0 : 1)  ; --pos.m_row)
+        for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::NUM_COLS ; ++pos.m_col)
           funct(pos);
   }
 
   template<class F>
-  inline void forAll(F const &funct)
+  inline void forAll(F const &funct, bool alsoFirstRow = false)
   {
     forAllPos([&](BoardPos const &pos)
     {
-       funct(getJewel(pos));
+       funct(getJewel(pos), alsoFirstRow);
     });
   }
   /**
@@ -58,9 +62,11 @@ public:
 
   void kill(BoardPos pos) override;
 
+  void update();
+
 private:
   BoardCallback& m_callback;
-  Jewel m_jewels[BoardPos::SIZE + 1][BoardPos::SIZE];
+  Jewel m_jewels[BoardPos::NUM_ROWS + 1][BoardPos::NUM_COLS];
 };
 
 #endif // BOARD_H

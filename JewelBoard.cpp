@@ -21,7 +21,7 @@
 JewelBoard::JewelBoard() : BoardObject(),
   m_model(*this),
   m_offset(350, 100),
-  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH, JewelObject::HEIGHT) * (BoardPos::SIZE + 1) ),
+  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * BoardPos::NUM_ROWS + 1) ),
   m_drag(*this)
 {
 
@@ -32,15 +32,15 @@ JewelBoard::JewelBoard() : BoardObject(),
 
 void JewelBoard::createInitialJewelsBoard()
 {
-  for (unsigned i = 0 ; i <= BoardPos::BoardPos::SIZE ; ++i)
+  for (unsigned y = 0 ; y <= BoardPos::BoardPos::NUM_ROWS ; ++y)
   {
-    for (unsigned j = 0 ; j < BoardPos::BoardPos::SIZE ; ++j)
+    for (unsigned x = 0 ; x < BoardPos::BoardPos::NUM_COLS ; ++x)
     {
-      Jewel &jewel = m_model.getJewel(BoardPos(j, i), true);
+      Jewel &jewel = m_model.getJewel(BoardPos(x, y), true);
       JewelObject *jo = new JewelObject(jewel);
-      m_jewels[i][j] = jo;
-      jo->getPixel().setX(m_offset.getX() + jo->getWidth() * j);
-      jo->getPixel().setY(m_offset.getY() + jo->getHeight() * i);
+      m_jewels[y][x] = jo;
+      jo->getPixel().setX(m_offset.getX() + jo->getWidth() * x);
+      jo->getPixel().setY(m_offset.getY() + jo->getHeight() * y);
     }
   }
 }
@@ -52,6 +52,7 @@ void JewelBoard::kill(BoardPos pos)
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
 {
+  //@todo load dimensions from xml
 }
 
 /******* Model *******/
@@ -120,9 +121,15 @@ void JewelBoard::update()
   else
     m_drag.drop();
 
-  forAll([&](JewelObject &jewel)
+  m_model.update();
+  forAllPos([&](BoardPos pos)
   {
-    jewel.update();
+    JewelObject &jo = getJewel(pos);
+    if ((jo.isFalling() || jo.isDead()) && pos.m_row < BoardPos::NUM_ROWS)
+    {
+      getJewel(BoardPos(pos.m_col, pos.m_row + 1)).setFalling(true);
+    }
+    jo.update();
   });
 }
 

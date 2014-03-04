@@ -56,12 +56,20 @@ public:
 
     //using template more efficient than std::function
     template<class F>
-    void forAll(F const &funct)
+    void forAllPos(F const &funct, bool alsoFirstRow = false)
     {
-      BoardPos pos(-1, -1);
-      for (pos.m_row = 1; pos.m_row <= BoardPos::BoardPos::SIZE ; ++pos.m_row)
-          for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::SIZE ; ++pos.m_col)
-            funct(getJewel(pos));
+      BoardPos pos;
+      for (pos.m_row = (alsoFirstRow ? 0 : 1); pos.m_row <= BoardPos::BoardPos::NUM_ROWS ; ++pos.m_row)
+          for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::NUM_COLS ; ++pos.m_col)
+            funct(pos);
+    }
+    template<class F>
+    inline void forAll(F const &funct, bool alsoFirstRow = false)
+    {
+      forAllPos([&](BoardPos const &pos)
+      {
+         funct(getJewel(pos));
+      }, alsoFirstRow);
     }
     /**
      * @brief getJewelAt
@@ -74,7 +82,7 @@ private:
 
 
     //extra row is for falling new jewels
-    JewelObject* m_jewels[BoardPos::SIZE + 1][ BoardPos::SIZE];
+    JewelObject* m_jewels[BoardPos::NUM_ROWS + 1][ BoardPos::NUM_COLS];
 
     void createInitialJewelsBoard();
     Board m_model;

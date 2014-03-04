@@ -45,7 +45,7 @@ MODEL_TEST_OBJS=$(subst .cpp,.o,$(MODEL_TEST_SRCS))
 
 FULL_SRCS=$(wildcard *.cpp) $(MODEL_TEST_SRCS)
 FULL_OBJS=$(subst .cpp,.o,$(FULL_SRCS))
-clean_list += $(MODEL_TEST_OBJS) SDL_test test
+clean_list += $(OBJS) $(MODEL_TEST_OBJS) SDL_test test
 
 all: SDL_test
 

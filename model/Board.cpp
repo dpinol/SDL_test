@@ -15,6 +15,7 @@ Board::Board(BoardCallback &callback)
 {
   randomize();
 }
+
 void Board::randomize()
 {
   JewelStrike strike(*this);
@@ -43,15 +44,15 @@ inline static void assertBoardPos(BoardPos const pos, bool allowFirstRow = false
     throw std::runtime_error("BoardPos " + dani::toString(pos) + " is not valid");
 }
 #endif
-Jewel& Board::getJewel(BoardPos const pos, bool allowFirstRow)
+Jewel& Board::getJewel(BoardPos const pos, bool alsoFirstRow)
 {
-  assertBoardPos(pos, allowFirstRow);
+  assertBoardPos(pos, alsoFirstRow);
   return m_jewels[pos.m_row][pos.m_col];
 }
 
-Jewel const& Board::getJewel(BoardPos const pos, bool allowFirstRow) const
+Jewel const& Board::getJewel(BoardPos const pos, bool alsoFirstRow) const
 {
-  assertBoardPos(pos, allowFirstRow);
+  assertBoardPos(pos, alsoFirstRow);
   return m_jewels[pos.m_row][pos.m_col];
 }
 
@@ -59,4 +60,8 @@ Jewel const& Board::getJewel(BoardPos const pos, bool allowFirstRow) const
 void Board::kill(BoardPos pos)
 {
   m_callback.kill(pos);
+}
+
+void Board::update()
+{
 }

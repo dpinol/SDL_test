@@ -35,7 +35,7 @@ protected:
 
   bool checkCollideTile(Vector2D newPos);
 
-  void doDyingAnimation();
+  virtual void doDyingAnimation();
 
 
 
