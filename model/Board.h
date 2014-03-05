@@ -24,6 +24,7 @@ public:
    * @param callback
    */
   Board(BoardCallback &callback);
+  virtual ~Board();
 
   /**
    * loops upwards to quickly propagate falling
@@ -68,7 +69,9 @@ public:
   void pureSwap(BoardPos pos, BoardPos pos2);
 private:
   BoardCallback& m_callback;
-  Jewel m_jewels[BoardPos::NUM_ROWS + 1][BoardPos::NUM_COLS];
+  //@todo duplicating jewels here is a bad idea. maybe can be unified is JewelObject inherits from Jewel
+  // and JewelObject from Jewel?
+  Jewel* m_jewels[BoardPos::NUM_ROWS + 1][BoardPos::NUM_COLS];
 };
 
 #endif // BOARD_H

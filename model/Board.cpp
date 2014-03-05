@@ -13,7 +13,19 @@
 Board::Board(BoardCallback &callback)
   :m_callback(callback)
 {
+  forAllPos([&](BoardPos const &pos)
+  {
+    m_jewels[pos.m_row][pos.m_col] = new Jewel;
+  }, true);
   randomize();
+}
+
+Board::~Board()
+{
+  forAllPos([&](BoardPos const &pos)
+  {
+    delete m_jewels[pos.m_row][pos.m_col];
+  }, true);
 }
 
 void Board::randomize()
@@ -21,7 +33,7 @@ void Board::randomize()
   JewelStrike strike(*this);
   forAllPos([&](BoardPos const &pos)
   {
-    Jewel& jewel = getJewel(pos);
+    Jewel& jewel = getJewel(pos, true);
     if (pos.m_row == 0)
     {
       //it will reset anyway (without findMatch) when it starts falling
@@ -32,7 +44,7 @@ void Board::randomize()
     {
       jewel.setColor(random() % Jewel::NUM_COLORS);
     } while (strike.findMatch(pos, jewel.getColor()));
-  });
+  }, true);
 }
 #ifdef NDEBUG
 inline static void assertBoardPos(BoardPos const, bool allowFirstRow = false)
@@ -48,13 +60,13 @@ inline static void assertBoardPos(BoardPos const pos, bool allowFirstRow = false
 Jewel& Board::getJewel(BoardPos const pos, bool alsoFirstRow)
 {
   assertBoardPos(pos, alsoFirstRow);
-  return m_jewels[pos.m_row][pos.m_col];
+  return *m_jewels[pos.m_row][pos.m_col];
 }
 
 Jewel const& Board::getJewel(BoardPos const pos, bool alsoFirstRow) const
 {
   assertBoardPos(pos, alsoFirstRow);
-  return m_jewels[pos.m_row][pos.m_col];
+  return *m_jewels[pos.m_row][pos.m_col];
 }
 
 void Board::pureSwap(BoardPos pos, BoardPos pos2)
