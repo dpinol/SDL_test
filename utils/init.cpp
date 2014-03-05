@@ -6,6 +6,7 @@
 **************************************************************************/
 
 #include "init.h"
+#include "log.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,11 +60,12 @@ namespace dani
       prev_handler = signal(SIGQUIT, my_handler);
       prev_handler = signal(SIGABRT, my_handler);
     }
+
     void init(int argc, const char **argv)
     {
       m_argc = argc;
       m_argv = argv;
-
+      dani::log::init(argc, argv);
       handleSignals();
       std::set_terminate(verboseTerminate);
     }

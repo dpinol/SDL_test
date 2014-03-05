@@ -115,4 +115,12 @@ private:
     float m_y;
 };
 
+inline std::ostream& operator<<(std::ostream& os, const Vector2D& obj)
+{
+  os << "(" << obj.getX() << "," << obj.getY() << ")";
+  return os;
+}
+
+
+
 #endif /* defined(__SDL_Game_Programming_Book__Vector2D__) */

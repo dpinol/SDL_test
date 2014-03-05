@@ -7,9 +7,24 @@
 
 #include "log.h"
 #include <iostream>
+#include <algorithm>
 namespace dani {
 
-  static log::Level _level = log::DEBUG;
+  static log::Level _level = log::INFO;
+
+  void log::init(int argc, const char **argv)
+  {
+    std::string levels[] = {"--debug", "--info", "--warn", "--error"};
+    for(int i = 1; i < argc; i++)
+    {
+      auto it = std::find(std::begin(levels), std::end(levels), argv[i]);
+      if (it != std::end(levels))
+      {
+        _level = static_cast<log::Level>( it - std::begin(levels));
+        break;
+      }
+    }
+  }
 
   log::Level log::getLevel()
   {

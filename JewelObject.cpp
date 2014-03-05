@@ -11,10 +11,12 @@
 #include "TextureManager.h"
 #include "Game.h"
 
-JewelObject::JewelObject(Jewel &jewel) :
+JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
   m_fallingStep(0)
 {
+  if (firstRow)
+    m_bDead = true;
   m_pixel = Vector2D(0,0);
   m_currentRow = 0;
   //we don't use it so far
@@ -47,7 +49,8 @@ void JewelObject::load(std::unique_ptr<LoaderParams> const &pParams)
 // draw the object to the screen
 void JewelObject::draw()
 {
-  if(getModel().getColor() != Jewel::NO_COLOR && !isDying() && !isDead())
+  //pending dying animation
+  if(getModel().getColor() != Jewel::NO_COLOR && !isDying()) // && !isDead())
     TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
                                           m_width, m_height, m_currentRow, getModel().getColor());
   //TheGame::Instance()->getRenderer(), m_angle, m_alpha);
@@ -81,6 +84,7 @@ void JewelObject::setMovement(JewelMove const &m)
 void JewelObject::resurrect()
 {
   m_bDying = false;
+  m_bDead = false;
   getModel().setColor(random() % Jewel::NUM_COLORS);
 }
 

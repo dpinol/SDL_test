@@ -24,7 +24,7 @@
 JewelBoard::JewelBoard() : BoardObject(),
   m_model(*this),
   m_offset(350, 100),
-  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * BoardPos::NUM_ROWS + 1) ),
+  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1)) ),
   m_drag(*this)
 {
 
@@ -39,7 +39,8 @@ void JewelBoard::createInitialJewelsBoard()
   forAllPos([&](BoardPos const pos)
   {
     Jewel &jewel = m_model.getJewel(pos, true);
-    JewelObject *jo = new JewelObject(jewel);
+    JewelObject *jo = new JewelObject(jewel, pos.m_row == 0);
+
     m_jewels[pos.m_row][pos.m_col] = jo;
     Vector2D pixel = getJewelPixel(pos);
     jo->getPixel() = pixel;
@@ -92,7 +93,8 @@ void JewelBoard::draw()
 {
   forAll([&](JewelObject &jewel)
   {
-    if (jewel.getPixel().getY() +  jewel.getHeight() >= m_offset.getY())
+    //if (jewel.getPixel().getY() +  jewel.getHeight() >= m_offset.getY())
+    if (!jewel.isDead())
       jewel.draw();
   });
 }
@@ -185,7 +187,7 @@ void JewelBoard::update()
       JewelObject &upper = getJewel(BoardPos(pos.m_col, pos.m_row - 1));
       upper.fallStep();
       //resurrect so that it will fall
-      if (pos.m_row == 1)
+      if (pos.m_row == 1 && upper.isDead())
         upper.resurrect();
 
     }

@@ -22,6 +22,7 @@ PlayState::PlayState()
     m_jewelBoard = new JewelBoard();
 }
 
+static bool paused = false;
 void PlayState::update()
 {
   if(m_loadingComplete && !m_exiting)
@@ -41,8 +42,10 @@ void PlayState::update()
       TheGame::Instance()->getStateMachine()->changeState(new GameOverState());
     }
 
-
-    m_jewelBoard->update();
+    if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_P))
+      paused = !paused;
+    if (!paused)
+      m_jewelBoard->update();
   }
 }
 

@@ -21,7 +21,12 @@ class JewelBoard;
 class JewelObject : public BoardObject
 {
 public:
-  JewelObject(Jewel &jewel);
+  /**
+   * @brief JewelObject
+   * @param jewel
+   * @param firstRow if true, it will be marked as dead
+   */
+  JewelObject(Jewel &jewel, bool firstRow);
   virtual ~JewelObject() {}
 
   Jewel& getModel();

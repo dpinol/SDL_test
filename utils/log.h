@@ -23,7 +23,7 @@ namespace dani {
       ERROR=3
     };
 
-
+    static void init(int argc, const char **argv);
     static bool shouldLog(Level callLevel);
     static void print(Level callLevel,const char *format ,std::string const & msg);
     static Level getLevel();
@@ -33,10 +33,10 @@ namespace dani {
   { \
   if (DANI_UNLIKELY(dani::log::shouldLog(callLevel))) \
   { \
-    std::stringstream ss; \
-    ss << args; \
-    dani::log::print(callLevel, "%s\n", ss.str().c_str()); \
-  } \
+  std::stringstream ss; \
+  ss << args; \
+  dani::log::print(callLevel, "%s\n", ss.str().c_str()); \
+} \
 } while (0)
 
 #define LOG_DEBUG(args) DANI_LOG(dani::log::DEBUG, args)

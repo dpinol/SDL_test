@@ -40,19 +40,26 @@ void JewelDrag::drag()
     //move jewel only vertical or horizontal
     Vector2D shift = pMousePos - m_fromPixel;
     BoardPos shiftPos;
-    if (shift.getX() > JewelObject::WIDTH / 2)
+    int RATIO = 3;
+    if (shift.getX() > JewelObject::WIDTH / RATIO)
         shiftPos = BoardPos(1,0);
-    else if (shift.getX() < -JewelObject::WIDTH / 2)
+    else if (shift.getX() < -JewelObject::WIDTH / RATIO)
         shiftPos = BoardPos(-1,0);
-    else if (shift.getY() > JewelObject::HEIGHT / 2)
+    else if (shift.getY() > JewelObject::HEIGHT / RATIO)
         shiftPos = BoardPos(0, 1);
-    else if (shift.getY() < -JewelObject::HEIGHT / 2)
+    else if (shift.getY() < -JewelObject::HEIGHT / RATIO)
         shiftPos = BoardPos(0, -1);
     else
+    {
+      LOG_DEBUG("shift too small: " << shift);
       return;
+    }
+    LOG_DEBUG("shift: " << shift);
     m_toPos = m_fromPos + shiftPos;
     if (m_toPos.isValid())
       m_board.swap(m_fromPos, m_toPos);
+    else
+      LOG_DEBUG("to_pos not valid: " << m_toPos);
   }
 }
 
