@@ -109,7 +109,7 @@ bool JewelObject::isFalling() const
 
 bool JewelObject::isFallDone() const
 {
-  return m_fallingStep == FALLING_STEPS;
+  return m_fallingStep >= FALLING_STEPS;
 }
 
 void JewelObject::fallStep()
