@@ -56,13 +56,15 @@ public:
 
     //using template more efficient than std::function
     /**
+     * loops upwards to quickly propagate falling
      * @param alsoFirstRow default different than in Board
      */
     template<class F>
     void forAllPos(F const &funct, bool alsoFirstRow = true)
     {
       BoardPos pos;
-      for (pos.m_row = (alsoFirstRow ? 0 : 1); pos.m_row <= BoardPos::BoardPos::NUM_ROWS ; ++pos.m_row)
+      //for (pos.m_row = (alsoFirstRow ? 0 : 1); pos.m_row <= BoardPos::BoardPos::NUM_ROWS ; ++pos.m_row)
+      for (pos.m_row = BoardPos::BoardPos::NUM_ROWS; pos.m_row >= (alsoFirstRow ? 0 : 1)  ; --pos.m_row)
           for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::NUM_COLS ; ++pos.m_col)
             funct(pos);
     }

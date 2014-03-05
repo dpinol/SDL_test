@@ -133,11 +133,13 @@ void JewelBoard::shiftDown(BoardPos pos)
   assert(pos.m_row < BoardPos::NUM_ROWS);
   {
     BoardPos next = pos.getBelow();
+    LOG_INFO("swapping " << pos << " with " << next);
+
     pureSwap(pos, next);
+    m_model.pureSwap(pos, next);
     //it will be set to falling again if lower jewel is detected to be empty
     getJewel(next).resetFalling();
     getJewel(pos).resetFalling();
-
   }
   /*  else
   {
@@ -180,15 +182,20 @@ void JewelBoard::update()
   forAllPos([&](BoardPos pos)
   {
     JewelObject &jo = getJewel(pos);
-    if(jo.isFallDone())
+    if (jo.isFallDone())
       shiftDown(pos);
     if (pos.m_row > 0 && (jo.isFalling() || jo.isDead()))
     {
-      JewelObject &upper = getJewel(BoardPos(pos.m_col, pos.m_row - 1));
+      BoardPos const upperPos = BoardPos(pos.m_col, pos.m_row - 1);
+      JewelObject &upper = getJewel(upperPos);
       upper.fallStep();
       //resurrect so that it will fall
       if (pos.m_row == 1 && upper.isDead())
+      {
+        LOG_INFO("Resurrecting " << upperPos);
         upper.resurrect();
+        upper.getPixel() = getJewelPixel(upperPos);
+      }
 
     }
     jo.update();

@@ -65,6 +65,7 @@ public:
 
   void update();
 
+  void pureSwap(BoardPos pos, BoardPos pos2);
 private:
   BoardCallback& m_callback;
   Jewel m_jewels[BoardPos::NUM_ROWS + 1][BoardPos::NUM_COLS];

@@ -57,6 +57,12 @@ Jewel const& Board::getJewel(BoardPos const pos, bool alsoFirstRow) const
   return m_jewels[pos.m_row][pos.m_col];
 }
 
+void Board::pureSwap(BoardPos pos, BoardPos pos2)
+{
+  /*getJewel(BoardPos(pos.m_col, pos.m_row + 1)) = jo;
+  getJewel(BoardPos(pos.m_col, pos.m_row)).resetFalling();*/
+  std::swap( m_jewels[pos.m_row][pos.m_col], m_jewels[pos2.m_row][pos2.m_col]);
+}
 
 void Board::kill(BoardPos pos)
 {
