@@ -52,9 +52,13 @@ void JewelObject::load(std::unique_ptr<LoaderParams> const &pParams)
 void JewelObject::draw()
 {
   //pending dying animation
-  if(getModel().getColor() != Jewel::NO_COLOR && !isDying()) // && !isDead())
+  int alpha = 255;
+  if (isDying())
+    alpha = 255.0 * (m_dyingTime - m_dyingCounter) / m_dyingTime;
+  if(getModel().getColor() != Jewel::NO_COLOR) // && !isDead())
     TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
-                                          m_width, m_height, m_currentRow, getModel().getColor());
+                                          m_width, m_height, m_currentRow, getModel().getColor(),
+                                          NULL, 0, alpha);
   //TheGame::Instance()->getRenderer(), m_angle, m_alpha);
 }
 
@@ -93,7 +97,7 @@ void JewelObject::resurrect()
 void JewelObject::kill()
 {
   m_bDying = true;
-  m_dyingTime = 10;
+  m_dyingTime = 30;
   m_dyingCounter = 0;
 }
 
