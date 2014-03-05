@@ -56,7 +56,7 @@ public:
   static constexpr short WIDTH = 35;
   static constexpr short HEIGHT = 35;
   //in how many steps will it fall a single row
-  static constexpr short FALLING_STEPS = 100;
+  static const short FALLING_STEPS;
 
 protected:
 

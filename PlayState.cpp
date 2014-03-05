@@ -22,7 +22,9 @@ PlayState::PlayState()
     m_jewelBoard = new JewelBoard();
 }
 
-static bool paused = false;
+static bool m_keyPpressed = false;
+static bool m_paused = false;
+
 void PlayState::update()
 {
   if(m_loadingComplete && !m_exiting)
@@ -42,9 +44,10 @@ void PlayState::update()
       TheGame::Instance()->getStateMachine()->changeState(new GameOverState());
     }
 
-    if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_P))
-      paused = !paused;
-    if (!paused)
+    bool keyPpressed = TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_P);
+    if (keyPpressed != m_keyPpressed)
+      m_paused = !m_paused;
+    if (!m_paused)
       m_jewelBoard->update();
   }
 }
