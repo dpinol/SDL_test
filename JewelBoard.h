@@ -55,8 +55,11 @@ public:
     JewelObject const& getJewel(BoardPos const pos) const;
 
     //using template more efficient than std::function
+    /**
+     * @param alsoFirstRow default different than in Board
+     */
     template<class F>
-    void forAllPos(F const &funct, bool alsoFirstRow = false)
+    void forAllPos(F const &funct, bool alsoFirstRow = true)
     {
       BoardPos pos;
       for (pos.m_row = (alsoFirstRow ? 0 : 1); pos.m_row <= BoardPos::BoardPos::NUM_ROWS ; ++pos.m_row)
@@ -64,7 +67,7 @@ public:
             funct(pos);
     }
     template<class F>
-    inline void forAll(F const &funct, bool alsoFirstRow = false)
+    inline void forAll(F const &funct, bool alsoFirstRow = true)
     {
       forAllPos([&](BoardPos const &pos)
       {

@@ -27,6 +27,7 @@ public:
 
   /**
    * loops upwards to quickly propagate falling
+   * @param alsoFirstRow default different than in JewelBoard
    */
   template<class F>
   inline void forAllPos(F const &funct, bool alsoFirstRow = false)

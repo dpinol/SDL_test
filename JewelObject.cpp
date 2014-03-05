@@ -81,6 +81,7 @@ void JewelObject::setMovement(JewelMove const &m)
 void JewelObject::resurrect()
 {
   m_bDying = false;
+  getModel().setColor(random() % Jewel::NUM_COLORS);
 }
 
 void JewelObject::kill()

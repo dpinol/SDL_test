@@ -36,14 +36,14 @@ JewelBoard::JewelBoard() : BoardObject(),
 
 void JewelBoard::createInitialJewelsBoard()
 {
-   forAllPos([&](BoardPos const pos)
-    {
-      Jewel &jewel = m_model.getJewel(pos, true);
-      JewelObject *jo = new JewelObject(jewel);
-      m_jewels[pos.m_row][pos.m_col] = jo;
-      Vector2D pixel = getJewelPixel(pos);
-      jo->getPixel() = pixel;
-    }, true);
+  forAllPos([&](BoardPos const pos)
+  {
+    Jewel &jewel = m_model.getJewel(pos, true);
+    JewelObject *jo = new JewelObject(jewel);
+    m_jewels[pos.m_row][pos.m_col] = jo;
+    Vector2D pixel = getJewelPixel(pos);
+    jo->getPixel() = pixel;
+  });
 }
 
 void JewelBoard::kill(BoardPos pos)
@@ -100,7 +100,7 @@ void JewelBoard::draw()
 Vector2D JewelBoard::getJewelPixel(BoardPos pos) const
 {
   return Vector2D(m_offset.getX() + JewelObject::WIDTH * pos.m_col,
-                m_offset.getY() + JewelObject::HEIGHT * pos.m_row);
+                  m_offset.getY() + JewelObject::HEIGHT * pos.m_row);
 }
 
 BoardPos JewelBoard::getJewelAt(Vector2D const &v) const
@@ -134,11 +134,10 @@ void JewelBoard::shiftDown(BoardPos pos)
     pureSwap(pos, next);
     //it will be set to falling again if lower jewel is detected to be empty
     getJewel(next).resetFalling();
-    //resurrect so that it will fall
-    if (pos.m_row == 0)
-      getJewel(pos).kill();
+    getJewel(pos).resetFalling();
+
   }
-/*  else
+  /*  else
   {
     BoardPos first(pos.m_col, 0);
     pureSwap(pos, first);
@@ -146,7 +145,7 @@ void JewelBoard::shiftDown(BoardPos pos)
   }
 
    m_jewels[fallPos.m_row][fallPos.m_col] = m_jewels[fallPos.m_row - 1][fallPos.m_col];*/
-/*  JewelObject &jo = getJewel(pos);
+  /*  JewelObject &jo = getJewel(pos);
   //it will be reset to falling if lower jewel is detected to be empty
   jo.resetFalling();
   if (pos.m_row < BoardPos::NUM_ROWS)
@@ -185,10 +184,14 @@ void JewelBoard::update()
     {
       JewelObject &upper = getJewel(BoardPos(pos.m_col, pos.m_row - 1));
       upper.fallStep();
+      //resurrect so that it will fall
+      if (pos.m_row == 1)
+        upper.resurrect();
+
     }
     jo.update();
 
-  }, true);
+  });
 }
 
 void JewelBoard::clean()

@@ -24,6 +24,7 @@ void Board::randomize()
     Jewel& jewel = getJewel(pos);
     if (pos.m_row == 0)
     {
+      //it will reset anyway (without findMatch) when it starts falling
       jewel.setColor(Jewel::NO_COLOR);
       return;
     }
