@@ -49,7 +49,7 @@ public:
   virtual void doDyingAnimation() override;
   bool isFalling() const;
   bool isFallDone() const;
-  void resetFalling();
+  void setFalling(bool falling =true);
   void fallStep();
 
 
@@ -59,7 +59,7 @@ public:
   static const short FALLING_STEPS;
 
 protected:
-
+  bool m_bfalling;
   //friend class JewelBoard;
   Jewel *m_model;
   short m_fallingStep;

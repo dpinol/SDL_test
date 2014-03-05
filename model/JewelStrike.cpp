@@ -40,6 +40,8 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ign
       cur = newPos + dir;
       while (cur.isValid() )
       {
+        if (m_callback && !m_callback->isAlive(cur))
+          break;
         if (ignorePos.isValid() && ignorePos == cur)
           break;
         if (m_board.getJewel(cur).getColor() != newColor)

@@ -11,12 +11,13 @@
 #include "TextureManager.h"
 #include "Game.h"
 
-const short JewelObject::FALLING_STEPS = 100;
+const short JewelObject::FALLING_STEPS = 60;
 
 JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
   m_fallingStep(0)
 {
+  m_bfalling = false;
   if (firstRow)
     m_bDead = true;
   m_pixel = Vector2D(0,0);
@@ -96,9 +97,14 @@ void JewelObject::resurrect()
 
 void JewelObject::kill()
 {
-  m_bDying = true;
-  m_dyingTime = 30;
-  m_dyingCounter = 0;
+  if (!m_bDying)
+  {
+   // m_model->setColor(Jewel::NO_COLOR);
+    m_bDying = true;
+    m_dyingTime = 100;
+    m_dyingCounter = 0;
+    m_fallingStep = 0;
+  }
 }
 
 void JewelObject::doDyingAnimation()
@@ -107,14 +113,15 @@ void JewelObject::doDyingAnimation()
 }
 
 
-void JewelObject::resetFalling()
+void JewelObject::setFalling(bool falling)
 {
+  m_bfalling = falling;
   m_fallingStep = 0;
 }
 
 bool JewelObject::isFalling() const
 {
-  return m_fallingStep != 0;
+  return m_bfalling; //m_fallingStep != 0;
 }
 
 bool JewelObject::isFallDone() const

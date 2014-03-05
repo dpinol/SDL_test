@@ -1,10 +1,9 @@
-//
-//  JewelBoard.cpp
-//  SDL Game Programming Book
-//
-//  Created by shaun mitchell on 26/03/2013.
-//  Copyright (c) 2013 shaun mitchell. All rights reserved.
-//
+/**************************************************************************
+** Qt Creator license header template
+**   Special keywords: dpinol 03/03/2014 2014
+**   Environment variables:
+**   To protect a percent sign, use '%'.
+**************************************************************************/
 
 #include "JewelBoard.h"
 #include "JewelObject.h"
@@ -25,7 +24,8 @@ JewelBoard::JewelBoard() : BoardObject(),
   m_model(*this),
   m_offset(350, 100),
   m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1)) ),
-  m_drag(*this)
+  m_drag(*this),
+  m_strike(m_model, this)
 {
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
@@ -50,6 +50,11 @@ void JewelBoard::createInitialJewelsBoard()
 void JewelBoard::kill(BoardPos pos)
 {
   getJewel(pos).kill(); //.setColor(Jewel::NO_COLOR);
+}
+
+bool JewelBoard::isAlive(BoardPos pos) const
+{
+  return !getJewel(pos).isDead() && !getJewel(pos).isDying();
 }
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
@@ -81,9 +86,6 @@ JewelObject const& JewelBoard::getJewel(BoardPos const pos) const
   assertBoardPos(pos);
   return *m_jewels[pos.m_row][pos.m_col];
 }
-
-
-
 
 
 /******* Model *******/
@@ -131,42 +133,19 @@ void JewelBoard::shiftDown(BoardPos pos)
 {
   //JewelObject &jo = getJewel(pos);
   assert(pos.m_row < BoardPos::NUM_ROWS);
+
   {
     BoardPos next = pos.getBelow();
-    LOG_INFO("jewel " << next << " popped up (dead: " << getJewel(next).isDead() << ")" );
+    //assert(getJewel(next).isDead());
+    LOG_INFO("jewel " << next << " popped up ");
 
     pureSwap(pos, next);
     m_model.pureSwap(pos, next);
-    //it will be set to falling again if lower jewel is detected to be empty
-    getJewel(next).resetFalling();
-    getJewel(pos).resetFalling();
-  }
-  /*  else
-  {
-    BoardPos first(pos.m_col, 0);
-    pureSwap(pos, first);
-    jo.resetFalling();
-  }
 
-   m_jewels[fallPos.m_row][fallPos.m_col] = m_jewels[fallPos.m_row - 1][fallPos.m_col];*/
-  /*  JewelObject &jo = getJewel(pos);
-  //it will be reset to falling if lower jewel is detected to be empty
-  jo.resetFalling();
-  if (pos.m_row < BoardPos::NUM_ROWS)
-    getJewel(BoardPos(pos.m_col, pos.m_row + 1)).getModel() = jo.getModel();
-  else
-  {
-    BoardPos fallPos(pos.m_col, BoardPos::NUM_ROWS);
-    JewelObject &last = getJewel(fallPos);
-    while(fallPos.m_row > 0)
-    {
-      m_jewels[fallPos.m_row][fallPos.m_col] = m_jewels[fallPos.m_row - 1][fallPos.m_col];
-      fallPos.m_row--;
-    }
-    m_jewels[0][fallPos.m_col] = &last;
-    m_jewels[0][fallPos.m_col]->getModel().setColor(random() % Jewel::NUM_COLORS);
+    //it will be set to falling again if lower jewel is detected to be empty
+    getJewel(next).setFalling(false);
+    getJewel(pos).setFalling(false);
   }
-  */
 }
 
 
@@ -188,19 +167,28 @@ void JewelBoard::update()
     {
       BoardPos const upperPos = BoardPos(pos.m_col, pos.m_row - 1);
       JewelObject &upper = getJewel(upperPos);
-      upper.fallStep();
-      //resurrect so that it will fall
-      if (pos.m_row == 1 && upper.isDead())
+      if (!upper.isFalling())
       {
-        LOG_INFO("Resurrecting " << upperPos);
-        upper.resurrect();
-        upper.getPixel() = getJewelPixel(upperPos);
+        upper.setFalling();
+        //resurrect so that it will fall
+        if (pos.m_row == 1 && upper.isDead())
+        {
+          LOG_INFO("Resurrecting " << upperPos);
+          upper.resurrect();
+          upper.getPixel() = getJewelPixel(upperPos);
+        }
       }
 
     }
     jo.update();
-
   });
+
+  //mostly works, but eventually a falling jewel overtakes lower one and assert at shiftDown fails
+  //or jewels stop at halfway
+  forAllPos([&](BoardPos pos)
+  {
+    m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
+  }, false);
 }
 
 void JewelBoard::clean()

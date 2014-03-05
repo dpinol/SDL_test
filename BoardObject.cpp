@@ -52,6 +52,7 @@ void BoardObject::doDyingAnimation()
     {
         m_bDead = true;
         m_bDying = false;
+        m_dyingCounter = 0;
     }
     m_dyingCounter++;
 }

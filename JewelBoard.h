@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "model/BoardPos.h"
+#include <model/JewelStrike.h>
 #include "GameObjectFactory.h"
 #include "BoardObject.h"
 #include "JewelDrag.h"
@@ -35,6 +36,7 @@ public:
 
     //BoardCallback
     void kill(BoardPos pos) override;
+    bool isAlive(BoardPos pos) const override;
 
 
     /**
@@ -103,6 +105,7 @@ private:
     Vector2D const m_offset;
     Vector2D const m_bottomDown;
     JewelDrag m_drag;
+    JewelStrike m_strike;
 
 };
 

@@ -14,6 +14,7 @@
 struct BoardCallback
 {
   virtual void kill(BoardPos pos) = 0;
+  virtual bool isAlive(BoardPos pos) const = 0;
 };
 
 class Board : public BoardCallback
@@ -63,6 +64,7 @@ public:
   Jewel const &getJewel(BoardPos pos, bool allowFirstRow = false) const;
 
   void kill(BoardPos pos) override;
+  bool isAlive(BoardPos pos) const override;
 
   void update();
 

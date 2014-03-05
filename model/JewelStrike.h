@@ -26,17 +26,18 @@ public:
   /**
    * @brief JewelStrike
    * @param board
-   * @param callback
+   * @param callback if set, its kill() will be called for each jewel on detected strikes
    */
   JewelStrike(Board &board, BoardCallback * callback = NULL);
 
   /**
-   * @brief findMatch if callback, its kill() will be called for detected strikes
+   * @brief findMatch detects whether in case we move a newColor jewel into newPos, we would
+   * be creating any strike
    * @param newPos
    * @param newColor
    * @param ignorePos in case of a swap, don't check the position color, as for sure it does
    * not match. If invalid, argument is not taken into account
-   * @return
+   * @return whether any strike is created
    */
   bool findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ignorePos = BoardPos()) const;
 
