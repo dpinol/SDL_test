@@ -11,7 +11,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 
-const short JewelObject::FALLING_STEPS = 60;
+const short JewelObject::FALLING_STEPS = 30;
 
 JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),

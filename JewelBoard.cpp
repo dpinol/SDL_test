@@ -136,6 +136,7 @@ void JewelBoard::shiftDown(BoardPos pos)
 
   {
     BoardPos next = pos.getBelow();
+    //@bug still would rarely fails.pending to investigate
     //assert(getJewel(next).isDead());
     LOG_INFO("jewel " << next << " popped up ");
 
@@ -163,7 +164,7 @@ void JewelBoard::update()
     JewelObject &jo = getJewel(pos);
     if (jo.isFallDone())
       shiftDown(pos);
-    if (pos.m_row > 0 && (jo.isFalling() || jo.isDead()))
+    if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
     {
       BoardPos const upperPos = BoardPos(pos.m_col, pos.m_row - 1);
       JewelObject &upper = getJewel(upperPos);
