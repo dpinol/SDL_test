@@ -45,8 +45,9 @@ void PlayState::update()
     }
 
     bool keyPpressed = TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_P);
-    if (keyPpressed != m_keyPpressed)
+    if (keyPpressed && !m_keyPpressed)
       m_paused = !m_paused;
+    m_keyPpressed = keyPpressed;
     if (!m_paused)
       m_jewelBoard->update();
   }

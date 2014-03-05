@@ -106,7 +106,7 @@ private:
     Vector2D const m_bottomDown;
     JewelDrag m_drag;
     JewelStrike m_strike;
-
+    bool m_jewelsFalling;
 };
 
 class JewelBoardCreator : public BaseCreator

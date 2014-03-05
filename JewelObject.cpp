@@ -11,7 +11,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 
-const short JewelObject::FALLING_STEPS = 30;
+const short JewelObject::FALLING_STEPS = 20;
 
 JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
@@ -101,7 +101,7 @@ void JewelObject::kill()
   {
    // m_model->setColor(Jewel::NO_COLOR);
     m_bDying = true;
-    m_dyingTime = 100;
+    m_dyingTime = 60;
     m_dyingCounter = 0;
     m_fallingStep = 0;
   }

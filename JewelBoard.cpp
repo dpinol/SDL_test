@@ -25,7 +25,8 @@ JewelBoard::JewelBoard() : BoardObject(),
   m_offset(350, 100),
   m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1)) ),
   m_drag(*this),
-  m_strike(m_model, this)
+  m_strike(m_model, this),
+  m_jewelsFalling(true)
 {
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
@@ -152,6 +153,7 @@ void JewelBoard::shiftDown(BoardPos pos)
 
 void JewelBoard::update()
 {
+  //@todo should we block while block are falling?
   bool clicked = TheInputHandler::Instance()->getMouseButtonState(LEFT);
   if (clicked)
     m_drag.drag();
@@ -159,6 +161,7 @@ void JewelBoard::update()
     m_drag.drop();
 
   m_model.update();
+  m_jewelsFalling = false;
   forAllPos([&](BoardPos pos)
   {
     JewelObject &jo = getJewel(pos);
@@ -166,6 +169,7 @@ void JewelBoard::update()
       shiftDown(pos);
     if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
     {
+      m_jewelsFalling = true;
       BoardPos const upperPos = BoardPos(pos.m_col, pos.m_row - 1);
       JewelObject &upper = getJewel(upperPos);
       if (!upper.isFalling())
@@ -184,12 +188,15 @@ void JewelBoard::update()
     jo.update();
   });
 
-  //mostly works, but eventually a falling jewel overtakes lower one and assert at shiftDown fails
-  //or jewels stop at halfway
-  forAllPos([&](BoardPos pos)
+  if (!m_jewelsFalling)
   {
-    m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
-  }, false);
+    //mostly works, but eventually a falling jewel overtakes lower one and assert at shiftDown fails
+    //or jewels stop at halfway
+    forAllPos([&](BoardPos pos)
+    {
+      m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
+    }, false);
+  }
 }
 
 void JewelBoard::clean()
