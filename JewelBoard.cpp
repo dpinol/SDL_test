@@ -136,7 +136,7 @@ void JewelBoard::shiftDown(BoardPos pos)
     LOG_INFO("jewel " << next << " popped up (dead: " << getJewel(next).isDead() << ")" );
 
     pureSwap(pos, next);
-    //m_model.pureSwap(pos, next);
+    m_model.pureSwap(pos, next);
     //it will be set to falling again if lower jewel is detected to be empty
     getJewel(next).resetFalling();
     getJewel(pos).resetFalling();
