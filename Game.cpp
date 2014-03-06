@@ -39,13 +39,14 @@ Game::~Game()
 }
 
 
-bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
+bool Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen, int FPS)
 {
     int flags = 0;
     
     // store the game width and height
     m_gameWidth = width;
     m_gameHeight = height;
+    m_FPS = FPS;
     
     if(fullscreen)
     {
@@ -63,6 +64,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         {
             cout << "window creation success\n";
             m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+            //width/height looks ok, but refresh_rate is 0 on a OSX Mavericks
+            SDL_DisplayMode mode;
+            SDL_GetCurrentDisplayMode(SDL_GetWindowDisplayIndex(m_pWindow), &mode);
             
             if(m_pRenderer != 0) // renderer init success
             {

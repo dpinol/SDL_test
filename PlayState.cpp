@@ -18,10 +18,6 @@
 
 const std::string PlayState::s_playID = "PLAY";
 
-PlayState::PlayState()
-{
-  m_gameObjects.push_back(new JewelBoard());
-}
 
 static bool m_keyPpressed = false;
 static bool m_paused = false;
@@ -30,7 +26,7 @@ class TNT : public MovingObject
 {
 public:
   TNT()
-    :MovingObject("assets/spark.png", 60 * 1000, true, 1)
+    :MovingObject("assets/spark.png", 60 * 1000, true, 0.2)
   {
     Trajectory trj = {
       { 265, 557},
@@ -57,6 +53,13 @@ public:
     setTrajectory(trj);
   }
 };
+
+PlayState::PlayState()
+{
+  m_gameObjects.push_back(new JewelBoard());
+  m_gameObjects.push_back(new TNT());
+}
+
 
 void PlayState::update()
 {

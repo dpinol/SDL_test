@@ -6,7 +6,8 @@
 **************************************************************************/
 
 #include "MovingObject.h"
-#include <TextureManager.h>
+#include "TextureManager.h"
+#include "Game.h"
 #include <numeric>
 #include <SDL2/SDL_render.h>
 #include <SDL_image.h>
@@ -21,12 +22,23 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
     m_trajectoryIndex(0)
 {
   TheTextureManager::Instance()->load(imgFilename, "spark");
-  SDL_Texture *texture = TheTextureManager::Instance()->getTextureMap()["spark"];
+
+}
+
+MovingObject::~MovingObject()
+{
+
+}
+
+void MovingObject::setTrajectory(Trajectory &trajectory)
+{
+  m_trajectory = std::move(trajectory);
 
   if (m_center)
   {
     int access;
     Uint32 format;
+    SDL_Texture *texture = TheTextureManager::Instance()->getTextureMap()["spark"];
     SDL_QueryTexture(texture, &format, &access, &m_width, &m_height);
     std::for_each(m_trajectory.begin(), m_trajectory.end(), [&](Vector2D &v)
     {
@@ -34,6 +46,8 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
       v.setY( v.getY() - m_height / 2);
     });
   }
+  m_trajectoryIndex = 0;
+  m_pixel = m_trajectory[0];
 
   Vector2D lastPoint;
   m_totalDistance = std::accumulate(m_trajectory.begin(), m_trajectory.end(), 0.0,
@@ -49,18 +63,7 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
       return (p - lastPoint).length();
     }
   });
-}
 
-MovingObject::~MovingObject()
-{
-
-}
-
-void MovingObject::setTrajectory(Trajectory &trajectory)
-{
-  m_trajectory = std::move(trajectory);
-  m_trajectoryIndex = 0;
-  m_pixel = m_trajectory[0];
 }
 
 // load from file - int x, int y, int width, int height, std::string textureID, int numFrames, int callbackID = 0, int animSpeed = 0
@@ -89,7 +92,8 @@ void MovingObject::update()
     else if  (m_angle < 0)
       m_angle += 360;
   }
-  if ((m_pixel - m_trajectory[m_trajectoryIndex]).length() < 2)
+  float dist = (m_pixel - m_trajectory[m_trajectoryIndex]).length();
+  if (dist < 2)
   {
     m_trajectoryIndex++;
     if (m_trajectoryIndex == m_trajectory.size())
@@ -100,7 +104,8 @@ void MovingObject::update()
     m_stepSpeed = (m_trajectory[m_trajectoryIndex] - m_trajectory[m_trajectoryIndex - 1]);
     float stepTimeMs = m_totalTimeMs *  m_stepSpeed.length() / m_totalDistance;
     //m_stepSpeed.normalize();
-    m_stepSpeed /= stepTimeMs;
+    //pix/frame = pix / (frame/ sec) / s
+    m_stepSpeed /=  TheGame::Instance()->getFPS() * (stepTimeMs / 1000.0);
   }
   m_pixel += m_stepSpeed;
 }

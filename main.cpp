@@ -23,7 +23,7 @@ int main(int argc, char const **argv)
   Uint32 frameStart, frameTime;
 
   std::cout << "game init attempt...\n";
-  if(TheGame::Instance()->init("SDL_test", 100, 100, 755, 600, false))
+  if(TheGame::Instance()->init("SDL_test", 100, 100, 755, 600, false, FPS))
   {
     std::cout << "game init success!\n";
     while(TheGame::Instance()->running())
