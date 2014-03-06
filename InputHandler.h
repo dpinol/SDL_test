@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "SDL.h"
-#include "Vector2D.h"
+#include <utils/Vector2D.h>
 
 enum mouse_buttons
 {
@@ -97,6 +97,7 @@ private:
     // mouse specific
     std::vector<bool> m_mouseButtonStates;
     Vector2D m_mousePosition;
+    bool m_logMouseClicks;
     
     // singleton
     static InputHandler* s_pInstance;

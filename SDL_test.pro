@@ -10,7 +10,8 @@ SOURCES += *.cpp \
     model/*.cpp \
     JewelDrag.cpp \
     model/test/*.cpp \
-    utils/init.cpp
+    utils/init.cpp \
+    MovingObject.cpp
 
 
 OTHER_FILES += \
@@ -25,5 +26,6 @@ HEADERS += \
     model/*.h \
     model/test/*.h \
     JewelDrag.h \
-    utils/init.h
+    utils/init.h \
+    MovingObject.h
 

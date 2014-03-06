@@ -33,8 +33,6 @@ public:
 protected:
   BoardObject();
 
-  bool checkCollideTile(Vector2D newPos);
-
   virtual void doDyingAnimation();
 
 

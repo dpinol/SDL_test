@@ -12,7 +12,7 @@
 //#include <boost/archive/xml_oarchive.hpp>
 //#include <boost/archive/xml_iarchive.hpp>
 #include "LoaderParams.h"
-#include "Vector2D.h"
+#include <utils/Vector2D.h>
 #include <string>
 #include <memory>
 #include <vector>
@@ -26,16 +26,16 @@ public:
     virtual ~GameObject() {}
     
     // load from file - int x, int y, int width, int height, std::string textureID, int numFrames, int callbackID = 0, int animSpeed = 0
-    virtual void load(std::unique_ptr<LoaderParams> const &pParams)=0;
+    virtual void load(std::unique_ptr<LoaderParams> const &pParams) = 0;
     
     // draw the object
-    virtual void draw()=0;
+    virtual void draw() = 0;
     
-    // do update stuff
-    virtual void update()=0;
+    // do update stuf
+    virtual void update() = 0;
     
     // remove anything that needs to be deleted
-    virtual void clean()=0;
+    virtual void clean() = 0;
     
     
     // get the type of the object

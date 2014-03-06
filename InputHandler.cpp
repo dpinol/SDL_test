@@ -8,14 +8,18 @@
 
 #include "InputHandler.h"
 #include "Game.h"
+#include <utils/log.h>
+#include <utils/init.h>
 #include <iostream>
 
 InputHandler* InputHandler::s_pInstance = 0;
 
 InputHandler::InputHandler() :  m_keystates(0),
   m_bJoysticksInitialised(false),
-  m_mousePosition(0,0)
+  m_mousePosition(0,0),
+  m_logMouseClicks(false)
 {
+  m_logMouseClicks = dani::init::hasArg("--logMouseClicks");
   // create button states for the mouse
   for(int i = 0; i < 3; i++)
   {
@@ -243,6 +247,8 @@ void InputHandler::onMouseButtonDown(SDL_Event &event)
   if(event.button.button == SDL_BUTTON_LEFT)
   {
     m_mouseButtonStates[LEFT] = true;
+    if (m_logMouseClicks)
+      LOG_ERROR("{ " << event.button.x << ", " << event.button.y << "}, ");
   }
 
   if(event.button.button == SDL_BUTTON_MIDDLE)

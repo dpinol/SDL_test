@@ -28,7 +28,7 @@ bool JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ign
   //  BoardPos const pos = m_positions[posIndex];
 
   BoardPos const directions[] = {{0,1}, {1,0}};
-  for(int d=0; d < 2; d++)
+  for(int d = 0; d < 2; d++)
   {
     BoardPos dir = directions[d];
     //length on each sense

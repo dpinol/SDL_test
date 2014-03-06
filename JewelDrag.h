@@ -8,7 +8,7 @@
 #ifndef JEWELDRAG_H
 #define JEWELDRAG_H
 
-#include "Vector2D.h"
+#include <utils/Vector2D.h>
 #include <model/BoardPos.h>
 
 class JewelBoard;

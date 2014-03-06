@@ -10,7 +10,7 @@
 #include "SDL.h"
 #include "GameStateMachine.h"
 //#include "SDL_mixer.h"
-#include "Vector2D.h"
+#include <utils/Vector2D.h>
 #include <vector>
 #include <atomic>
 
