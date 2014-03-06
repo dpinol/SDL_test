@@ -41,7 +41,7 @@ namespace dani
     void my_handler (int param)
     {
       std::cerr << "Interrupted by signal "<< param << " at: " << std::endl
-                   << dani::getCallstack() << std::endl;
+                << dani::getCallstack() << std::endl;
       //user interruption
       if (param == SIGINT)
         exit(SIGINT);
@@ -68,6 +68,29 @@ namespace dani
       dani::log::init(argc, argv);
       handleSignals();
       std::set_terminate(verboseTerminate);
+    }
+
+    int getNumArgs()
+    {
+      return m_argc;
+    }
+
+    std::string getArg(int index)
+    {
+      if (index > m_argc)
+        return m_argv[index];
+      else
+        throw std::runtime_error("getArg's index too high");
+    }
+
+    bool hasArg(const char *arg)
+    {
+      for(int i = 1; i < m_argc; i++)
+      {
+        if (strcmp(arg, m_argv[i]) == 0)
+          return true;
+      }
+      return false;
     }
 
   }
