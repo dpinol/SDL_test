@@ -16,7 +16,14 @@ class MovingObject : public GameObject
 {
 public:
 
-  MovingObject();
+  /**
+   * @brief MovingObject
+   * @param imgFilename filename of image to display
+   * @param center whether image should be centered to each position
+   */
+  MovingObject(std::string const &imgFilename, int totalTimeMs, bool center = false, float rotateSpeed = 0);
+  virtual ~MovingObject();
+
   typedef std::vector<Vector2D> Trajectory;
   /**
    * @brief setTrajectory
@@ -24,7 +31,7 @@ public:
    */
   void setTrajectory(Trajectory &trajectory);
 
-  virtual ~MovingObject();
+
 
   // load from file - int x, int y, int width, int height, std::string textureID, int numFrames, int callbackID = 0, int animSpeed = 0
   virtual void load(std::unique_ptr<LoaderParams> const &pParams) override;
@@ -43,7 +50,14 @@ public:
   virtual std::string type() override { return "MovingObject";}
 
   bool m_done;
+  bool const m_center;
+  float const m_rotateSpeed;
+  float m_angle;
   Trajectory m_trajectory;
+  int m_trajectoryIndex;
+  float m_totalDistance;
+  Vector2D m_stepSpeed;
+  int m_totalTimeMs;
 };
 
 #endif // MOVINGOBJECT_H

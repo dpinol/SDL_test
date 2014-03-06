@@ -17,38 +17,38 @@
 class TextureManager
 {
 public:
-    
-    static TextureManager* Instance()
+
+  static TextureManager* Instance()
+  {
+    if(s_pInstance == 0)
     {
-        if(s_pInstance == 0)
-        {
-            s_pInstance = new TextureManager();
-            return s_pInstance;
-        }
-       
-        return s_pInstance;
+      s_pInstance = new TextureManager();
+      return s_pInstance;
     }
-    
-    /**
+
+    return s_pInstance;
+  }
+
+  /**
      * @brief load an image from disk so that it can be later drawn
      * @param fileName
      * @param id to be used to draw it
      * @param pRenderer
      * @return
      */
-    void load(std::string const &fileName, std::string const &id, SDL_Renderer* pRenderer);
-    
-    void clearTextureMap();
-    void clearFromTextureMap(std::string const &id);
-    
-    /**
+  void load(std::string const &fileName, std::string const &id, SDL_Renderer* pRenderer = 0);
+
+  void clearTextureMap();
+  void clearFromTextureMap(std::string const &id);
+
+  /**
      * @brief draw
      * @param id
      * @param pRenderer
      * @param flip
      */
-    void draw(std::string const &id, int x, int y, int width, int height, SDL_Renderer* pRenderer = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
-    /**
+  void draw(std::string const &id, int x, int y, int width, int height, SDL_Renderer* pRenderer = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
+  /**
      * @brief drawFrame
      * @param id
      * @param currentRow row within the sprite sheet
@@ -58,24 +58,24 @@ public:
      * @param alpha
      * @param flip
      */
-    void drawFrame(std::string const &id, int x, int y, int width, int height, int currentRow = 0, int currentFrame = 0,
-                   SDL_Renderer* pRenderer = 0, double angle = 0, int alpha = 255, SDL_RendererFlip flip = SDL_FLIP_NONE);
-    void drawTile(std::string const &id, int margin, int spacing, int x, int y, int width, int height,
-                  int currentRow, int currentFrame, SDL_Renderer *pRenderer);
-    
-    std::map<std::string, SDL_Texture*> getTextureMap() { return m_textureMap; }
-    
+  void drawFrame(std::string const &id, int x, int y, int width, int height, int currentRow = 0, int currentFrame = 0,
+                 SDL_Renderer* pRenderer = 0, double angle = 0, int alpha = 255, SDL_RendererFlip flip = SDL_FLIP_NONE);
+  void drawTile(std::string const &id, int margin, int spacing, int x, int y, int width, int height,
+                int currentRow, int currentFrame, SDL_Renderer *pRenderer);
+
+  std::map<std::string, SDL_Texture*> getTextureMap() const { return m_textureMap; }
+
 private:
-    
-    TextureManager() {}
-    ~TextureManager() {}
-    
-    TextureManager(const TextureManager&);
-	TextureManager& operator=(const TextureManager&);
-    
-    std::map<std::string, SDL_Texture*> m_textureMap;
-    
-    static TextureManager* s_pInstance;
+
+  TextureManager() {}
+  ~TextureManager() {}
+
+  TextureManager(const TextureManager&);
+  TextureManager& operator=(const TextureManager&);
+
+  std::map<std::string, SDL_Texture*> m_textureMap;
+
+  static TextureManager* s_pInstance;
 };
 
 typedef TextureManager TheTextureManager;

@@ -29,7 +29,7 @@ JewelBoard::JewelBoard() : BoardObject(),
   m_jewelsFalling(true)
 {
 
-  TheTextureManager::Instance()->load("assets/jewels.png", "jewels", TheGame::Instance()->getRenderer());
+  TheTextureManager::Instance()->load("assets/jewels.png", "jewels");
 
   createInitialJewelsBoard();
 }

@@ -28,9 +28,9 @@ static bool m_paused = false;
 
 class TNT : public MovingObject
 {
-
 public:
   TNT()
+    :MovingObject("assets/spark.png", 60 * 1000, true, 1)
   {
     Trajectory trj = {
       { 265, 557},
@@ -54,6 +54,7 @@ public:
       { 205, 374},
       { 180, 372}
     };
+    setTrajectory(trj);
   }
 };
 
@@ -102,7 +103,7 @@ void PlayState::render()
 
     for(int i = 0; i < TheGame::Instance()->getPlayerLives(); i++)
     {
-      TheTextureManager::Instance()->drawFrame("lives", i * 30, 0, 32, 30, 0, 0, TheGame::Instance()->getRenderer(), 0.0, 255);
+      TheTextureManager::Instance()->drawFrame("lives", i * 30, 0, 32, 30, 0, 0, nullptr, 0.0, 255);
     }
   }
 
@@ -114,7 +115,7 @@ bool PlayState::onEnterImpl()
 {
   TheGame::Instance()->setPlayerLives(3);
 
-  TheTextureManager::Instance()->load("assets/BackGround.jpg", "background", TheGame::Instance()->getRenderer());
+  TheTextureManager::Instance()->load("assets/BackGround.jpg", "background");
 
   std::cout << "entering PlayState\n";
   return true;

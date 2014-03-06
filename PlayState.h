@@ -36,7 +36,7 @@ private:
     
     static const std::string s_playID;
 
-    JewelBoard* m_jewelBoard;
+    //JewelBoard* m_jewelBoard;
     
 };
 
