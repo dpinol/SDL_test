@@ -17,6 +17,11 @@ MovingObject::~MovingObject()
 
 }
 
+void MovingObject::setTrajectory(Trajectory &trajectory)
+{
+  m_trajectory = std::move(trajectory);
+}
+
 // load from file - int x, int y, int width, int height, std::string textureID, int numFrames, int callbackID = 0, int animSpeed = 0
 void MovingObject::load(std::unique_ptr<LoaderParams> const &pParams)
 {

@@ -15,7 +15,14 @@
 class MovingObject : public GameObject
 {
 public:
+
   MovingObject();
+  typedef std::vector<Vector2D> Trajectory;
+  /**
+   * @brief setTrajectory
+   * @param trajectory will be moved in
+   */
+  void setTrajectory(Trajectory &trajectory);
 
   virtual ~MovingObject();
 
@@ -36,7 +43,7 @@ public:
   virtual std::string type() override { return "MovingObject";}
 
   bool m_done;
-  std::vector<Vector2D> m_trajectory;
+  Trajectory m_trajectory;
 };
 
 #endif // MOVINGOBJECT_H

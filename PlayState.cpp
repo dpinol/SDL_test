@@ -14,16 +14,48 @@
 #include "InputHandler.h"
 #include "TextureManager.h"
 #include "JewelBoard.h"
+#include "MovingObject.h"
 
 const std::string PlayState::s_playID = "PLAY";
 
 PlayState::PlayState()
 {
-    m_jewelBoard = new JewelBoard();
+  m_gameObjects.push_back(new JewelBoard());
 }
 
 static bool m_keyPpressed = false;
 static bool m_paused = false;
+
+class TNT : public MovingObject
+{
+
+public:
+  TNT()
+  {
+    Trajectory trj = {
+      { 265, 557},
+      { 258, 553},
+      { 256, 550},
+      { 254, 546},
+      { 252, 538},
+      { 254, 526},
+      { 255, 520},
+      { 253, 517},
+      { 249, 515},
+      { 241, 512},
+      { 227, 511},
+      { 220, 510},
+      { 217, 508},
+      { 214, 504},
+      { 208, 382},
+      { 208, 382},
+      { 208, 378},
+      { 206, 376},
+      { 205, 374},
+      { 180, 372}
+    };
+  }
+};
 
 void PlayState::update()
 {
@@ -49,7 +81,8 @@ void PlayState::update()
       m_paused = !m_paused;
     m_keyPpressed = keyPpressed;
     if (!m_paused)
-      m_jewelBoard->update();
+      //m_jewelBoard->update();
+      GameState::update();
   }
 }
 
@@ -59,7 +92,7 @@ void PlayState::render()
   {
     GameState::render();
 
- /*   if(pLevel != 0)
+    /*   if(pLevel != 0)
     {
       pLevel->render();
     }
@@ -73,7 +106,8 @@ void PlayState::render()
     }
   }
 
-  m_jewelBoard->draw();
+  //m_jewelBoard->draw();
+  GameState::render();
 }
 
 bool PlayState::onEnterImpl()
