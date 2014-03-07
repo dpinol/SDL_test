@@ -55,7 +55,7 @@ void MovingObject::setAlphaOscillation(float minAlphaRatio)
 {
   //m_minAlphaPerc = minAlphaRatio;
   //m_alphaDegree = 0;
-  m_alpha.setRange(minAlphaRatio, 1.0);
+  m_alpha.setRange( 255 *  minAlphaRatio, 255);
 }
 
 void MovingObject::setTrajectory(Trajectory &trajectory)

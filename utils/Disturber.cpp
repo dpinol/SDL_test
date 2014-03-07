@@ -15,6 +15,7 @@ namespace dani
   {
     m_FPS = FPS;
   }
+
   int IDisturbed::getFPS()
   {
     if (DANI_UNLIKELY(m_FPS == 0))
@@ -24,5 +25,15 @@ namespace dani
   }
 
   int IDisturbed::m_FPS = 0;
+
+  float IDisturbed::getPhaseNormalized(float phase)
+  {
+    while(phase >= 2 * M_PI)
+      phase -= 2 * M_PI;
+    while(phase < 0)
+      phase += 2 * M_PI;
+    return phase;
+  }
+
 
 }

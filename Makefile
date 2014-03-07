@@ -67,8 +67,8 @@ depend: .depend
 # Generate dependencies for all files in project
 %.d: $(FULL_SRCS)
 	@$(CXX) $(CPPFLAGS) -MM $*.cpp | sed -e 's@^\(.*\)\.o:@\1.d \1.o:@' > $@ ; \
-	grep "model\/[a-zA-Z]\+\.cpp" $@ > /dev/null && sed -i"" -e"s/\([a-zA-Z]*\)\.\([od]\)/model\/\1\.\2/g" $@ ; \
-	grep "utils\/[a-zA-Z]\+\.cpp" $@  > /dev/null && sed -i"" -e"s/\([a-zA-Z]*\)\.\([od]\)/utils\/\1\.\2/g" $@
+	grep "model\/[a-zA-Z]\+\.cpp" $@ > /dev/null && sed -i "" -e "s/\([a-zA-Z]*\)\.\([od]\)/model\/\1\.\2/g" $@ ; \
+	grep "utils\/[a-zA-Z]\+\.cpp" $@  > /dev/null && sed -i "" -e "s/\([a-zA-Z]*\)\.\([od]\)/utils\/\1\.\2/g" $@
 
 clean_list += ${FULL_SRCS:.cpp=.d}
 clean:

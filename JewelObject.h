@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 #include "BoardObject.h"
+#include <utils/Disturber.h>
 #include "model/Jewel.h"
 #include "JewelMove.h"
 #include <SDL_timer.h>
@@ -51,6 +52,8 @@ public:
   bool isFallDone() const;
   void setFalling(bool falling =true);
   void fallStep();
+
+ // dani::OscilleDisturbed<Vector2D> m_swapper;
 
 
   static constexpr short WIDTH = 35;
