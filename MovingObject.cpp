@@ -22,11 +22,7 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
     m_center(center),
     m_rotateSpeed(rotateSpeed),
     m_angle(0),
-    m_trajectoryIndex(0),
-    m_minAlphaPerc(100),
-    m_alphaDegree(0),
-    m_maxOscilllationPerc(0),
-    m_scale(1.0)
+    m_trajectoryIndex(0)
 {
   TheTextureManager::Instance()->load(imgFilename, "spark");
   int access;
@@ -35,7 +31,7 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
   SDL_QueryTexture(texture, &format, &access, &m_width, &m_height);
 
 
- /* if (m_maxOscilllationPerc != 0)
+  /* if (m_maxOscilllationPerc != 0)
   {
     for (int i =0; i < 10; i++)
     {
@@ -47,23 +43,19 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
 }
 
 MovingObject::~MovingObject()
-{
-  for(dani::IDisturber* dist : m_disturbers)
-  {
-    delete dist;
-  }
+{  
 }
 
-void MovingObject::setSizeOscillation(float maxOscilllationPerc)
+void MovingObject::setRandomSize(float amplitudeRatio)
 {
-  m_maxOscilllationPerc = maxOscilllationPerc;
-  m_disturbers.push_back(new dani::RandomDisturber<float>(m_scale));
+  m_scale.setMean(1, amplitudeRatio);
 }
 
-void MovingObject::setAlphaOscillation(float minAlphaPercentage)
+void MovingObject::setAlphaOscillation(float minAlphaRatio)
 {
-  m_minAlphaPerc = minAlphaPercentage;
-  m_alphaDegree = 0;
+  //m_minAlphaPerc = minAlphaRatio;
+  //m_alphaDegree = 0;
+  m_alpha.setRange(minAlphaRatio, 1.0);
 }
 
 void MovingObject::setTrajectory(Trajectory &trajectory)
@@ -101,21 +93,14 @@ void MovingObject::load(std::unique_ptr<LoaderParams> const &pParams)
 // draw the object
 void MovingObject::draw()
 {
-  int w = m_width, h = m_height;
-  int alpha = 255;
+  float scale = m_scale.get();
 
-  if (m_minAlphaPerc != 0)
-  {
-    //float randPerc = rand() / (float) RAND_MAX;
-    float oscil0to1 = (cos(m_alphaDegree) + 1) /2;
-    alpha = 255 * (1 - (m_minAlphaPerc / 100) * oscil0to1);
-  }
-  Uint32 x = m_pixel.getX() - m_width * m_scale / 2;
-  Uint32 y = m_pixel.getY() - m_height *m_scale / 2;
+  Uint32 x = m_pixel.getX() - m_width * scale / 2;
+  Uint32 y = m_pixel.getY() - m_height * scale / 2;
 
   TextureManager::Instance()->draw("spark", x, y,
-                                        w, h,
-                                        NULL, m_angle, alpha, m_scale);
+                                   m_width, m_height,
+                                   NULL, m_angle, m_alpha.get(), scale);
 
 }
 
@@ -142,15 +127,16 @@ void MovingObject::update()
   }
   m_pixel += m_stepSpeed;
 
+  /*
   if (m_minAlphaPerc != 100)
   {
     m_alphaDegree += 5 * 2.0 * M_PI / TheGame::Instance()->getFPS();
     if (m_alphaDegree > 2 * M_PI)
       m_alphaDegree = 0;
-  }
+  }*/
 
 
-/*  float scale = 1;
+  /*  float scale = 1;
   if (m_maxOscilllationPerc != 0)
   {
     //sizeRatio = 1 - (m_minAlpha / 100  + m_deltaIndex
@@ -159,11 +145,11 @@ void MovingObject::update()
 
   }
 //  float scale = 1 - (m_maxOscilllationPerc / 100.0) * ( -1 + 2* i / 10.0);
-  */
+
   for(dani::IDisturber* dist: m_disturbers)
   {
     dist->run();
-  }
+  }*/
 }
 
 // remove anything that needs to be deleted

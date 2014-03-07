@@ -43,7 +43,11 @@ public:
 
   /**
      * @brief draw
-     * @param id
+     * @param id as specified at load
+     * @param x for top left corner to be painted at
+     + @param y for top left corner to be painted at
+     * @param width at the original file. Will be drawn as per width * scale
+     * @param height at the original file. Will be drawn as per height * scale
      * @param pRenderer
      * @param scale 1 for keeping source size
      * @param flip

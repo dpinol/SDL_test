@@ -3,8 +3,8 @@ CC=clang
 #CXX=g++-4.9
 CXX=clang++
 RM=rm -f
-CPPFLAGS:=$(shell /usr/local/bin/pkg-config --cflags sdl2)
-LDFLAGS:=-g $(shell /usr/local/bin/pkg-config --libs sdl2)
+CPPFLAGS:=$(shell pkg-config --cflags sdl2)
+LDFLAGS:=-g $(shell pkg-config --libs sdl2)
 
 CPPFLAGS:=$(CPPFLAGS) -Wall -Wextra -Wno-ignored-qualifiers -Wno-sign-compare -Wno-reorder
 CPPFLAGS:=$(CPPFLAGS) -Werror=address -Werror=array-bounds  -Werror=c++0x-compat -Werror=char-subscripts
@@ -67,8 +67,8 @@ depend: .depend
 # Generate dependencies for all files in project
 %.d: $(FULL_SRCS)
 	@$(CXX) $(CPPFLAGS) -MM $*.cpp | sed -e 's@^\(.*\)\.o:@\1.d \1.o:@' > $@ ; \
-	grep "model\/[a-zA-Z]\+\.cpp" $@ > /dev/null && sed -i "" "s/\([a-zA-Z]*\)\.\([od]\)/model\/\1\.\2/g" $@ ; \
-	grep "utils\/[a-zA-Z]\+\.cpp" $@  > /dev/null && sed -i "" "s/\([a-zA-Z]*\)\.\([od]\)/utils\/\1\.\2/g" $@
+	grep "model\/[a-zA-Z]\+\.cpp" $@ > /dev/null && sed -i"" -e"s/\([a-zA-Z]*\)\.\([od]\)/model\/\1\.\2/g" $@ ; \
+	grep "utils\/[a-zA-Z]\+\.cpp" $@  > /dev/null && sed -i"" -e"s/\([a-zA-Z]*\)\.\([od]\)/utils\/\1\.\2/g" $@
 
 clean_list += ${FULL_SRCS:.cpp=.d}
 clean:

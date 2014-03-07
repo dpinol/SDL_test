@@ -27,11 +27,16 @@ public:
   virtual ~MovingObject();
 
   /**
-   * @brief setScaleOscilation image scale will oscillate
-   * @param minAlphaPerc if 50, it will oscille betwen 128 and 255
+   * @brief setAlphaOscillation image alpha value will gradually loop
+   * @param minAlphaRatio if 0.75, it will oscille betwen 192 and 255
    */
-  void setAlphaOscillation(float minAlphaPerc = 0.0);
-  void setSizeOscillation(float maxOscillationPerc = 0.0);
+  void setAlphaOscillation(float minAlphaRatio = 0.0);
+
+  /**
+   * @brief setSizeOscillation image scale will random change
+   * @param amplitudeRatio if 0.1, size will oscille betwen x0.9 and x1.1
+   */
+  void setRandomSize(float amplitudeRatio = 0.0);
 
 
   typedef std::vector<Vector2D> Trajectory;
@@ -68,16 +73,9 @@ public:
   float m_totalDistance;
   Vector2D m_stepSpeed;
   int m_totalTimeMs;
-  float m_minAlphaPerc;
-  /** Will loop from 0 to 2*PI. It cosinus will be multiplied by m_minAlpha  */
-  float m_alphaDegree;
-  /**
-   * @brief m_deltaGrowing true when m_deltaIndex growing, false when decreasing
-   */
-  bool m_deltaGrowing;
-  float m_maxOscilllationPerc;
-  std::vector<dani::IDisturber*> m_disturbers;
-  float m_scale;
+
+  dani::RandomDisturbed<float> m_scale;
+  dani::OscilleDisturbed<float> m_alpha;
 };
 
 #endif // MOVINGOBJECT_H
