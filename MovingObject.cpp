@@ -138,7 +138,7 @@ void MovingObject::update()
       return;
     }
     m_stepSpeed = (m_trajectory[m_trajectoryIndex] - m_trajectory[m_trajectoryIndex - 1]);
-    m_angle = m_stepSpeed.angle() * 2 * M_PI;
+    m_angle = m_stepSpeed.angle() * 180.0 / M_PI;
     float stepTimeMs = m_totalTimeMs *  m_stepSpeed.length() / m_totalDistance;
     //m_stepSpeed.normalize();
     //pix/frame = pix / (frame/ sec) / s
