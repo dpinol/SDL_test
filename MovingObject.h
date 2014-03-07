@@ -24,6 +24,13 @@ public:
   MovingObject(std::string const &imgFilename, int totalTimeMs, bool center = false, float rotateSpeed = 0);
   virtual ~MovingObject();
 
+  /**
+   * @brief setScaleOscilation image scale will oscillate
+   * @param minAlphaPerc if 50, it will oscille betwen 128 and 255
+   */
+  void setAlphaOscillation(float minAlphaPerc = 0.0);
+
+
   typedef std::vector<Vector2D> Trajectory;
   /**
    * @brief setTrajectory
@@ -58,6 +65,13 @@ public:
   float m_totalDistance;
   Vector2D m_stepSpeed;
   int m_totalTimeMs;
+  float m_minAlphaPerc;
+  /** Will loop from 0 to 2*PI. It cosinus will be multiplied by m_minAlpha  */
+  float m_alphaDegree;
+  /**
+   * @brief m_deltaGrowing true when m_deltaIndex growing, false when decreasing
+   */
+  bool m_deltaGrowing;
 };
 
 #endif // MOVINGOBJECT_H

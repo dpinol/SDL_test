@@ -44,6 +44,12 @@ public:
     void setY(float y) { m_y = y; }
     
     float length() const { return sqrt(m_x * m_x + m_y * m_y); }
+
+    /**
+     * @brief angle will be 0 when y is 0
+     * @return angle in radians with respect to x axis
+     */
+    float angle() const { return atan( m_y /m_x);}
     
     Vector2D operator+(const Vector2D& v2) const { return Vector2D(m_x + v2.getX(), m_y + v2.getY()); }
     friend Vector2D& operator+=(Vector2D& v1, const Vector2D& v2)

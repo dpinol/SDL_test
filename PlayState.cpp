@@ -51,6 +51,7 @@ public:
       { 180, 372}
     };
     setTrajectory(trj);
+    setAlphaOscillation(20);
   }
 };
 

@@ -4,7 +4,8 @@
 **   Environment variables:
 **   To protect a percent sign, use '%'.
 **************************************************************************/
-
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "MovingObject.h"
 #include "TextureManager.h"
 #include "Game.h"
@@ -19,7 +20,9 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
     m_center(center),
     m_rotateSpeed(rotateSpeed),
     m_angle(0),
-    m_trajectoryIndex(0)
+    m_trajectoryIndex(0),
+    m_minAlphaPerc(100),
+    m_alphaDegree(0)
 {
   TheTextureManager::Instance()->load(imgFilename, "spark");
 
@@ -28,6 +31,12 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
 MovingObject::~MovingObject()
 {
 
+}
+
+void MovingObject::setAlphaOscillation(float minAlphaPercentage)
+{
+  m_minAlphaPerc = minAlphaPercentage;
+  m_alphaDegree = 0;
 }
 
 void MovingObject::setTrajectory(Trajectory &trajectory)
@@ -40,11 +49,6 @@ void MovingObject::setTrajectory(Trajectory &trajectory)
     Uint32 format;
     SDL_Texture *texture = TheTextureManager::Instance()->getTextureMap()["spark"];
     SDL_QueryTexture(texture, &format, &access, &m_width, &m_height);
-    std::for_each(m_trajectory.begin(), m_trajectory.end(), [&](Vector2D &v)
-    {
-      v.setX( v.getX() - m_width / 2);
-      v.setY( v.getY() - m_height / 2);
-    });
   }
   m_trajectoryIndex = 0;
   m_pixel = m_trajectory[0];
@@ -72,26 +76,44 @@ void MovingObject::load(std::unique_ptr<LoaderParams> const &pParams)
 
 }
 
+
+
 // draw the object
 void MovingObject::draw()
 {
-  TextureManager::Instance()->drawFrame("spark", (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
-                                        m_width, m_height, 0, 0,
-                                        NULL, m_angle);
+  int w = m_width, h = m_height;
+  /* float sizeRatio = 1;
+  if (m_minAlpha != 0)
+  {
+    //sizeRatio = 1 - (m_minAlpha / 100  + m_deltaIndex
+    float randPerc = rand() / (float) RAND_MAX;
+    sizeRatio =  1 - (m_minAlpha / 100) * 2 * randPerc;
+    w *= sizeRatio;
+    h *= sizeRatio;
+  }*/
+  int alpha = 255;
+
+  if (m_minAlphaPerc != 0)
+  {
+    //float randPerc = rand() / (float) RAND_MAX;
+    float oscil0to1 = (cos(m_alphaDegree) + 1) /2;
+    alpha = 255 * (1 - (m_minAlphaPerc / 100) * oscil0to1);
+  }
+  Uint32 x = m_pixel.getX() - m_width / 2;
+  Uint32 y = m_pixel.getY() - m_height / 2;
+
+  TextureManager::Instance()->drawFrame("spark", x, y,
+                                        w, h,
+                                        0, 0,
+                                        NULL, m_angle, alpha);
 
 }
 
 // do update stuff
 void MovingObject::update()
 {
-  if (m_rotateSpeed)
-  {
-    m_angle = (m_angle + m_rotateSpeed);
-    if (m_angle >= 360)
-      m_angle-= 360;
-    else if  (m_angle < 0)
-      m_angle += 360;
-  }
+  if (m_done)
+    return;
   float dist = (m_pixel - m_trajectory[m_trajectoryIndex]).length();
   if (dist < 2)
   {
@@ -102,12 +124,21 @@ void MovingObject::update()
       return;
     }
     m_stepSpeed = (m_trajectory[m_trajectoryIndex] - m_trajectory[m_trajectoryIndex - 1]);
+    m_angle = m_stepSpeed.angle() * 2 * M_PI;
     float stepTimeMs = m_totalTimeMs *  m_stepSpeed.length() / m_totalDistance;
     //m_stepSpeed.normalize();
     //pix/frame = pix / (frame/ sec) / s
     m_stepSpeed /=  TheGame::Instance()->getFPS() * (stepTimeMs / 1000.0);
   }
   m_pixel += m_stepSpeed;
+
+  if (m_minAlphaPerc != 100)
+  {
+    m_alphaDegree += 2.0 * M_PI / TheGame::Instance()->getFPS();
+    if (m_alphaDegree > 2 * M_PI)
+      m_alphaDegree = 0;
+  }
+
 }
 
 // remove anything that needs to be deleted
