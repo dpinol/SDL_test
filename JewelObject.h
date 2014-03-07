@@ -63,6 +63,7 @@ public:
 protected:
   //swap place with adjacent
   dani::OscilleDisturbed<Vector2D> m_swapper;
+  dani::OscilleDisturbed<float> m_dier;
 
   bool m_bfalling;
   //friend class JewelBoard;

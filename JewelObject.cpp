@@ -17,7 +17,9 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
   m_fallingStep(0)
 {
+  m_swapper.setPeriod(3000);
   m_swapper.setPaused(true);
+  m_dier.setPaused(true);
 
   m_bfalling = false;
   if (firstRow)
@@ -42,7 +44,7 @@ void JewelObject::swapWith(BoardPos relativeShift, bool andReturn)
 {
   m_swapper.setPaused(false);
   Vector2D vShift(relativeShift.m_col * WIDTH, relativeShift.m_row * HEIGHT);
-  m_swapper.setRange(m_pixel, m_pixel + vShift);
+  m_swapper.setMean({0,0}, vShift);
   m_swapper.setStartPhase(0);
   if (andReturn)
   {
@@ -72,12 +74,22 @@ void JewelObject::draw()
 {
   //pending dying animation
   int alpha = 255;
-  if (isDying())
-    alpha = 255.0 * (m_dyingTime - m_dyingCounter) / m_dyingTime;
+  //if (isDying())
+  //  alpha = 255.0 * (m_dyingTime - m_dyingCounter) / m_dyingTime;
   if(getModel().getColor() != Jewel::NO_COLOR) // && !isDead())
-    TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
+  {
+    Uint32 x = (Uint32)m_pixel.getX();
+    Uint32 y = (Uint32)m_pixel.getY();
+    if (!m_swapper.isPaused())
+    {
+      Vector2D swapper = m_swapper.get();
+      x += swapper.getX();
+      y += swapper.getY();
+    }
+    TextureManager::Instance()->drawFrame(m_textureID, x, y,
                                           m_width, m_height, m_currentRow, getModel().getColor(),
                                           NULL, 0, alpha);
+  }
   //TheGame::Instance()->getRenderer(), m_angle, m_alpha);
 }
 

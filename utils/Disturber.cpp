@@ -21,6 +21,11 @@ namespace dani
     m_paused = paused;
   }
 
+  bool IDisturbed::isPaused() const
+  {
+    return m_paused;
+  }
+
   int IDisturbed::getFPS()
   {
     if (DANI_UNLIKELY(m_FPS == 0))
@@ -35,7 +40,7 @@ namespace dani
   {
     while(phase > M_PI)
       phase -= 2 * M_PI;
-    while(phase < M_PI)
+    while(phase < -M_PI)
       phase += 2 * M_PI;
     return phase;
   }

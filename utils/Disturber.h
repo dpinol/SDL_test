@@ -135,7 +135,7 @@ namespace dani
      */
     void setPeriod(int periodMs = 1000)
     {
-      m_incRadian = 2.0 * M_PI / IDisturbed::getFPS() / periodMs;
+      m_incRadian = 2.0 * M_PI / IDisturbed::getFPS() / (periodMs / 1000.0);
     }
 
 
