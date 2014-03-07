@@ -56,8 +56,13 @@ void JewelDrag::drag()
     }
     LOG_DEBUG("shift: " << shift);
     m_toPos = m_fromPos + shiftPos;
+    bool returnBack;
     if (m_toPos.isValid())
-      m_board.swap(m_fromPos, m_toPos);
+    {
+      returnBack = !m_board.swap(m_fromPos, m_toPos);
+      m_board.getJewel(m_fromPos).swapWith(shiftPos, returnBack);
+      m_board.getJewel(m_toPos).swapWith(-shiftPos, returnBack);
+    }
     else
       LOG_DEBUG("to_pos not valid: " << m_toPos);
   }

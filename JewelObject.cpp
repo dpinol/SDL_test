@@ -17,6 +17,8 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
   m_fallingStep(0)
 {
+  m_swapper.setPaused(true);
+
   m_bfalling = false;
   if (firstRow)
     m_bDead = true;
@@ -34,6 +36,22 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
 Jewel& JewelObject::getModel()
 {
   return *m_model;
+}
+
+void JewelObject::swapWith(BoardPos relativeShift, bool andReturn)
+{
+  m_swapper.setPaused(false);
+  Vector2D vShift(relativeShift.m_col * WIDTH, relativeShift.m_row * HEIGHT);
+  m_swapper.setRange(m_pixel, m_pixel + vShift);
+  m_swapper.setStartPhase(0);
+  if (andReturn)
+  {
+    m_swapper.setStopPhase(M_PI);
+  }
+  else
+  {
+    m_swapper.setStopPhase(M_PI / 2);
+  }
 }
 
 

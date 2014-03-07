@@ -53,8 +53,7 @@ public:
   void setFalling(bool falling =true);
   void fallStep();
 
- // dani::OscilleDisturbed<Vector2D> m_swapper;
-
+  void swapWith(BoardPos relativeShift, bool andReturn);
 
   static constexpr short WIDTH = 35;
   static constexpr short HEIGHT = 35;
@@ -62,6 +61,9 @@ public:
   static const short FALLING_STEPS;
 
 protected:
+  //swap place with adjacent
+  dani::OscilleDisturbed<Vector2D> m_swapper;
+
   bool m_bfalling;
   //friend class JewelBoard;
   Jewel *m_model;

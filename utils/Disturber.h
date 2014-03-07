@@ -19,6 +19,13 @@ namespace dani
   class IDisturbed
   {
   public:
+    IDisturbed()
+      :m_paused(false)
+    {
+    }
+
+    void setPaused(bool paused);
+    bool isPaused() const;
     /**
      * @brief setFPS If we know the FPS, we spare some IDisturbed class to have a timer to
      * keep a given speed
@@ -26,9 +33,16 @@ namespace dani
      */
     static void setFPS(int FPS);
   protected:
+    /**
+     * @brief getPhaseNormalized normalizes to range [-PI,PI]
+     * PI is also allowed because otherwise we could not express a whole loop
+     * @param phase
+     * @return
+     */
     static float getPhaseNormalized(float phase);
 
     static int getFPS();
+    bool m_paused;
   private:
     static int m_FPS;
   };
@@ -49,28 +63,29 @@ namespace dani
       assert(0 <= curReldisturbance);
       assert(1 >= curReldisturbance);
       float ratioNormalized = - 1  + 2 * curReldisturbance;
-      return m_mean * (1 + m_maxRelDisturbance * ratioNormalized);
+      return m_mean + (m_maxDisturbance * ratioNormalized);
     }
 
     /**
      * @brief set
-     * @param mean
-     * @param amplitudeRatio  (1 - amplitudeRatio) * mean  <= val <= (1 + amplitudeRatio) * mean
+     * @param mean if paused, will always return this number
+     * @param amplitudeRatio  mean - maxDisturbance <= val <= mean + maxDisturbance
      */
-    void setMean(T mean, float amplitudeRatio = 0)
+    void setMean(T mean, T const &maxDisturbance = 0)
     {
       m_mean = std::move(mean);
-      m_maxRelDisturbance = amplitudeRatio;
+      m_maxDisturbance = maxDisturbance;
     }
+
     void setRange(T const &min, T const &max)
     {
       m_mean = (min + max) / 2.0;
-      m_maxRelDisturbance = (max - min) / 2.0 / m_mean;
+      m_maxDisturbance = (max - min) / 2.0;
     }
 
   protected:
     T m_mean;
-    float m_maxRelDisturbance;
+    T m_maxDisturbance;
     //cache so that we can return by ref
     //T m_lastValue;
   };
@@ -85,7 +100,10 @@ namespace dani
 
     T get() const override
     {
-      return Parent::getMapToRange(rand() / (float) RAND_MAX);
+      if (Parent::m_paused)
+        return Parent::m_mean;
+      else
+        return Parent::getMapToRange(rand() / (float) RAND_MAX);
     }
   };
 
@@ -125,7 +143,7 @@ namespace dani
      * @brief setStartPhase
      * @param startPhase degree in radian on where to start in the sin() function
      * So 0 mean at mean value increasing, PI/2 at max value,
-     * PI at mean  value decreading, -PI/2 at min value
+     * PI at mean  value decreasing, -PI/2 at min value
      * startPhase will be normalized
      */
     void setStartPhase(float startPhase = 0)
@@ -151,12 +169,11 @@ namespace dani
 
     T get() const override
     {
-      if (m_curRadian > m_stopRadian)
-        return m_curRadian;
-      m_curRadian += m_incRadian;
-      if (m_curRadian > 2 * M_PI)
-        m_curRadian -= 2 * M_PI;
-
+      if (!Parent::m_paused && m_curRadian < m_stopRadian)
+      {
+        m_curRadian += m_incRadian;
+        m_curRadian = Parent::getPhaseNormalized(m_curRadian);
+      }
       return Parent::getMapToRange((sin(m_curRadian) + 1) /2);
     }
 
