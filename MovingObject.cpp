@@ -25,7 +25,8 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
     m_trajectoryIndex(0),
     m_minAlphaPerc(100),
     m_alphaDegree(0),
-    m_maxOscilllationPerc(0)
+    m_maxOscilllationPerc(0),
+    m_scale(1.0)
 {
   TheTextureManager::Instance()->load(imgFilename, "spark");
   int access;
@@ -53,6 +54,7 @@ MovingObject::~MovingObject()
 void MovingObject::setSizeOscillation(float maxOscilllationPerc)
 {
   m_maxOscilllationPerc = maxOscilllationPerc;
+  m_disturbers.push_back(new dani::RandomDisturber<float>(m_scale));
 }
 
 void MovingObject::setAlphaOscillation(float minAlphaPercentage)
@@ -97,15 +99,6 @@ void MovingObject::load(std::unique_ptr<LoaderParams> const &pParams)
 void MovingObject::draw()
 {
   int w = m_width, h = m_height;
-  float scale = 1;
-  if (m_maxOscilllationPerc != 0)
-  {
-    //sizeRatio = 1 - (m_minAlpha / 100  + m_deltaIndex
-    float randPerc = rand() / (float) RAND_MAX;
-    scale =  1 + (m_maxOscilllationPerc / 100.0) * (- 1  + 2 * randPerc);
-
-  }
-//  float scale = 1 - (m_maxOscilllationPerc / 100.0) * ( -1 + 2* i / 10.0);
   int alpha = 255;
 
   if (m_minAlphaPerc != 0)
@@ -114,12 +107,12 @@ void MovingObject::draw()
     float oscil0to1 = (cos(m_alphaDegree) + 1) /2;
     alpha = 255 * (1 - (m_minAlphaPerc / 100) * oscil0to1);
   }
-  Uint32 x = m_pixel.getX() - m_width * scale / 2;
-  Uint32 y = m_pixel.getY() - m_height *scale / 2;
+  Uint32 x = m_pixel.getX() - m_width * m_scale / 2;
+  Uint32 y = m_pixel.getY() - m_height *m_scale / 2;
 
   TextureManager::Instance()->draw("spark", x, y,
                                         w, h,
-                                        NULL, m_angle, alpha, scale);
+                                        NULL, m_angle, alpha, m_scale);
 
 }
 
@@ -153,6 +146,22 @@ void MovingObject::update()
       m_alphaDegree = 0;
   }
 
+
+/*  float scale = 1;
+  if (m_maxOscilllationPerc != 0)
+  {
+    //sizeRatio = 1 - (m_minAlpha / 100  + m_deltaIndex
+    float randPerc = rand() / (float) RAND_MAX;
+    scale =  1 + (m_maxOscilllationPerc / 100.0) * (- 1  + 2 * randPerc);
+
+  }
+//  float scale = 1 - (m_maxOscilllationPerc / 100.0) * ( -1 + 2* i / 10.0);
+  */
+  std::for_each(m_disturbers.begin(), m_disturbers.end(),
+                [](std::unique_ptr<dani::IDisturber*> dist)
+  {
+    (*dist)->run();
+  });
 }
 
 // remove anything that needs to be deleted
