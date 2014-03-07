@@ -48,7 +48,10 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
 
 MovingObject::~MovingObject()
 {
-
+  for(dani::IDisturber* dist : m_disturbers)
+  {
+    delete dist;
+  }
 }
 
 void MovingObject::setSizeOscillation(float maxOscilllationPerc)
@@ -157,11 +160,10 @@ void MovingObject::update()
   }
 //  float scale = 1 - (m_maxOscilllationPerc / 100.0) * ( -1 + 2* i / 10.0);
   */
-  std::for_each(m_disturbers.begin(), m_disturbers.end(),
-                [](std::unique_ptr<dani::IDisturber*> dist)
+  for(dani::IDisturber* dist: m_disturbers)
   {
-    (*dist)->run();
-  });
+    dist->run();
+  }
 }
 
 // remove anything that needs to be deleted

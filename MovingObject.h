@@ -76,7 +76,7 @@ public:
    */
   bool m_deltaGrowing;
   float m_maxOscilllationPerc;
-  std::vector<std::unique_ptr<dani::IDisturber*>> m_disturbers;
+  std::vector<dani::IDisturber*> m_disturbers;
   float m_scale;
 };
 

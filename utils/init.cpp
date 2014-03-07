@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <signal.h>
+#include <stdexcept>
+#include <string.h>
 
 
 
