@@ -24,7 +24,7 @@ namespace dani
     {
     }
 
-    void setPaused(bool paused);
+    void setPaused(bool paused = true);
     bool isPaused() const;
     /**
      * @brief setFPS If we know the FPS, we spare some IDisturbed class to have a timer to
@@ -169,10 +169,13 @@ namespace dani
 
     T get() const override
     {
-      if (!Parent::m_paused && m_curRadian < m_stopRadian)
+      if (!Parent::m_paused )
       {
         m_curRadian += m_incRadian;
-        m_curRadian = Parent::getPhaseNormalized(m_curRadian);
+        if(m_curRadian > m_stopRadian)
+          m_curRadian = m_stopRadian;
+        else
+          m_curRadian = Parent::getPhaseNormalized(m_curRadian);
       }
       return Parent::getMapToRange((sin(m_curRadian) + 1) /2);
     }

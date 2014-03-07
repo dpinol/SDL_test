@@ -49,6 +49,7 @@ MovingObject::~MovingObject()
 void MovingObject::setRandomSize(float amplitudeRatio)
 {
   m_scale.setMean(1, amplitudeRatio);
+  m_scale.setPaused();
 }
 
 void MovingObject::setAlphaOscillation(float minAlphaRatio)
@@ -56,6 +57,7 @@ void MovingObject::setAlphaOscillation(float minAlphaRatio)
   //m_minAlphaPerc = minAlphaRatio;
   //m_alphaDegree = 0;
   m_alpha.setRange( 255 *  minAlphaRatio, 255);
+  m_alpha.setPaused();
 }
 
 void MovingObject::setTrajectory(Trajectory &trajectory)

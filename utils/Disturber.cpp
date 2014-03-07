@@ -38,9 +38,9 @@ namespace dani
 
   float IDisturbed::getPhaseNormalized(float phase)
   {
-    while(phase > M_PI)
+    while(phase > (float) M_PI)
       phase -= 2 * M_PI;
-    while(phase < -M_PI)
+    while(phase < (float) -M_PI)
       phase += 2 * M_PI;
     return phase;
   }

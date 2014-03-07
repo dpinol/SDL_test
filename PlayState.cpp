@@ -96,7 +96,6 @@ void PlayState::render()
 {
   if(m_loadingComplete)
   {
-    GameState::render();
 
     /*   if(pLevel != 0)
     {
@@ -105,6 +104,7 @@ void PlayState::render()
 */
     TheTextureManager::Instance()->draw("background", 0,0,
                                         755, 600);
+    GameState::render();
 
     for(int i = 0; i < TheGame::Instance()->getPlayerLives(); i++)
     {
@@ -113,7 +113,7 @@ void PlayState::render()
   }
 
   //m_jewelBoard->draw();
-  GameState::render();
+ // GameState::render();
 }
 
 bool PlayState::onEnterImpl()
