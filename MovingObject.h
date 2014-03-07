@@ -29,6 +29,7 @@ public:
    * @param minAlphaPerc if 50, it will oscille betwen 128 and 255
    */
   void setAlphaOscillation(float minAlphaPerc = 0.0);
+  void setSizeOscillation(float maxOscillationPerc = 0.0);
 
 
   typedef std::vector<Vector2D> Trajectory;
@@ -72,6 +73,7 @@ public:
    * @brief m_deltaGrowing true when m_deltaIndex growing, false when decreasing
    */
   bool m_deltaGrowing;
+  float m_maxOscilllationPerc;
 };
 
 #endif // MOVINGOBJECT_H

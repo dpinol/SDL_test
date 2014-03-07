@@ -45,9 +45,11 @@ public:
      * @brief draw
      * @param id
      * @param pRenderer
+     * @param scale 1 for keeping source size
      * @param flip
      */
-  void draw(std::string const &id, int x, int y, int width, int height, SDL_Renderer* pRenderer = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
+  void draw(std::string const &id, int x, int y, int width, int height, SDL_Renderer* pRenderer = 0, double angle = 0, int alpha = 255,
+            double scale = 1.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
   /**
      * @brief drawFrame
      * @param id

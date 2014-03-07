@@ -21,6 +21,7 @@ static SDL_Renderer* getRenderer(SDL_Renderer* pRenderer)
     return TheGame::Instance()->getRenderer();
 }
 
+
 void TextureManager::load(std::string const &fileName, std::string const &id, SDL_Renderer* pRenderer)
 {
   pRenderer = getRenderer(pRenderer);
@@ -43,7 +44,8 @@ void TextureManager::load(std::string const &fileName, std::string const &id, SD
     throw std::runtime_error("Error loading " + fileName + ": " + SDL_GetError());
 }
 
-void TextureManager::draw(std::string const &id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
+void TextureManager::draw(std::string const &id, int x, int y, int width, int height, SDL_Renderer* pRenderer,
+                          double angle, int alpha, double scale, SDL_RendererFlip flip)
 {
   SDL_Rect srcRect;
   SDL_Rect destRect;
@@ -51,11 +53,14 @@ void TextureManager::draw(std::string const &id, int x, int y, int width, int he
   srcRect.x = 0;
   srcRect.y = 0;
   //@todo get size automatic when 0
-  srcRect.w = destRect.w = width;
-  srcRect.h = destRect.h = height;
+  srcRect.w = width;
+  destRect.w = width * scale;
+  srcRect.h = height;
+  destRect.h = height * scale;
   destRect.x = x;
   destRect.y = y;
 
+  SDL_SetTextureAlphaMod(m_textureMap[id], alpha);
   SDL_RenderCopyEx(getRenderer(pRenderer), m_textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }
 
@@ -75,7 +80,8 @@ void TextureManager::drawFrame(const std::string &id, int x, int y, int width, i
   SDL_RenderCopyEx(getRenderer(pRenderer), m_textureMap[id], &srcRect, &destRect, angle, 0, flip);
 }
 
-void TextureManager::drawTile(std::string const &id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer)
+void TextureManager::drawTile(std::string const &id, int margin, int spacing, int x, int y, int width, int height,
+                              int currentRow, int currentFrame, SDL_Renderer *pRenderer)
 {
   SDL_Rect srcRect;
   SDL_Rect destRect;
@@ -86,6 +92,7 @@ void TextureManager::drawTile(std::string const &id, int margin, int spacing, in
   destRect.x = x;
   destRect.y = y;
 
+  SDL_SetTextureAlphaMod(m_textureMap[id], 255);
   SDL_RenderCopyEx(getRenderer(pRenderer), m_textureMap[id], &srcRect, &destRect, 0, 0, SDL_FLIP_NONE);
 }
 

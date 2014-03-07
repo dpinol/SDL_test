@@ -52,6 +52,7 @@ public:
     };
     setTrajectory(trj);
     setAlphaOscillation(20);
+    setSizeOscillation(30);
   }
 };
 
