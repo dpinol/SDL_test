@@ -143,11 +143,6 @@ void JewelObject::kill()
   }
 }
 
-void JewelObject::doDyingAnimation()
-{
-  //@todo
-}
-
 
 void JewelObject::setFalling(bool falling)
 {

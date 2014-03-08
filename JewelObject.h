@@ -10,7 +10,7 @@
 #define JEWEL_OBJECT_H
 
 #include <SDL.h>
-#include "BoardObject.h"
+#include "GameObject.h"
 #include <utils/ValueEffect.h>
 #include "model/Jewel.h"
 #include "JewelMove.h"
@@ -19,7 +19,7 @@
 
 class JewelBoard;
 
-class JewelObject : public BoardObject
+class JewelObject : public GameObject
 {
 public:
   /**
@@ -47,7 +47,6 @@ public:
   void kill();
   void resurrect();
 
-  virtual void doDyingAnimation() override;
   bool isFalling() const;
   bool isFallDone() const;
   void setFalling(bool falling =true);

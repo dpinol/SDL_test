@@ -13,7 +13,7 @@
 #include "model/BoardPos.h"
 #include <model/JewelStrike.h>
 #include "GameObjectFactory.h"
-#include "BoardObject.h"
+#include "GameObject.h"
 #include "JewelDrag.h"
 #include "model/Board.h"
 #include <functional>

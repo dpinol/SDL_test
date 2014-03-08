@@ -26,7 +26,7 @@ public:
   virtual void clean() {}
   virtual void collision() {}
 
-  virtual std::string type() { return "Jewel"; }
+  virtual std::string type() { return "BoardObject"; }
 
 
 
