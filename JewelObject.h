@@ -55,8 +55,11 @@ public:
 
   dani::Effect &swapWith(BoardPos relativeShift, bool andReturn);
 
-  static constexpr short WIDTH = 35;
-  static constexpr short HEIGHT = 35;
+  static constexpr short MARGIN = 2;
+  static constexpr short SPRITE_SIZE = 35;
+  //WIDTH & HEIGHT include margin
+  static constexpr short WIDTH = SPRITE_SIZE + MARGIN * 2;
+  static constexpr short HEIGHT = WIDTH;
   //in how many steps will it fall a single row
   static const short FALLING_STEPS;
 

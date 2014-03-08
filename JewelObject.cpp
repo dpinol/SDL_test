@@ -34,8 +34,8 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_currentFrame = -1; //jewel.getColor();
 
   // get drawing variables
-  m_width = WIDTH;
-  m_height = HEIGHT;
+  m_width = SPRITE_SIZE;
+  m_height = SPRITE_SIZE;
   m_textureID = "jewels";
 }
 
@@ -83,8 +83,8 @@ void JewelObject::draw()
   //  alpha = 255.0 * (m_dyingTime - m_dyingCounter) / m_dyingTime;
   if(getModel().getColor() != Jewel::NO_COLOR) // && !isDead())
   {
-    Uint32 x = (Uint32)m_pixel.getX();
-    Uint32 y = (Uint32)m_pixel.getY();
+    Uint32 x = (Uint32)m_pixel.getX() + MARGIN;
+    Uint32 y = (Uint32)m_pixel.getY() + MARGIN;
     if (!m_swapper.isDone())
     {
       Vector2D swapper = m_swapper.get();

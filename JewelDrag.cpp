@@ -32,7 +32,6 @@ bool JewelDrag::isSwapping() const
 void JewelDrag::drag()
 {
   Vector2D const &pMousePos = TheInputHandler::Instance()->getMousePosition();
-  LOG_INFO("fromPixel valis?" << m_fromPixel.isValid());
 
   if (isSwapping())
     return;

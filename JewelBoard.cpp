@@ -22,7 +22,7 @@
 
 JewelBoard::JewelBoard() : BoardObject(),
   m_model(*this),
-  m_offset(350, 100),
+  m_offset(342, 86),
   m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1)) ),
   m_drag(*this),
   m_strike(m_model, this),
