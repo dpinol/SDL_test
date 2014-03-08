@@ -6,15 +6,15 @@
 //  Copyright (c) 2013 shaun mitchell. All rights reserved.
 //
 
-#include "BoardObject.h"
+#include "PersistedObject.h"
 #include "TextureManager.h"
 #include "Game.h"
 
-BoardObject::BoardObject() :    GameObject()
+PersistedObject::PersistedObject() :    GameObject()
 {
 }
 
-void BoardObject::load(std::unique_ptr<LoaderParams> const &pParams)
+void PersistedObject::load(std::unique_ptr<LoaderParams> const &pParams)
 {
     // get position
     m_pixel = Vector2D(pParams->getX(),pParams->getY());
@@ -27,14 +27,14 @@ void BoardObject::load(std::unique_ptr<LoaderParams> const &pParams)
 }
 
 // draw the object to the screen
-void BoardObject::draw()
+void PersistedObject::draw()
 {
     TextureManager::Instance()->drawFrame(m_textureID, (Uint32)m_pixel.getX(), (Uint32)m_pixel.getY(),
                                           m_width, m_height, m_currentRow, m_currentFrame, 0, m_angle, m_alpha);
 }
 
 // apply velocity to current position
-void BoardObject::update()
+void PersistedObject::update()
 {
     m_pixel += m_velocity;
     m_currentFrame = int(((SDL_GetTicks() / (1000 / 3)) % m_numFrames));
@@ -42,7 +42,7 @@ void BoardObject::update()
       doDyingAnimation();
 }
 
-void BoardObject::doDyingAnimation()
+void PersistedObject::doDyingAnimation()
 {
     m_currentFrame = int(((SDL_GetTicks() / (1000/ 10)) % m_numFrames));
 

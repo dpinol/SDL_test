@@ -9,20 +9,20 @@
 #include "MenuButton.h"
 #include "InputHandler.h"
 
-MenuButton::MenuButton() : BoardObject(), m_callback(0), m_bReleased(true)
+MenuButton::MenuButton() : PersistedObject(), m_callback(0), m_bReleased(true)
 {
 }
 
 void MenuButton::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-    BoardObject::load(std::move(pParams));
+    PersistedObject::load(std::move(pParams));
     m_callbackID = pParams->getCallbackID();
     m_currentFrame = MOUSE_OUT;
 }
 
 void MenuButton::draw()
 {
-    BoardObject::draw();
+    PersistedObject::draw();
 }
 
 void MenuButton::update()
@@ -58,5 +58,5 @@ void MenuButton::update()
 
 void MenuButton::clean()
 {
-    BoardObject::clean();
+    PersistedObject::clean();
 }

@@ -10,20 +10,20 @@
 
 using namespace std;
 
-AnimatedGraphic::AnimatedGraphic() : BoardObject()
+AnimatedGraphic::AnimatedGraphic() : PersistedObject()
 {
     
 }
 
 void AnimatedGraphic::load(std::unique_ptr<LoaderParams> const &pParams)
 {
-    BoardObject::load(pParams);
+    PersistedObject::load(pParams);
     m_animSpeed = pParams->getAnimSpeed();
 }
 
 void AnimatedGraphic::draw()
 {
-    BoardObject::draw();
+    PersistedObject::draw();
 }
 
 void AnimatedGraphic::update()
@@ -33,5 +33,5 @@ void AnimatedGraphic::update()
 
 void AnimatedGraphic::clean()
 {
-    BoardObject::clean();
+    PersistedObject::clean();
 }

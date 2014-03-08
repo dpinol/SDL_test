@@ -13,10 +13,10 @@
 #include "GameObject.h"
 
 class JewelBoard;
-class BoardObject : public GameObject
+class PersistedObject : public GameObject
 {
 public:
-  virtual ~BoardObject() {}
+  virtual ~PersistedObject() {}
 
   virtual void load(std::unique_ptr<LoaderParams> const &pParams);
 
@@ -26,12 +26,12 @@ public:
   virtual void clean() {}
   virtual void collision() {}
 
-  virtual std::string type() { return "BoardObject"; }
+  virtual std::string type() { return "PersistedObject"; }
 
 
 
 protected:
-  BoardObject();
+  PersistedObject();
 
   virtual void doDyingAnimation();
 

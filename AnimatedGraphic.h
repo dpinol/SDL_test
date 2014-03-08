@@ -11,9 +11,9 @@
 
 #include <iostream>
 #include "GameObjectFactory.h"
-#include "BoardObject.h"
+#include "PersistedObject.h"
 
-class AnimatedGraphic : public BoardObject
+class AnimatedGraphic : public PersistedObject
 {
 public:
     
