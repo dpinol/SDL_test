@@ -7,9 +7,9 @@
 //
 
 #include "JewelObject.h"
-
 #include "TextureManager.h"
 #include "Game.h"
+#include <utils/ValueEffect.h>
 
 const short JewelObject::FALLING_STEPS = 20;
 
@@ -17,6 +17,9 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
   m_fallingStep(0)
 {
+  m_effects->addChild(m_swapper);
+  m_effects->addChild(m_dier);
+
   m_swapper.setPeriod(3000);
   m_swapper.setPaused(true);
   m_dier.setPaused(true);
@@ -40,7 +43,7 @@ Jewel& JewelObject::getModel()
   return *m_model;
 }
 
-void JewelObject::swapWith(BoardPos relativeShift, bool andReturn)
+dani::Effect &JewelObject::swapWith(BoardPos relativeShift, bool andReturn)
 {
   m_swapper.setPaused(false);
   Vector2D vShift(relativeShift.m_col * WIDTH, relativeShift.m_row * HEIGHT);
@@ -54,6 +57,7 @@ void JewelObject::swapWith(BoardPos relativeShift, bool andReturn)
   {
     m_swapper.setStopPhase(M_PI / 2);
   }
+  return m_swapper;
 }
 
 
@@ -96,6 +100,7 @@ void JewelObject::draw()
 // apply velocity to current position
 void JewelObject::update()
 {
+  m_effects->update();
   if (isDying())
   {
     m_dyingCounter++;

@@ -9,10 +9,13 @@
 #include "JewelObject.h"
 #include "JewelBoard.h"
 #include <utils/log.h>
+#include <utils/Effect.h>
 #include "InputHandler.h"
 
 JewelDrag::JewelDrag(JewelBoard &board)
-  :m_board(board)
+  :m_board(board),
+    m_modelSwap(board.getModel()),
+    m_swapEffect(NULL)
 {
 }
 
@@ -42,13 +45,13 @@ void JewelDrag::drag()
     BoardPos shiftPos;
     int RATIO = 3;
     if (shift.getX() > JewelObject::WIDTH / RATIO)
-        shiftPos = BoardPos(1,0);
+      shiftPos = BoardPos(1,0);
     else if (shift.getX() < -JewelObject::WIDTH / RATIO)
-        shiftPos = BoardPos(-1,0);
+      shiftPos = BoardPos(-1,0);
     else if (shift.getY() > JewelObject::HEIGHT / RATIO)
-        shiftPos = BoardPos(0, 1);
+      shiftPos = BoardPos(0, 1);
     else if (shift.getY() < -JewelObject::HEIGHT / RATIO)
-        shiftPos = BoardPos(0, -1);
+      shiftPos = BoardPos(0, -1);
     else
     {
       LOG_DEBUG("shift too small: " << shift);
@@ -59,9 +62,16 @@ void JewelDrag::drag()
     bool returnBack;
     if (m_toPos.isValid())
     {
-      returnBack = !m_board.swap(m_fromPos, m_toPos);
+      m_modelSwap.setPositions(m_fromPos, m_toPos);
+      returnBack = m_modelSwap.isValid();
+
       m_board.getJewel(m_fromPos).swapWith(shiftPos, returnBack);
-      m_board.getJewel(m_toPos).swapWith(-shiftPos, returnBack);
+      m_swapEffect = &m_board.getJewel(m_toPos).swapWith(-shiftPos, returnBack);
+      m_swapEffect->setNext([&]()
+      {
+        m_modelSwap.run();
+        m_swapEffect->setNext(NULL);
+      });
     }
     else
       LOG_DEBUG("to_pos not valid: " << m_toPos);

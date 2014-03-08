@@ -89,18 +89,13 @@ namespace dani
     typedef RangeEffect<T> Parent;
   public:
 
-    void restart() override
-    {
-    }
-
     constexpr bool isDone() const override
     {
       return false;
     }
 
-    void update() override
+    void updateImpl() override
     {
-      if (!Parent::m_paused)
         Parent::m_value = Parent::getMapToRange(rand() / (float) RAND_MAX);
     }
   };
@@ -140,14 +135,14 @@ namespace dani
 
     constexpr bool isDone() const override
     {
-      return m_curRadian > m_stopRadian;
+      return m_curRadian >= m_stopRadian;
     }
 
-    void restart()
+/*    void restart()
     {
       m_curRadian = m_startRadian;
     }
-
+*/
 
     /**
      * @brief setStartPhase
@@ -177,10 +172,8 @@ namespace dani
       return m_curRadian;
     }
 
-    void update() override
+    void updateImpl() override
     {
-      if (Parent::m_paused )
-        return;
 
       m_curRadian += m_incRadian;
       if(isDone())

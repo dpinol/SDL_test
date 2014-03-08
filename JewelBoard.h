@@ -37,16 +37,8 @@ public:
     //BoardCallback
     void kill(BoardPos pos) override;
     bool isAlive(BoardPos pos) const override;
+    //
 
-
-    /**
-     * @brief swap swaps jewels at specified positions
-     * but only if final position achieves a strike
-     * @param pos1
-     * @param pos2
-     * @return whether they could be swap
-     */
-    bool swap(BoardPos const pos1, BoardPos const pos2);
     /**
      * @brief getJewel
      * @param row 0 to SIZE
@@ -85,6 +77,9 @@ public:
      */
     BoardPos getJewelAt(const Vector2D &pixel) const;
     Vector2D getJewelPixel(BoardPos pos) const;
+
+    Board &getModel();
+    Board const &getModel() const;
 
 private:
     /**

@@ -10,8 +10,13 @@
 
 #include <utils/Vector2D.h>
 #include <model/BoardPos.h>
+#include <model/JewelSwap.h>
+
 
 class JewelBoard;
+namespace dani {
+  class Effect;
+}
 
 /**
  * @brief The JewelDrag class mimicks Candy Crush swipe.
@@ -35,6 +40,8 @@ private:
   /** redundant wrt m_fromPixel to avoid recalculation*/
   BoardPos m_fromPos;
   BoardPos m_toPos;
+  JewelSwap m_modelSwap;
+  dani::Effect *m_swapEffect;
 //  BoardPos m_selected;
 
 };

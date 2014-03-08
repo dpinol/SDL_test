@@ -53,7 +53,7 @@ public:
   void setFalling(bool falling =true);
   void fallStep();
 
-  void swapWith(BoardPos relativeShift, bool andReturn);
+  dani::Effect &swapWith(BoardPos relativeShift, bool andReturn);
 
   static constexpr short WIDTH = 35;
   static constexpr short HEIGHT = 35;

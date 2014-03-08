@@ -76,6 +76,16 @@ inline static void assertBoardPos(BoardPos const pos)
 }
 #endif
 
+Board const &JewelBoard::getModel() const
+{
+  return m_model;
+}
+
+Board &JewelBoard::getModel()
+{
+  return m_model;
+}
+
 JewelObject& JewelBoard::getJewel(BoardPos const pos)
 {
   assertBoardPos(pos);
@@ -116,13 +126,22 @@ BoardPos JewelBoard::getJewelAt(Vector2D const &v) const
                   (v.getY() - m_offset.getY()) / JewelObject::HEIGHT);
 }
 
+/**
+ * @brief wa swaps jewels at specified positions
+ * but only if final position achieves a strike
+ * @param pos1
+ * @param pos2
+ * @return whether they could be swap
+
+bool swap(BoardPos const pos1, BoardPos const pos2);
+
 bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
 {
   JewelSwap sw(m_model);
   sw.setPositions(pos1, pos2);
   return sw.run();
 }
-
+*/
 void JewelBoard::pureSwap(BoardPos pos, BoardPos pos2)
 {
   /*getJewel(BoardPos(pos.m_col, pos.m_row + 1)) = jo;

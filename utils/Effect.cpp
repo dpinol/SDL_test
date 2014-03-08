@@ -15,11 +15,46 @@ namespace dani
 
   Effect::Effect(bool paused)
     :m_paused(paused),
+      m_isDone(false),
       m_slave(NULL),
-      m_next(NULL)
+      m_next(NULL),
+      m_callback(NULL)
   {
   }
+#if 0
+  /**
+   * @brief restart
+   * resets m_isDone and calls restartImpl
+   */
+  void restart();
 
+  void Effect::restart()
+  {
+    m_isDone = false;
+    restartImpl();
+  }
+#endif
+
+  void Effect::update()
+  {
+    if (isDone())
+    {
+      if (!m_isDone)
+      {
+        if (m_next)
+          m_next->setPaused(false);
+        if (m_callback)
+          m_callback();
+        m_isDone = true;
+      }
+    }
+    else
+    {
+      m_isDone = false;
+      if (!isPaused())
+        updateImpl();
+    }
+  }
 
   void Effect::setSlave(Effect *slaveEffect)
   {
@@ -29,6 +64,11 @@ namespace dani
   void Effect::setNext(Effect *nextEffect)
   {
     m_next = nextEffect;
+  }
+
+  void Effect::setNext(std::function<void (void)> callback)
+  {
+    m_callback = callback;
   }
 
   void Effect::setFPS(int FPS)
@@ -69,7 +109,7 @@ namespace dani
   }
 
   /******** Composite Effect****/
-  void CompositeEffect::update()
+  void CompositeEffect::updateImpl()
   {
     for(auto &effect: m_children)
     {
@@ -85,6 +125,11 @@ namespace dani
     }
   }
 
+  void CompositeEffect::clearChildren()
+  {
+    m_children.clear();
+  }
+
   void CompositeEffect::addChild(Effect &child)
   {
     m_children.push_back(&child);
@@ -97,12 +142,12 @@ namespace dani
     {return e->isDone();});
   }
 
-  void CompositeEffect::restart()
+/*  void CompositeEffect::restartImpl()
   {
     for(auto &effect: m_children)
     {
       effect->restart();
     }
   }
-
+*/
 }

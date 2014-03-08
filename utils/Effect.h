@@ -14,6 +14,9 @@
 #include <utility>
 #include <memory>
 #include <vector>
+#include <functional>
+
+
 
 namespace dani
 {
@@ -23,9 +26,13 @@ namespace dani
   public:
     Effect(bool paused = false);
 
+    /**
+     * @brief update calls isDone(). If done && !isPaused(), calls updateImpl()
+     * (in this way we spare a virtual call)
+     */
+    void update();
 
 
-    virtual void update() = 0;
     virtual void setPaused(bool paused = true);
     virtual bool isPaused() const;
     /**
@@ -34,13 +41,20 @@ namespace dani
      */
     virtual bool isDone() const = 0;
 
-    virtual void restart() = 0;
+
+
     /**
      * @brief setNext to sequence effects
      * @param nextEffect when this effect isDone(), nextEffect will be unpaused
      * nextEffect is automatically paused
      */
     void setNext(Effect *nextEffect);
+
+    /**
+     * @brief setNext sets function to be called after effect is done
+     * @param f
+     */
+    void setNext(std::function<void (void)> callback);
 
     /**
      * @brief setSlave a master u/pauses its slaved whe it itself un/pauses
@@ -56,6 +70,9 @@ namespace dani
      */
     static void setFPS(int FPS);
   protected:
+
+    virtual void updateImpl()  = 0;
+
     /**
      * @brief getPhaseNormalized normalizes to range [-PI,PI]
      * PI is also allowed because otherwise we could not express a whole loop
@@ -67,7 +84,10 @@ namespace dani
     static int getFPS();
     bool m_paused;
   private:
+    // to know whether we should call setNext
+    bool m_isDone;
     Effect *m_next, *m_slave;
+    std::function<void (void)> m_callback;
     static int m_FPS;
   }; //Effect
 
@@ -75,15 +95,18 @@ namespace dani
   {
   public:
     /**
+     * @brief clearChildren remove children
+     */
+    void clearChildren();
+    /**
      * @brief addChid
      * @param effect ownwership is not transferred
      */
     void addChild(Effect &effect);
-    virtual void update() override;
     virtual void setPaused(bool paused = true) override;
     virtual bool isDone() const override;
-    virtual void restart() override;
   private:
+    virtual void updateImpl() override;
     std::vector<Effect*> m_children;
   };
 }
