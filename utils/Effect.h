@@ -75,6 +75,7 @@ namespace dani
   {
     void addChid(std::unique_ptr<Effect>);
     virtual void update() override;
+    virtual void setPaused(bool paused = true) override;
   private:
     std::vector<std::unique_ptr<Effect>> m_children;
   };

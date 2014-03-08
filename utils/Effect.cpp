@@ -29,6 +29,7 @@ namespace dani
   {
     m_next = nextEffect;
   }
+
   void Effect::setFPS(int FPS)
   {
     m_FPS = FPS;
@@ -37,7 +38,10 @@ namespace dani
   void Effect::setPaused(bool paused)
   {
     m_paused = paused;
+    if (m_slave)
+      m_slave->setPaused(paused);
   }
+
 
   bool Effect::isPaused() const
   {
@@ -66,7 +70,18 @@ namespace dani
   /******** Composite Effect****/
   void CompositeEffect::update()
   {
+    for(auto &effect: m_children)
+    {
+      effect->update();
+    }
+  }
 
+  void CompositeEffect::setPaused(bool paused)
+  {
+    for(auto &effect: m_children)
+    {
+      effect->setPaused(paused);
+    }
   }
 
   void CompositeEffect::addChid(std::unique_ptr<Effect> child)
