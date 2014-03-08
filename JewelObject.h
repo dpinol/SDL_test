@@ -11,7 +11,7 @@
 
 #include <SDL.h>
 #include "BoardObject.h"
-#include <utils/Disturber.h>
+#include <utils/Effect.h>
 #include "model/Jewel.h"
 #include "JewelMove.h"
 #include <SDL_timer.h>
@@ -62,8 +62,8 @@ public:
 
 protected:
   //swap place with adjacent
-  dani::OscilleDisturbed<Vector2D> m_swapper;
-  dani::OscilleDisturbed<float> m_dier;
+  dani::OscilleEffect<Vector2D> m_swapper;
+  dani::OscilleEffect<float> m_dier;
 
   bool m_bfalling;
   //friend class JewelBoard;

@@ -11,7 +11,7 @@
 #include "GameObject.h"
 #include <vector>
 #include <utils/Vector2D.h>
-#include <utils/Disturber.h>
+#include <utils/Effect.h>
 #include <memory>
 
 class MovingObject : public GameObject
@@ -74,8 +74,8 @@ public:
   Vector2D m_stepSpeed;
   int m_totalTimeMs;
 
-  dani::RandomDisturbed<float> m_scale;
-  dani::OscilleDisturbed<float> m_alpha;
+  dani::RandomEffect<float> m_scale;
+  dani::OscilleEffect<float> m_alpha;
 };
 
 #endif // MOVINGOBJECT_H

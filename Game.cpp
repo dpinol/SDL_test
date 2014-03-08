@@ -14,7 +14,7 @@
 #include "SoundManager.h"
 #include "GameOverState.h"
 
-#include <utils/Disturber.h>
+#include <utils/Effect.h>
 #include <iostream>
 
 using namespace std;
@@ -49,7 +49,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     m_gameWidth = width;
     m_gameHeight = height;
     m_FPS = FPS;
-    dani::IDisturbed::setFPS(FPS);
+    dani::Effect::setFPS(FPS);
     
     if(fullscreen)
     {

@@ -148,7 +148,7 @@ void MovingObject::update()
   }
 //  float scale = 1 - (m_maxOscilllationPerc / 100.0) * ( -1 + 2* i / 10.0);
 
-  for(dani::IDisturber* dist: m_disturbers)
+  for(dani::Effect* dist: m_Effects)
   {
     dist->run();
   }*/
