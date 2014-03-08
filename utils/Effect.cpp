@@ -11,6 +11,24 @@
 
 namespace dani
 {
+
+  Effect::Effect(bool paused)
+    :m_paused(paused),
+      m_slave(NULL),
+      m_next(NULL)
+  {
+  }
+
+
+  void Effect::setSlave(Effect *slaveEffect)
+  {
+    m_slave = slaveEffect;
+  }
+
+  void Effect::setNext(Effect *nextEffect)
+  {
+    m_next = nextEffect;
+  }
   void Effect::setFPS(int FPS)
   {
     m_FPS = FPS;
@@ -45,5 +63,15 @@ namespace dani
     return phase;
   }
 
+  /******** Composite Effect****/
+  void CompositeEffect::update()
+  {
+
+  }
+
+  void CompositeEffect::addChid(std::unique_ptr<Effect> child)
+  {
+    m_children.push_back(std::move(child));
+  }
 
 }

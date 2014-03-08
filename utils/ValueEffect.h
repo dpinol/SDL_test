@@ -24,6 +24,7 @@ namespace dani
     {
       return m_value;
     }
+
     /* virtual void setPaused(bool paused = true)
     {
       m_value
@@ -86,6 +87,10 @@ namespace dani
     typedef RangeEffect<T> Parent;
   public:
 
+    constexpr bool isDone() const override
+    {
+      return false;
+    }
 
     void update() override
     {
@@ -125,6 +130,11 @@ namespace dani
       m_incRadian = 2.0 * M_PI / Effect::getFPS() / (periodMs / 1000.0);
     }
 
+    constexpr bool isDone() const override
+    {
+      return m_curRadian > m_stopRadian;
+    }
+
 
     /**
      * @brief setStartPhase
@@ -160,7 +170,7 @@ namespace dani
         return;
 
       m_curRadian += m_incRadian;
-      if(m_curRadian > m_stopRadian)
+      if(isDone())
         m_curRadian = m_stopRadian;
       else
         m_curRadian = Parent::getPhaseNormalized(m_curRadian);
