@@ -137,7 +137,7 @@ namespace dani
 
   bool CompositeEffect::isDone() const
   {
-    return !std::all_of(m_children.begin(), m_children.end(),
+    return std::all_of(m_children.begin(), m_children.end(),
                         [](Effect* e)
     {return e->isDone();});
   }
