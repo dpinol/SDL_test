@@ -9,10 +9,20 @@
 #define SCOREPANEL_H
 
 #include "GameObject.h"
-class ScorePanel
+
+class ScorePanel: public GameObject
 {
 public:
   ScorePanel();
+
+  void draw() override;
+
+  // do update stuff
+  virtual void update();
+
+  // get the type of the object
+  std::string type() override { return "scorePanel";}
+
 };
 
 #endif // SCOREPANEL_H

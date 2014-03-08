@@ -23,7 +23,7 @@
 JewelBoard::JewelBoard():
   m_model(*this),
   m_offset(342, 86),
-  m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1)) ),
+  m_size(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1) ),
   m_drag(*this),
   m_strike(m_model, this),
   m_jewelsFalling(true)
@@ -120,7 +120,7 @@ Vector2D JewelBoard::getJewelPixel(BoardPos pos) const
 
 BoardPos JewelBoard::getJewelAt(Vector2D const &v) const
 {
-  if (!v.isInside(m_offset, m_bottomDown))
+  if (!v.isInside(m_offset, m_offset + m_size))
     return BoardPos();
   return BoardPos((v.getX() - m_offset.getX()) / JewelObject::WIDTH,
                   (v.getY() - m_offset.getY()) / JewelObject::HEIGHT);

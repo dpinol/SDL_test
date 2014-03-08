@@ -101,7 +101,7 @@ private:
      * @brief _offset where board is painted
      */
     Vector2D const m_offset;
-    Vector2D const m_bottomDown;
+    Vector2D const m_size;
     JewelDrag m_drag;
     JewelStrike m_strike;
     bool m_jewelsFalling;

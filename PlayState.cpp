@@ -15,6 +15,7 @@
 #include "TextureManager.h"
 #include "JewelBoard.h"
 #include "MovingObject.h"
+#include "ScorePanel.h"
 
 const std::string PlayState::s_playID = "PLAY";
 
@@ -58,8 +59,9 @@ public:
 
 PlayState::PlayState()
 {
-  m_gameObjects.push_back(new JewelBoard());
-  m_gameObjects.push_back(new TNT());
+  m_gameObjects.push_back(new JewelBoard);
+  m_gameObjects.push_back(new TNT);
+  m_gameObjects.push_back(new ScorePanel);
 }
 
 
