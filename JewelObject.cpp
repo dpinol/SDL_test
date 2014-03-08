@@ -17,6 +17,7 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
   m_fallingStep(0)
 {
+  m_swapper.setVerbose(true);
   m_effects->addChild(m_swapper);
   m_effects->addChild(m_dier);
 
@@ -84,7 +85,7 @@ void JewelObject::draw()
   {
     Uint32 x = (Uint32)m_pixel.getX();
     Uint32 y = (Uint32)m_pixel.getY();
-    if (!m_swapper.isPaused())
+    if (!m_swapper.isDone())
     {
       Vector2D swapper = m_swapper.get();
       x += swapper.getX();

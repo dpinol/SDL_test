@@ -9,6 +9,8 @@
 #define ValueEffect_H
 
 #include "Effect.h"
+#include <utils/utils.h>
+
 #include <math.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -35,6 +37,10 @@ namespace dani
       m_value =
     }*/
 
+    std::string toString() const override
+    {
+      return dani::toString(m_value);
+    }
   protected:
     T m_value;
   };

@@ -7,6 +7,7 @@
 
 #include "Effect.h"
 #include <utils/utils.h>
+#include <utils/log.h>
 #include <stdexcept>
 #include <numeric>
 
@@ -18,7 +19,8 @@ namespace dani
       m_isDone(false),
       m_slave(NULL),
       m_next(NULL),
-      m_callback(NULL)
+      m_callback(NULL),
+      m_verbose(false)
   {
   }
 #if 0
@@ -52,8 +54,17 @@ namespace dani
     {
       m_isDone = false;
       if (!isPaused())
+      {
         updateImpl();
+        if (DANI_UNLIKELY(m_verbose))
+          LOG_DEBUG(toString());
+      }
     }
+  }
+
+  void Effect::setVerbose(bool verbose)
+  {
+    m_verbose = verbose;
   }
 
   void Effect::setSlave(Effect *slaveEffect)
@@ -142,6 +153,15 @@ namespace dani
     {return e->isDone();});
   }
 
+  std::string CompositeEffect::toString() const
+  {
+    std::string ret;
+    for(Effect* e: m_children)
+    {
+      ret += e->toString() + "; ";
+    }
+    return ret;
+  }
 /*  void CompositeEffect::restartImpl()
   {
     for(auto &effect: m_children)

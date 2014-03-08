@@ -15,6 +15,7 @@
 #include <memory>
 #include <vector>
 #include <functional>
+#include <iosfwd>
 
 
 
@@ -32,7 +33,7 @@ namespace dani
      */
     void update();
 
-
+    void setVerbose(bool verbose = true);
     virtual void setPaused(bool paused = true);
     virtual bool isPaused() const;
     /**
@@ -69,6 +70,8 @@ namespace dani
      * @param FPS how many time per s will the Effect getter be called
      */
     static void setFPS(int FPS);
+
+    virtual std::string toString() const = 0;
   protected:
 
     virtual void updateImpl()  = 0;
@@ -89,6 +92,7 @@ namespace dani
     Effect *m_next, *m_slave;
     std::function<void (void)> m_callback;
     static int m_FPS;
+    bool m_verbose;
   }; //Effect
 
   class CompositeEffect: public Effect
@@ -105,6 +109,8 @@ namespace dani
     void addChild(Effect &effect);
     virtual void setPaused(bool paused = true) override;
     virtual bool isDone() const override;
+    std::string toString() const;
+
   private:
     virtual void updateImpl() override;
     std::vector<Effect*> m_children;

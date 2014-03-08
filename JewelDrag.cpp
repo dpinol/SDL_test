@@ -24,10 +24,18 @@ void JewelDrag::update()
 
 }
 
+bool JewelDrag::isSwapping() const
+{
+  return m_toPos.isValid();
+}
+
 void JewelDrag::drag()
 {
   Vector2D const &pMousePos = TheInputHandler::Instance()->getMousePosition();
+  LOG_INFO("fromPixel valis?" << m_fromPixel.isValid());
 
+  if (isSwapping())
+    return;
   if (!m_fromPixel.isValid())
   {
     //drag start
@@ -59,19 +67,21 @@ void JewelDrag::drag()
     }
     LOG_DEBUG("shift: " << shift);
     m_toPos = m_fromPos + shiftPos;
-    bool returnBack;
     if (m_toPos.isValid())
     {
       m_modelSwap.setPositions(m_fromPos, m_toPos);
-      returnBack = m_modelSwap.isValid();
-
-      m_board.getJewel(m_fromPos).swapWith(shiftPos, returnBack);
-      m_swapEffect = &m_board.getJewel(m_toPos).swapWith(-shiftPos, returnBack);
-      m_swapEffect->setNext([&]()
+      bool valid = m_modelSwap.isValid();
+      LOG_INFO("Going to swap " << m_fromPos << " to " << m_toPos);
+      m_board.getJewel(m_fromPos).swapWith(shiftPos, !valid);
+      m_swapEffect = &m_board.getJewel(m_toPos).swapWith(-shiftPos, !valid);
+      if (valid)
       {
-        m_modelSwap.run();
-        m_swapEffect->setNext(NULL);
-      });
+        m_swapEffect->setNext([&]()
+        {
+          m_modelSwap.run();
+          m_swapEffect->setNext(NULL);
+        });
+      }
     }
     else
       LOG_DEBUG("to_pos not valid: " << m_toPos);
@@ -80,8 +90,13 @@ void JewelDrag::drag()
 
 void JewelDrag::drop()
 {
-  m_fromPixel.clear();
-  m_fromPos.clear();
+  if (m_fromPixel.isValid())
+  {
+    LOG_INFO("fromPixel clear");
+     m_fromPixel.clear();
+    m_fromPos.clear();
+    m_toPos.clear();
+  }
   /*
   Vector2D const &pMousePos = TheInputHandler::Instance()->getMousePosition();
   if (m_dragging.isValid() && !TheInputHandler::Instance()->getMouseButtonState(LEFT))

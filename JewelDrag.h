@@ -33,6 +33,11 @@ public:
   void drag();
   /** mouse button up*/
   void drop();
+  /**
+   * @brief isSwapping
+   * @return
+   */
+  bool isSwapping() const;
 private:
   JewelBoard &m_board;
   /** Invalid is not dragging*/
