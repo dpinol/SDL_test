@@ -11,7 +11,7 @@
 #include "GameObject.h"
 #include <vector>
 #include <utils/Vector2D.h>
-#include <utils/Effect.h>
+#include <utils/ValueEffect.h>
 #include <memory>
 
 class MovingObject : public GameObject

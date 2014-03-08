@@ -9,15 +9,21 @@
 #ifndef SDL_Game_Programming_Book_IGameState_h
 #define SDL_Game_Programming_Book_IGameState_h
 
+
 #include <string>
 #include <vector>
+#include <memory>
+
+namespace dani
+{
+  class CompositeEffect;
+}
 
 class GameObject;
 class GameState
 {
 public:
-    
-    virtual ~GameState() {}
+    virtual ~GameState();
     
     virtual void update();
     virtual void render();
@@ -25,23 +31,20 @@ public:
     virtual bool onEnter();
     virtual bool onExit() = 0;
     
-    virtual void resume() {}
+    virtual void resume();
     
     virtual std::string getStateID() const = 0;
     
 protected:
     virtual bool onEnterImpl() = 0;
 
-    GameState() : m_loadingComplete(false), m_exiting(false)
-    {
-        
-    }
-    
+    GameState();
+    //@todo put everything on pimpl
     bool m_loadingComplete;
     bool m_exiting;
     std::vector<GameObject*> m_gameObjects;
-
     std::vector<std::string> m_textureIDList;
+    std::unique_ptr<dani::CompositeEffect> m_effects;
 };
 
 #endif

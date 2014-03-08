@@ -11,7 +11,7 @@
 
 #include <SDL.h>
 #include "BoardObject.h"
-#include <utils/Effect.h>
+#include <utils/ValueEffect.h>
 #include "model/Jewel.h"
 #include "JewelMove.h"
 #include <SDL_timer.h>

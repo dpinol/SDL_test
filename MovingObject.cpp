@@ -10,6 +10,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 #include <utils/utils.h>
+#include <utils/Effect.h>
 
 #include <numeric>
 #include <SDL2/SDL_render.h>
@@ -24,6 +25,8 @@ MovingObject::MovingObject(const std::string &imgFilename, int totalTimeMs, bool
     m_angle(0),
     m_trajectoryIndex(0)
 {
+  m_effects->addChild(m_alpha);
+  m_effects->addChild(m_scale);
   TheTextureManager::Instance()->load(imgFilename, "spark");
   int access;
   Uint32 format;
@@ -111,6 +114,7 @@ void MovingObject::update()
 {
   if (m_done)
     return;
+  m_effects->update();
   float dist = (m_pixel - m_trajectory[m_trajectoryIndex]).length();
   if (dist < 2)
   {

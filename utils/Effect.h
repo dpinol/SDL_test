@@ -73,11 +73,18 @@ namespace dani
 
   class CompositeEffect: public Effect
   {
-    void addChid(std::unique_ptr<Effect>);
+  public:
+    /**
+     * @brief addChid
+     * @param effect ownwership is not transferred
+     */
+    void addChild(Effect &effect);
     virtual void update() override;
     virtual void setPaused(bool paused = true) override;
+    virtual bool isDone() const override;
+    virtual void restart() override;
   private:
-    std::vector<std::unique_ptr<Effect>> m_children;
+    std::vector<Effect*> m_children;
   };
 }
 #endif // Effect_H

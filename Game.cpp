@@ -14,7 +14,7 @@
 #include "SoundManager.h"
 #include "GameOverState.h"
 
-#include <utils/Effect.h>
+#include <utils/ValueEffect.h>
 #include <iostream>
 
 using namespace std;

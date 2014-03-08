@@ -20,6 +20,7 @@ namespace dani
   template <class T>
   class ValueEffect : public Effect
   {
+  public:
     inline T const &get() const
     {
       return m_value;
@@ -67,6 +68,7 @@ namespace dani
       m_maxDisturbance = maxDisturbance;
     }
 
+
     void setRange(T const &min, T const &max)
     {
       m_mean = (min + max) / 2.0;
@@ -78,7 +80,7 @@ namespace dani
     T m_maxDisturbance;
     //cache so that we can return by ref
     //T m_lastValue;
-  };
+  }; //RangeEffect
 
 
   template <class T>
@@ -86,6 +88,10 @@ namespace dani
   {
     typedef RangeEffect<T> Parent;
   public:
+
+    void restart() override
+    {
+    }
 
     constexpr bool isDone() const override
     {
@@ -107,6 +113,7 @@ namespace dani
   {
     typedef RangeEffect<T> Parent;
     //int m_periodMs;
+    float m_startRadian;
     mutable float m_curRadian;
     //larger than 10 for non stop
     float m_stopRadian;
@@ -115,6 +122,7 @@ namespace dani
     OscilleEffect()
     {
       setPeriod();
+      m_startRadian = 0;
       m_curRadian = 0;
       m_stopRadian = 42;
     }
@@ -133,6 +141,11 @@ namespace dani
     constexpr bool isDone() const override
     {
       return m_curRadian > m_stopRadian;
+    }
+
+    void restart()
+    {
+      m_curRadian = m_startRadian;
     }
 
 

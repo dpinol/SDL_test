@@ -8,6 +8,7 @@
 #include "Effect.h"
 #include <utils/utils.h>
 #include <stdexcept>
+#include <numeric>
 
 namespace dani
 {
@@ -84,9 +85,24 @@ namespace dani
     }
   }
 
-  void CompositeEffect::addChid(std::unique_ptr<Effect> child)
+  void CompositeEffect::addChild(Effect &child)
   {
-    m_children.push_back(std::move(child));
+    m_children.push_back(&child);
+  }
+
+  bool CompositeEffect::isDone() const
+  {
+    return !std::all_of(m_children.begin(), m_children.end(),
+                        [](Effect* e)
+    {return e->isDone();});
+  }
+
+  void CompositeEffect::restart()
+  {
+    for(auto &effect: m_children)
+    {
+      effect->restart();
+    }
   }
 
 }

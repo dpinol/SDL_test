@@ -17,13 +17,17 @@
 #include <memory>
 #include <vector>
 
+namespace dani
+{
+  class CompositeEffect;
+}
 
 class GameObject
 {
 public:
     
     // base class needs virtual destructor
-    virtual ~GameObject() {}
+    virtual ~GameObject();
     
     // load from file - int x, int y, int width, int height, std::string textureID, int numFrames, int callbackID = 0, int animSpeed = 0
     virtual void load(std::unique_ptr<LoaderParams> const &pParams) = 0;
@@ -31,8 +35,8 @@ public:
     // draw the object
     virtual void draw() = 0;
     
-    // do update stuf
-    virtual void update() = 0;
+    // do update stuff
+    virtual void update();
     
     // remove anything that needs to be deleted
     virtual void clean() = 0;
@@ -75,22 +79,7 @@ public:
 protected:
     
     // constructor with default initialisation list
-    GameObject() :  m_pixel(0,0),
-                    m_velocity(0,0),
-                    m_acceleration(0,0),
-                    m_width(0),
-                    m_height(0),
-                    m_currentRow(0),
-                    m_currentFrame(0),
-                    m_bUpdating(false),
-                    m_bDead(false),
-                    m_bDying(false),
-                    m_dyingTime(0),
-                    m_dyingCounter(0),
-                    m_angle(0),
-                    m_alpha(255)
-    {
-    }
+    GameObject() ;
 
     // movement variables
     Vector2D m_pixel;
@@ -120,6 +109,7 @@ protected:
     
     // blending
     int m_alpha;
+    std::unique_ptr<dani::CompositeEffect> m_effects;
     
 };
 

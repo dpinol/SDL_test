@@ -7,6 +7,25 @@
 
 #include "GameState.h"
 #include "GameObject.h"
+#include <utils/Effect.h>
+
+GameState::GameState()
+  : m_loadingComplete(false),
+    m_exiting(false),
+    m_effects(new dani::CompositeEffect)
+{
+
+}
+
+GameState::~GameState()
+{
+
+}
+
+void GameState::resume()
+{
+
+}
 
 bool GameState::onEnter()
 {
@@ -19,10 +38,10 @@ void GameState::render()
 {
   if(m_loadingComplete)
   {
-      for(int i = 0; i < m_gameObjects.size(); i++)
-      {
-          m_gameObjects[i]->draw();
-      }
+    for(GameObject * o: m_gameObjects)
+    {
+      o->draw();
+    }
   }
 }
 
@@ -30,10 +49,11 @@ void GameState::update()
 {
   if(m_loadingComplete)
   {
-      for(int i = 0; i < m_gameObjects.size(); i++)
-      {
-          m_gameObjects[i]->update();
-      }
+    m_effects->update();
+    for(GameObject * o: m_gameObjects)
+    {
+      o->update();
+    }
   }
 }
 

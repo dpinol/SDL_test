@@ -12,7 +12,8 @@ SOURCES += *.cpp \
     model/test/*.cpp \
     utils/init.cpp \
     MovingObject.cpp \
-    utils/Disturber.cpp
+    utils/Disturber.cpp \
+    GameObject.cpp
 
 
 OTHER_FILES += \
