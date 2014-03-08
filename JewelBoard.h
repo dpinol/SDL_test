@@ -21,18 +21,21 @@
 
 class JewelObject;
 struct SDL_MouseButtonEvent;
-class JewelBoard : public BoardObject, BoardCallback
+
+class JewelBoard : public GameObject, BoardCallback
 {
 public:
     
     virtual ~JewelBoard() {}
     JewelBoard();
     
-    virtual void draw();
-    virtual void update();
-    virtual void clean();
+    void draw() override;
+    void update() override;
+    void clean() override;
+    std::string type() override { return "JewelBoard";}
+
     
-    virtual void load(std::unique_ptr<LoaderParams> const &pParams);
+    void load(std::unique_ptr<LoaderParams> const &pParams) override;
 
     //BoardCallback
     void kill(BoardPos pos) override;

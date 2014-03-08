@@ -20,7 +20,7 @@
 
 #include <SDL_events.h>
 
-JewelBoard::JewelBoard() : BoardObject(),
+JewelBoard::JewelBoard():
   m_model(*this),
   m_offset(342, 86),
   m_bottomDown(m_offset + Vector2D(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1)) ),
@@ -225,5 +225,5 @@ void JewelBoard::clean()
     jewel.clean();
   });
 
-  BoardObject::clean();
+  GameObject::clean();
 }

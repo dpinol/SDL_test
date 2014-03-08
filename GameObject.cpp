@@ -34,3 +34,8 @@ void GameObject::update()
 {
   m_effects->update();
 }
+
+void GameObject::clean()
+{
+  m_effects->clearChildren();
+}

@@ -36,15 +36,6 @@ protected:
   virtual void doDyingAnimation();
 
 
-
-  // has the explosion sound played?
-  bool m_bPlayedDeathSound;
-
-  bool m_bFlipped;
-
-  Vector2D m_lastSafePos;
-
-  int m_jumpHeight;
 };
 
 #endif /* defined(__SDL_Game_Programming_Book__SDLGameObject__) */

@@ -13,7 +13,8 @@ SOURCES += *.cpp \
     utils/init.cpp \
     MovingObject.cpp \
     utils/Disturber.cpp \
-    GameObject.cpp
+    GameObject.cpp \
+    ScorePanel.cpp
 
 
 OTHER_FILES += \
@@ -30,5 +31,6 @@ HEADERS += \
     JewelDrag.h \
     utils/init.h \
     MovingObject.h \
-    utils/Disturber.h
+    utils/Disturber.h \
+    ScorePanel.h
 

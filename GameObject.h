@@ -39,7 +39,7 @@ public:
     virtual void update();
     
     // remove anything that needs to be deleted
-    virtual void clean() = 0;
+    virtual void clean();
     
     
     // get the type of the object

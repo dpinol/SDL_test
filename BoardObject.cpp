@@ -10,9 +10,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 
-BoardObject::BoardObject() :    GameObject(),
-                                    m_bPlayedDeathSound(false),
-                                    m_lastSafePos(0,0)
+BoardObject::BoardObject() :    GameObject()
 {
 }
 
