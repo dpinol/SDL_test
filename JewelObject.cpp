@@ -132,6 +132,7 @@ void JewelObject::resurrect()
 {
   m_bDying = false;
   m_bDead = false;
+  //@todo we should allow direct strike. fo
   getModel().setColor(random() % Jewel::NUM_COLORS);
 }
 

@@ -56,7 +56,7 @@ void Board::randomize()
     do
     {
       jewel.setColor(random() % Jewel::NUM_COLORS);
-    } while (strike.findMatch(pos, jewel.getColor()));
+    } while (strike.findMatch(pos, jewel.getColor()) > 0);
   }, true);
 }
 #ifdef NDEBUG

@@ -30,7 +30,7 @@ public:
     virtual ~GameObject();
     
     // load from file - int x, int y, int width, int height, std::string textureID, int numFrames, int callbackID = 0, int animSpeed = 0
-    virtual void load(std::unique_ptr<LoaderParams> const &pParams) {}
+    virtual void load(std::unique_ptr<LoaderParams> const &) {}
     
     // draw the object
     virtual void draw() = 0;

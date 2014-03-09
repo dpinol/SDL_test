@@ -200,6 +200,7 @@ void JewelBoard::update()
   m_model.update();
   m_jewelsFalling = false;
   bool boardChanged = false;
+  int totalStrikesLen = 0;
   forAllPos([&](BoardPos pos)
   {
     JewelObject &jo = getJewel(pos);
@@ -211,7 +212,7 @@ void JewelBoard::update()
     if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
     {
       m_jewelsFalling = true;
-      BoardPos const upperPos = BoardPos(pos.m_col, pos.m_row - 1);
+      BoardPos const upperPos = pos.getAbove();
       JewelObject &upper = getJewel(upperPos);
       if (!upper.isFalling())
       {
@@ -224,23 +225,34 @@ void JewelBoard::update()
           upper.getPixel() = getJewelPixel(upperPos);
         }
       }
-
     }
     jo.update();
   });
 
   bool scored = false;
-  if (boardChanged)
+  //@todo call findMatch on falling jewels which are isStable
+  //(and all jewels in strike also isStable). And then m_jewelsFalling can be removed
+  if (/*boardChanged &&*/ !m_jewelsFalling)
   {    
     forAllPos([&](BoardPos pos)
     {
       JewelObject &jo = getJewel(pos);
       if (!jo.isFalling())
-        scored = m_strike.findMatch(pos, getJewel(pos).getModel().getColor()) || scored;
+      {
+        int strikesLen;
+        strikesLen = m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
+        totalStrikesLen += strikesLen;
+        scoreAt(pos, strikesLen);
+      }
     }, false);
+    if (!m_jewelsFalling && totalStrikesLen == 0)
+      TheGame::Instance()->getMatch().nextTurn();
   }
-  if (!scored && !m_jewelsFalling)
-    TheGame::Instance()->getMatch().nextTurn();
+}
+
+void JewelBoard::scoreAt(BoardPos pos, int numJewels)
+{
+
 }
 
 void JewelBoard::clean()

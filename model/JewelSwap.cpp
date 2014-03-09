@@ -42,7 +42,7 @@ bool JewelSwap::isValid() const
   m_valid = false;
   for (int i = 0; i < 2; i++)
   {
-    if (strike.findMatch(m_positions[i], m_board.getJewel(m_positions[1 - i]).getColor(), m_positions[1 - i]))
+    if (strike.findMatch(m_positions[i], m_board.getJewel(m_positions[1 - i]).getColor(), m_positions[1 - i]) > 0)
         m_valid = true;
   }
   m_validated = true;

@@ -87,6 +87,13 @@ public:
 
 private:
     /**
+     * @brief scoreAt manages the scoring
+     * @param pos
+     * @param score
+     */
+    void scoreAt(BoardPos pos, int numJewels);
+
+    /**
      * Just swap the 2 pointers to the Jewels
      */
     void pureSwap(BoardPos pos, BoardPos pos2);
