@@ -37,9 +37,9 @@ public:
    * @param newColor
    * @param ignorePos in case of a swap, don't check the position color, as for sure it does
    * not match. If invalid, argument is not taken into account
-   * @return whether any strike is created
+   * @return the sum of the lengths of the strike scored
    */
-  bool findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ignorePos = BoardPos()) const;
+  int findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos ignorePos = BoardPos()) const;
 
 private:
   Board& m_board;
