@@ -32,7 +32,15 @@ void Board::setCallback(BoardCallback *callback)
 {
   m_callback = callback;
 }
+BoardCallback& Board::getCallback()
+{
+  return *m_callback;
+}
 
+const BoardCallback& Board::getCallback() const
+{
+  return *m_callback;
+}
 void Board::randomize()
 {
   JewelStrike strike(*this);
@@ -80,7 +88,7 @@ void Board::pureSwap(BoardPos pos, BoardPos pos2)
   getJewel(BoardPos(pos.m_col, pos.m_row)).resetFalling();*/
   std::swap( m_jewels[pos.m_row][pos.m_col], m_jewels[pos2.m_row][pos2.m_col]);
 }
-
+/*
 void Board::kill(BoardPos pos)
 {
   m_callback->kill(pos);
@@ -91,7 +99,7 @@ bool Board::isAlive(BoardPos pos) const
 {
   return m_callback->isAlive(pos);
 }
-
+*/
 void Board::update()
 {
 }

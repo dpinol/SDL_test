@@ -38,7 +38,7 @@ bool JewelSwap::isValid() const
 {
   if (m_validated)
     return m_valid;
-  JewelStrike strike(m_board, &m_board);
+  JewelStrike strike(m_board, &m_board.getCallback());
   m_valid = false;
   for (int i = 0; i < 2; i++)
   {

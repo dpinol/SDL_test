@@ -7,6 +7,7 @@
 
 #include "Match.h"
 #include "Board.h"
+#include <utils/log.h>
 
 class MatchImpl
 {
@@ -68,17 +69,20 @@ int Match::getScore() const
 void Match::addScore(int addedScore)
 {
   m_pimpl->m_score += addedScore;
+  //m_pimpl->m_board.getCallback().setScore(m_pimpl->m_score);
 }
 
 int Match::scoreStrike(int strikeLen)
 {
   int partial = m_pimpl->m_turnScore + strikeLen * 20;
+  LOG_INFO("scored " << partial << "points");
   m_pimpl->m_score += partial;
   return partial;
 }
 
 void Match::nextTurn()
 {
+  LOG_INFO("end of turn");
   m_pimpl->m_turnScore = 0;
 }
 

@@ -13,6 +13,9 @@
 
 class MatchImpl;
 
+/**
+ * @brief The Match class manages a match being played.
+ */
 class Match
 {
 public:

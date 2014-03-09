@@ -26,7 +26,7 @@ struct BoardCallback
   virtual bool isAlive(BoardPos pos) const = 0;
 };
 
-class Board : public BoardCallback
+class Board //: public BoardCallback
 {
 public:
   /**
@@ -37,7 +37,8 @@ public:
   virtual ~Board();
 
   void setCallback(BoardCallback *callback);
-
+  BoardCallback &getCallback();
+  BoardCallback const &getCallback() const;
   /**
    * loops upwards to quickly propagate falling
    * @param alsoFirstRow default different than in JewelBoard
@@ -74,8 +75,8 @@ public:
   Jewel &getJewel(BoardPos pos, bool allowFirstRow = false);
   Jewel const &getJewel(BoardPos pos, bool allowFirstRow = false) const;
 
-  void kill(BoardPos pos) override;
-  bool isAlive(BoardPos pos) const override;
+  //void kill(BoardPos pos) override;
+  //bool isAlive(BoardPos pos) const override;
 
   void update();
 

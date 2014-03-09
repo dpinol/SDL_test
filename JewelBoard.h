@@ -20,6 +20,7 @@
 
 
 class JewelObject;
+class ScorePanel;
 struct SDL_MouseButtonEvent;
 
 class JewelBoard : public GameObject, public BoardCallback
@@ -27,7 +28,7 @@ class JewelBoard : public GameObject, public BoardCallback
 public:
     
     virtual ~JewelBoard() {}
-    JewelBoard(Board &board);
+    JewelBoard(Board &board, ScorePanel &panel);
     
     void draw() override;
     void update() override;
@@ -89,7 +90,9 @@ private:
      * Just swap the 2 pointers to the Jewels
      */
     void pureSwap(BoardPos pos, BoardPos pos2);
-    /** Move jewel to next row*/
+    /** Move jewel to next row
+     * @return true if it cannot fall anymore (supposing lower cells have already been updated)
+     */
     void shiftDown(BoardPos pos);
 
     //extra row is for falling new jewels
@@ -97,6 +100,7 @@ private:
 
     void createInitialJewelsBoard();
     Board& m_model;
+    ScorePanel& m_panel;
     /**
      * @brief _offset where board is painted
      */

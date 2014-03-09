@@ -6,6 +6,7 @@
 **************************************************************************/
 
 #include "JewelBoard.h"
+#include "ScorePanel.h"
 #include "JewelObject.h"
 #include "TextureManager.h"
 #include "InputHandler.h"
@@ -21,8 +22,9 @@
 
 #include <SDL_events.h>
 
-JewelBoard::JewelBoard(Board &board):
+JewelBoard::JewelBoard(Board &board, ScorePanel &panel):
   m_model(board),
+  m_panel(panel),
   m_offset(342, 86),
   m_size(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1) ),
   m_drag(*this),
@@ -151,7 +153,20 @@ void JewelBoard::pureSwap(BoardPos pos, BoardPos pos2)
   getJewel(BoardPos(pos.m_col, pos.m_row)).resetFalling();*/
   std::swap( m_jewels[pos.m_row][pos.m_col], m_jewels[pos2.m_row][pos2.m_col]);
 }
-
+/**
+ * draft
+ * bool isStable(BoardPos pos)
+  {
+    while (pos.m_row <= BoardPos::NUM_ROWS)
+    {
+       pos =next.getBelow();
+      JewelObject &below = getJewel(pos)
+      if (below.isFalling() || below.isDead())
+        return false;
+    }
+    return true;
+  }
+ */
 void JewelBoard::shiftDown(BoardPos pos)
 {
   //JewelObject &jo = getJewel(pos);

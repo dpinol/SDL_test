@@ -7,10 +7,14 @@
 
 #include "ScorePanel.h"
 #include "Game.h"
+#include <utils/utils.h>
+#include <model/Match.h>
+
 #include <SDL_rect.h>
 #include <SDL_test_font.h>
 
-ScorePanel::ScorePanel()
+ScorePanel::ScorePanel(Match &match)
+  :m_match(match)
 {
 }
 
@@ -26,7 +30,7 @@ void ScorePanel::draw()
   SDL_RenderFillRect(renderer, &rect);
   //SDL_FillRect()
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-  SDLTest_DrawString(renderer, 80, 80, "text");
+  SDLTest_DrawString(renderer, 80, 80, ("Score: " + dani::toString(m_match.getScore())).c_str());
 }
 
 void ScorePanel::update()

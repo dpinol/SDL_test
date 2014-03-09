@@ -10,10 +10,11 @@
 
 #include "GameObject.h"
 
+class Match;
 class ScorePanel: public GameObject
 {
 public:
-  ScorePanel();
+  ScorePanel(Match &match);
 
   void draw() override;
 
@@ -22,7 +23,8 @@ public:
 
   // get the type of the object
   std::string type() override { return "scorePanel";}
-
+private:
+  Match &m_match;
 };
 
 #endif // SCOREPANEL_H

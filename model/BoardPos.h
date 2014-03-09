@@ -43,6 +43,12 @@ struct BoardPos
     return BoardPos(m_col, m_row + 1);
   }
 
+  BoardPos getAbove() const
+  {
+    assert(m_row >= 0);
+    return BoardPos(m_col, m_row - 1);
+  }
+
   inline void clear()
   {
     m_col = m_row = -1;
