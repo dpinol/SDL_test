@@ -10,6 +10,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 #include <utils/ValueEffect.h>
+#include <utils/log.h>
 
 const short JewelObject::FALLING_STEPS = 20;
 
@@ -85,12 +86,15 @@ void JewelObject::draw()
   {
     Uint32 x = (Uint32)m_pixel.getX() + MARGIN;
     Uint32 y = (Uint32)m_pixel.getY() + MARGIN;
-    if (!m_swapper.isDone())
+
+    if (!m_swapper.isDone() && !m_swapper.isPaused())
     {
       Vector2D swapper = m_swapper.get();
       x += swapper.getX();
       y += swapper.getY();
+      LOG_DEBUG("swapper in action" << getPixel() << " " << swapper << "col " <<getModel().getColor());
     }
+
     TextureManager::Instance()->drawFrame(m_textureID, x, y,
                                           m_width, m_height, m_currentRow, getModel().getColor(),
                                           NULL, 0, alpha);

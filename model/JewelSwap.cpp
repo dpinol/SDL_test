@@ -56,6 +56,7 @@ bool JewelSwap::run()
 {
   if (!isValid())
     return false;
+  LOG_INFO("swap::run");
   Jewel j1 = m_board.getJewel(m_positions[0]);
   Jewel &j2 = m_board.getJewel(m_positions[1]);
   m_board.getJewel(m_positions[0]) = j2;

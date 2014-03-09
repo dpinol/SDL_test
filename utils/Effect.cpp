@@ -37,28 +37,26 @@ namespace dani
   }
 #endif
 
+  void Effect::resume()
+  {
+    m_isDone = false;
+  }
+
   void Effect::update()
   {
+    if (m_isDone || m_paused)
+      return;
+    updateImpl();
+    if (DANI_UNLIKELY(m_verbose))
+      LOG_DEBUG(toString());
+
     if (isDone())
     {
-      if (!m_isDone)
-      {
         if (m_next)
           m_next->setPaused(false);
         if (m_callback)
           m_callback();
         m_isDone = true;
-      }
-    }
-    else
-    {
-      m_isDone = false;
-      if (!isPaused())
-      {
-        updateImpl();
-        if (DANI_UNLIKELY(m_verbose))
-          LOG_DEBUG(toString());
-      }
     }
   }
 

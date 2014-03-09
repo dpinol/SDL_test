@@ -28,25 +28,35 @@ namespace dani
     Effect(bool paused = false);
 
     /**
-     * @brief update calls isDone(). If done && !isPaused(), calls updateImpl()
-     * (in this way we spare a virtual call)
+     * @brief update if not already done or paused, it calls updateImpl()
+     * (in this way we spare a virtual call to updateImpl or isDone)
+     * After updateImpl, it calls isDone
      */
     void update();
 
     void setVerbose(bool verbose = true);
     virtual void setPaused(bool paused = true);
-    virtual bool isPaused() const;
+    bool isPaused() const;
+
     /**
      * @brief isDone see nextNext, setSlave
+     * when false is returned, updateImpl() will not be called again
+     * until resume is called
      * @return
      */
     virtual bool isDone() const = 0;
 
-
+    /**
+     * @brief resume causes updateImpl() to be called again from update()
+     * Is not required to restart from first
+     * Calls resumeImpl
+     */
+    void resume();
 
     /**
      * @brief setNext to sequence effects
      * @param nextEffect when this effect isDone(), nextEffect will be unpaused
+     * (will be updated() on same or next iteration, dependening on relative order in effects list)
      * nextEffect is automatically paused
      */
     void setNext(Effect *nextEffect);
@@ -74,6 +84,7 @@ namespace dani
     virtual std::string toString() const = 0;
   protected:
 
+    virtual void resumeImpl() {}
     virtual void updateImpl()  = 0;
 
     /**

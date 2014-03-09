@@ -156,16 +156,23 @@ namespace dani
      * So 0 mean at mean value increasing, PI/2 at max value,
      * PI at mean  value decreasing, -PI/2 at min value
      * startPhase will be normalized
+     * calls resume()
      */
     void setStartPhase(float startPhase = 0)
     {
       m_curRadian = Parent::getPhaseNormalized(startPhase);
-
+      Parent::resume();
     }
 
+    /**
+     * @brief setStopPhase
+     * Calls resume
+     * @param stopPhase
+     */
     void setStopPhase(float stopPhase)
     {
       m_stopRadian = Parent::getPhaseNormalized(stopPhase);
+      Parent::resume();
     }
 
 
@@ -183,6 +190,7 @@ namespace dani
 
       m_curRadian += m_incRadian;
       if(isDone())
+        // we don't want to go past stop radian
         m_curRadian = m_stopRadian;
       else
         m_curRadian = Parent::getPhaseNormalized(m_curRadian);

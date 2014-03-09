@@ -104,8 +104,9 @@ JewelObject const& JewelBoard::getJewel(BoardPos const pos) const
 
 void JewelBoard::draw()
 {
-  forAll([&](JewelObject &jewel)
+  forAllPos([&](BoardPos const &pos)
   {
+    JewelObject &jewel = getJewel(pos);
     //if (jewel.getPixel().getY() +  jewel.getHeight() >= m_offset.getY())
     if (!jewel.isDead())
       jewel.draw();
@@ -158,7 +159,7 @@ void JewelBoard::shiftDown(BoardPos pos)
     BoardPos next = pos.getBelow();
     //@bug still would rarely fails.pending to investigate
     //assert(getJewel(next).isDead());
-    LOG_INFO("jewel " << next << " popped up ");
+    LOG_DEBUG("jewel " << next << " popped up ");
 
     pureSwap(pos, next);
     m_model.pureSwap(pos, next);

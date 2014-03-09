@@ -30,6 +30,7 @@ int main(int argc, char const **argv)
     {
       frameStart = SDL_GetTicks();
 
+      LOG_DEBUG("---------------");
       TheGame::Instance()->handleEvents();
       TheGame::Instance()->update();
       TheGame::Instance()->render();
