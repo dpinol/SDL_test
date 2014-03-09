@@ -13,7 +13,16 @@
 
 struct BoardCallback
 {
+  /**
+   * @brief kill removes the jewel at the given position
+   * @param pos
+   */
   virtual void kill(BoardPos pos) = 0;
+  /**
+   * @brief isAlive
+   * @param pos
+   * @return wether cell at given position is dead (or dying)
+   */
   virtual bool isAlive(BoardPos pos) const = 0;
 };
 
@@ -24,8 +33,10 @@ public:
    * @brief Board
    * @param callback
    */
-  Board(BoardCallback &callback);
+  Board();
   virtual ~Board();
+
+  void setCallback(BoardCallback *callback);
 
   /**
    * loops upwards to quickly propagate falling
@@ -70,7 +81,7 @@ public:
 
   void pureSwap(BoardPos pos, BoardPos pos2);
 private:
-  BoardCallback& m_callback;
+  BoardCallback* m_callback;
   //@todo duplicating jewels here is a bad idea. maybe can be unified is JewelObject inherits from Jewel
   // and JewelObject from Jewel?
   Jewel* m_jewels[BoardPos::NUM_ROWS + 1][BoardPos::NUM_COLS];

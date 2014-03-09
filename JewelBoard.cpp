@@ -20,14 +20,15 @@
 
 #include <SDL_events.h>
 
-JewelBoard::JewelBoard():
-  m_model(*this),
+JewelBoard::JewelBoard(Board &board):
+  m_model(board),
   m_offset(342, 86),
   m_size(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1) ),
   m_drag(*this),
   m_strike(m_model, this),
   m_jewelsFalling(true)
 {
+  board.setCallback(this);
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels");
 

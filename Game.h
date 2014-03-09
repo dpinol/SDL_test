@@ -9,10 +9,12 @@
 
 #include "SDL.h"
 #include "GameStateMachine.h"
-//#include "SDL_mixer.h"
+
 #include <utils/Vector2D.h>
 #include <vector>
 #include <atomic>
+
+class Match;
 
 class Game
 {
@@ -52,22 +54,17 @@ public:
   SDL_Window* getWindow() const { return m_pWindow; }
   GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
 
-  void setPlayerLives(int lives) { m_playerLives = lives; }
-  const int getPlayerLives() { return m_playerLives; }
-
-  void setCurrentLevel(int currentLevel);
-  const int getCurrentLevel() { return m_currentLevel; }
 
   bool running() { return m_bRunning; }
 
   void quit() { m_bRunning = false; }
 
-  int getGameWidth() const { return m_gameWidth; }
-  int getGameHeight() const { return m_gameHeight; }
   int getFPS() const { return m_FPS; }
 
+  Match& getMatch();
 private:
 
+  std::unique_ptr<Match> m_match;
   SDL_Window* m_pWindow;
   SDL_Renderer* m_pRenderer;
 
@@ -77,15 +74,7 @@ private:
 
   static Game* s_pInstance;
 
-  int m_gameWidth;
-  int m_gameHeight;
-  int m_playerLives;
-
-  int m_currentLevel;
-  int m_nextLevel;
-  bool m_bLevelComplete;
   int m_FPS;
-
 
   Game();
   ~Game();

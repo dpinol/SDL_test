@@ -13,11 +13,11 @@ BoardTest::BoardTest()
 }
 struct DummyBoardCallback : public BoardCallback
 {
-  void kill(BoardPos pos)
+  void kill(BoardPos )
   {
     //getJewel(pos).setColor(Jewel::NO_COLOR);
   }
-  bool isAlive(BoardPos pos) const
+  bool isAlive(BoardPos ) const
   {
     //@bug
    // return getJewel(pos).getCol
@@ -28,5 +28,6 @@ struct DummyBoardCallback : public BoardCallback
 void BoardTest::run()
 {
   DummyBoardCallback callback;
-  Board board(callback);
+  Board board;
+  board.setCallback(&callback);
 }

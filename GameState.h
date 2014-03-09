@@ -32,6 +32,7 @@ public:
     virtual bool onExit() = 0;
     
     virtual void resume();
+    void clean();
     
     virtual std::string getStateID() const = 0;
     

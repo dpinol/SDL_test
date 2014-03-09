@@ -16,6 +16,7 @@
 #include "JewelBoard.h"
 #include "MovingObject.h"
 #include "ScorePanel.h"
+#include <model/Match.h>
 
 const std::string PlayState::s_playID = "PLAY";
 
@@ -59,7 +60,8 @@ public:
 
 PlayState::PlayState()
 {
-  m_gameObjects.push_back(new JewelBoard);
+  JewelBoard * board = new JewelBoard(TheGame::Instance()->getMatch().getBoard());
+  m_gameObjects.push_back(board);
   m_gameObjects.push_back(new TNT);
   m_gameObjects.push_back(new ScorePanel);
 }
@@ -79,7 +81,7 @@ void PlayState::update()
     //            TheGame::Instance()->getStateMachine()->pushState(new PauseState());
     //        }
 
-    if(TheGame::Instance()->getPlayerLives() == 0)
+    if(TheGame::Instance()->getMatch().getPlayerLives() == 0)
     {
       TheGame::Instance()->getStateMachine()->changeState(new GameOverState());
     }
@@ -108,7 +110,7 @@ void PlayState::render()
                                         755, 600);
     GameState::render();
 
-    for(int i = 0; i < TheGame::Instance()->getPlayerLives(); i++)
+    for(int i = 0; i < TheGame::Instance()->getMatch().getPlayerLives(); i++)
     {
       TheTextureManager::Instance()->drawFrame("lives", i * 30, 0, 32, 30, 0, 0, nullptr, 0.0, 255);
     }
@@ -120,7 +122,7 @@ void PlayState::render()
 
 bool PlayState::onEnterImpl()
 {
-  TheGame::Instance()->setPlayerLives(3);
+  TheGame::Instance()->getMatch().restart();
 
   TheTextureManager::Instance()->load("assets/BackGround.jpg", "background");
 

@@ -21,9 +21,12 @@ void ScorePanel::draw()
   rect.y = 35;
   rect.w = 200;
   rect.h = 200;
-  SDL_RenderFillRect(TheGame::Instance()->getRenderer(), &rect);
+  SDL_Renderer *renderer = TheGame::Instance()->getRenderer();
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  SDL_RenderFillRect(renderer, &rect);
   //SDL_FillRect()
-  SDLTest_DrawString(TheGame::Instance()->getRenderer(), 80, 80, "text");
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  SDLTest_DrawString(renderer, 80, 80, "text");
 }
 
 void ScorePanel::update()

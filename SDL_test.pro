@@ -8,14 +8,7 @@ INCLUDEPATH=/usr/local/include/SDL2
 SOURCES += *.cpp \
     utils/*.cpp \
     model/*.cpp \
-    JewelDrag.cpp \
-    model/test/*.cpp \
-    utils/init.cpp \
-    MovingObject.cpp \
-    utils/Disturber.cpp \
-    GameObject.cpp \
-    ScorePanel.cpp
-
+    model/test/*.cpp
 
 OTHER_FILES += \
     Makefile \
@@ -27,10 +20,5 @@ HEADERS += \
     *.h \
     utils/*.h \
     model/*.h \
-    model/test/*.h \
-    JewelDrag.h \
-    utils/init.h \
-    MovingObject.h \
-    utils/Disturber.h \
-    ScorePanel.h
+    model/test/*.h
 

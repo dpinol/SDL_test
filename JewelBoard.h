@@ -22,12 +22,12 @@
 class JewelObject;
 struct SDL_MouseButtonEvent;
 
-class JewelBoard : public GameObject, BoardCallback
+class JewelBoard : public GameObject, public BoardCallback
 {
 public:
     
     virtual ~JewelBoard() {}
-    JewelBoard();
+    JewelBoard(Board &board);
     
     void draw() override;
     void update() override;
@@ -96,7 +96,7 @@ private:
     JewelObject* m_jewels[BoardPos::NUM_ROWS + 1][ BoardPos::NUM_COLS];
 
     void createInitialJewelsBoard();
-    Board m_model;
+    Board& m_model;
     /**
      * @brief _offset where board is painted
      */
@@ -107,14 +107,5 @@ private:
     bool m_jewelsFalling;
 };
 
-class JewelBoardCreator : public BaseCreator
-{
-public:
-    
-    virtual JewelBoard* createGameObject() const
-    {
-        return new JewelBoard();
-    }
-};
 
 #endif /* JEWEL_BOARD */

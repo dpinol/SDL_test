@@ -10,8 +10,8 @@
 #include "utils/utils.h"
 #include <stdexcept>
 
-Board::Board(BoardCallback &callback)
-  :m_callback(callback)
+Board::Board()
+  :m_callback(NULL)
 {
   forAllPos([&](BoardPos const &pos)
   {
@@ -26,6 +26,11 @@ Board::~Board()
   {
     delete m_jewels[pos.m_row][pos.m_col];
   }, true);
+}
+
+void Board::setCallback(BoardCallback *callback)
+{
+  m_callback = callback;
 }
 
 void Board::randomize()
@@ -78,13 +83,13 @@ void Board::pureSwap(BoardPos pos, BoardPos pos2)
 
 void Board::kill(BoardPos pos)
 {
-  m_callback.kill(pos);
+  m_callback->kill(pos);
   //getJewel(pos).setColor(Jewel::NO_COLOR);
 }
 
 bool Board::isAlive(BoardPos pos) const
 {
-  return m_callback.isAlive(pos);
+  return m_callback->isAlive(pos);
 }
 
 void Board::update()

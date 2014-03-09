@@ -16,11 +16,18 @@ GameState::GameState()
 {
 
 }
-
 GameState::~GameState()
 {
-
+  clean();
 }
+
+void GameState::clean()
+{
+ for(GameObject * o:m_gameObjects)
+   delete o;
+ m_gameObjects.clear();
+}
+
 
 void GameState::resume()
 {
