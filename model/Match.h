@@ -12,6 +12,7 @@
 #include "Board.h"
 
 class MatchImpl;
+
 class Match
 {
 public:
@@ -19,6 +20,22 @@ public:
   virtual ~Match();
   void setBoardCallback(BoardCallback* callback);
   void restart();
+
+  /**
+   * @brief nextTurn must be called when cascades caused
+   * by last moved are over
+   * Causes score accumulations to
+   */
+  void nextTurn();
+
+  /**
+   * @brief scoreStrike
+   * @param strikeLen number of jewels in strike
+   * Each strikes achieved in a turn is worth 20*strikeLen plus the score
+   * obtained so far in the current turn
+   * @return score obtained by this score (not the total score)
+   */
+  int scoreStrike(int strikeLen);
 
 
   int getLevel() const;

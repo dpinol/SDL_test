@@ -11,6 +11,7 @@
 #include "InputHandler.h"
 #include "Game.h"
 #include <model/JewelSwap.h>
+#include <model/Match.h>
 #include "utils/utils.h"
 #include "utils/log.h"
 #include <assert.h>
@@ -183,11 +184,15 @@ void JewelBoard::update()
 
   m_model.update();
   m_jewelsFalling = false;
+  bool boardChanged = false;
   forAllPos([&](BoardPos pos)
   {
     JewelObject &jo = getJewel(pos);
     if (jo.isFallDone())
+    {
+      boardChanged = true;
       shiftDown(pos);
+    }
     if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
     {
       m_jewelsFalling = true;
@@ -209,15 +214,18 @@ void JewelBoard::update()
     jo.update();
   });
 
-  if (!m_jewelsFalling)
-  {
-    //mostly works, but eventually a falling jewel overtakes lower one and assert at shiftDown fails
-    //or jewels stop at halfway
+  bool scored = false;
+  if (boardChanged)
+  {    
     forAllPos([&](BoardPos pos)
     {
-      m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
+      JewelObject &jo = getJewel(pos);
+      if (!jo.isFalling())
+        scored = m_strike.findMatch(pos, getJewel(pos).getModel().getColor()) || scored;
     }, false);
   }
+  if (!scored && !m_jewelsFalling)
+    TheGame::Instance()->getMatch().nextTurn();
 }
 
 void JewelBoard::clean()

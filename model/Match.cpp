@@ -14,6 +14,7 @@ public:
   MatchImpl()
     : m_currentLevel(1),
       m_score(0),
+      m_turnScore(0),
       m_playerLives(3)
 //    m_playerLives(3),
 //    m_bLevelComplete(false)
@@ -22,6 +23,7 @@ public:
   Board m_board;
   int m_level;
   int m_score;
+  int m_turnScore;
   int m_playerLives;
 
   int m_currentLevel;
@@ -57,6 +59,7 @@ int Match::getLevel() const
   return m_pimpl->m_currentLevel;
 }
 
+/*****************SCORE **************************/
 int Match::getScore() const
 {
   return m_pimpl->m_score;
@@ -66,6 +69,19 @@ void Match::addScore(int addedScore)
 {
   m_pimpl->m_score += addedScore;
 }
+
+int Match::scoreStrike(int strikeLen)
+{
+  int partial = m_pimpl->m_turnScore + strikeLen * 20;
+  m_pimpl->m_score += partial;
+  return partial;
+}
+
+void Match::nextTurn()
+{
+  m_pimpl->m_turnScore = 0;
+}
+
 /*
 
 void setCurrentLevel(int currentLevel);
