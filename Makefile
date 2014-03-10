@@ -65,10 +65,11 @@ SDL_test: $(OBJS)
 depend: .depend
 
 # Generate dependencies for all files in project
+# sed compatible on both OSX & linux: http://stackoverflow.com/questions/5694228/sed-in-place-flag-that-works-both-on-mac-bsd-and-linux
 %.d: $(FULL_SRCS)
 	@$(CXX) $(CPPFLAGS) -MM $*.cpp | sed -e 's@^\(.*\)\.o:@\1.d \1.o:@' > $@ ; \
-	grep "model\/[a-zA-Z]\+\.cpp" $@ > /dev/null && sed -i "" -e "s/\([a-zA-Z]*\)\.\([od]\)/model\/\1\.\2/g" $@ ; \
-	grep "utils\/[a-zA-Z]\+\.cpp" $@  > /dev/null && sed -i "" -e "s/\([a-zA-Z]*\)\.\([od]\)/utils\/\1\.\2/g" $@
+	grep "model\/[a-zA-Z]\+\.cpp" $@ > /dev/null && sed -i.bak -e "s/\([a-zA-Z]*\)\.\([od]\)/model\/\1\.\2/g" $@ ; rm -f $@.bak; \
+	grep "utils\/[a-zA-Z]\+\.cpp" $@  > /dev/null && sed -i.bak -e "s/\([a-zA-Z]*\)\.\([od]\)/utils\/\1\.\2/g" $@ ; rm -f $@.bak
 
 clean_list += ${FULL_SRCS:.cpp=.d}
 clean:
