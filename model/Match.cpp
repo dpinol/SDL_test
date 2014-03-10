@@ -15,7 +15,7 @@ public:
   MatchImpl()
     : m_currentLevel(1),
       m_score(0),
-      m_turnScore(0),
+      m_lastScore(0),
       m_playerLives(3)
 //    m_playerLives(3),
 //    m_bLevelComplete(false)
@@ -24,7 +24,7 @@ public:
   Board m_board;
   int m_level;
   int m_score;
-  int m_turnScore;
+  int m_lastScore;
   int m_playerLives;
 
   int m_currentLevel;
@@ -68,13 +68,13 @@ int Match::getScore() const
 
 void Match::addScore(int addedScore)
 {
-  m_pimpl->m_turnScore += addedScore;
+  m_pimpl->m_lastScore = addedScore;
   m_pimpl->m_score += addedScore;
 }
 
 int Match::scoreStrike(int strikeLen)
 {
-  int partial = m_pimpl->m_turnScore + strikeLen * 20;
+  int partial = m_pimpl->m_lastScore + strikeLen * 20;
   LOG_INFO("scored " << partial << "points");
   addScore(partial);
   return partial;
@@ -82,9 +82,9 @@ int Match::scoreStrike(int strikeLen)
 
 void Match::nextTurn()
 {
-  if (m_pimpl->m_turnScore > 0)
+  if (m_pimpl->m_lastScore > 0)
     LOG_INFO("end of turn");
-  m_pimpl->m_turnScore = 0;
+  m_pimpl->m_lastScore = 0;
 }
 
 /*

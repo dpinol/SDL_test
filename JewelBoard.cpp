@@ -222,7 +222,7 @@ void JewelBoard::update()
       boardChanged = true;
       shiftDown(pos);
     }
-    if (jo.isFalling())
+    if (jo.isFalling() || jo.isDying())
       m_jewelsFalling = true;
     if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
     {
