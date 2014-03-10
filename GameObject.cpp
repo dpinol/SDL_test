@@ -30,6 +30,11 @@ GameObject::~GameObject()
 
 }
 
+void GameObject::draw()
+{
+  m_effects->render();
+}
+
 void GameObject::update()
 {
   m_effects->update();

@@ -49,6 +49,7 @@ void GameState::render()
     {
       o->draw();
     }
+    m_effects->render();
   }
 }
 

@@ -81,6 +81,7 @@ namespace dani
       m_durationMs = durationMs;
       m_pendingUpdateCalls = Effect::getFPS() * (durationMs / 1000.0);
       m_totalUpdateCalls = m_pendingUpdateCalls;
+      Effect::resume();
     }
 
     void restart() override

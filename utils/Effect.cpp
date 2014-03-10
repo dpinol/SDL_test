@@ -48,6 +48,14 @@ namespace dani
     m_isDone = false;
   }
 
+  void Effect::render()
+  {
+    if (m_isDone || m_paused)
+      return;
+    renderImpl();
+  }
+
+
   void Effect::update()
   {
     if (m_isDone || m_paused)
@@ -151,6 +159,13 @@ namespace dani
     }
   }
 
+  void CompositeEffect::renderImpl()
+  {
+    for(auto &effect: m_children)
+      effect->render();
+  }
+
+
   void CompositeEffect::setPaused(bool paused)
   {
     for(auto &effect: m_children)
@@ -209,6 +224,7 @@ namespace dani
   {
     return m_children.begin();
   }
+
 
   /*  void CompositeEffect::restartImpl()
   {

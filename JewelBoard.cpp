@@ -58,7 +58,6 @@ public:
   {
     addChild(m_mover);
     addChild(m_fader);
-    m_fader.setRange(255, 0, DURATION_MS);
   }
 
   void trigger(BoardPos pos, int score)
@@ -69,13 +68,13 @@ public:
     //@todo get text size estimate and center
     m_pixel = jo.getPixel() + Vector2D(JewelObject::WIDTH /2 - 8, JewelObject::HEIGHT /2 -8);
     m_mover.setRange(m_pixel, m_pixel - Vector2D(0, - JewelObject::HEIGHT), DURATION_MS);
-    m_fader.restart();
+    m_fader.setRange(255, 0, DURATION_MS);
   }
 
 
-  void updateImpl() override
+  void renderImpl() override
   {
-    dani::CompositeEffect::updateImpl();
+//    dani::CompositeEffect::updateImpl();
     //get color from
     SDL_SetRenderDrawColor(TheGame::Instance()->getRenderer(), m_rgb.r, m_rgb.g, m_rgb.b, m_fader.get());
 
@@ -98,6 +97,7 @@ JewelBoard::JewelBoard(Match &match):
   {
     m_scoreEffects.addChild(*new ScorePopUpEffect(*this));
   }
+  m_effects->addChild(m_scoreEffects);
   getModel().setCallback(this);
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels");
@@ -192,6 +192,7 @@ void JewelBoard::draw()
     if (!jewel.isDead())
       jewel.draw();
   });
+  GameObject::draw();
 }
 
 Vector2D JewelBoard::getJewelPixel(BoardPos pos) const

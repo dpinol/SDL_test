@@ -42,6 +42,12 @@ namespace dani
      */
     void update();
 
+    /**
+     * @brief render will be invoked after update, and after the basic object
+     * is rendered. If you need to,draw on screen or play a media here
+     */
+    void render();
+
     void setVerbose(bool verbose = true);
     virtual void setPaused(bool paused = true);
     bool isPaused() const;
@@ -101,6 +107,7 @@ namespace dani
 
     virtual void resumeImpl() {}
     virtual void updateImpl()  = 0;
+    virtual void renderImpl() {}
 
     /**
      * @brief getPhaseNormalized normalizes to range [-PI,PI]
@@ -136,6 +143,7 @@ namespace dani
      */
     void clearChildren();
     virtual void resume();
+
     /**
      * @brief addChid
      * @param effect
@@ -149,7 +157,8 @@ namespace dani
     std::vector<Effect*>::iterator end();
 
   protected:
-    virtual void updateImpl() override;
+    void renderImpl() override;
+    void updateImpl() override;
     std::vector<Effect*> m_children;
     bool m_ownChildren;
   };

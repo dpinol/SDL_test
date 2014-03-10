@@ -33,7 +33,7 @@ public:
     virtual void load(std::unique_ptr<LoaderParams> const &) {}
     
     // draw the object
-    virtual void draw() = 0;
+    virtual void draw();
     
     // do update stuff
     virtual void update();
