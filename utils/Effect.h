@@ -65,7 +65,7 @@ namespace dani
      * Is not required to restart from first
      * Calls resumeImpl
      */
-    void resume();
+    virtual void resume();
 
     /**
      * @brief setNext to sequence effects
@@ -135,6 +135,7 @@ namespace dani
      * @brief clearChildren removes children (and delete if owned)
      */
     void clearChildren();
+    virtual void resume();
     /**
      * @brief addChid
      * @param effect

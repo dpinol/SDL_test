@@ -127,11 +127,20 @@ namespace dani
   CompositeEffect::CompositeEffect(bool ownChildren)
     :m_ownChildren(ownChildren)
   {
+    Effect::resume();
   }
 
   CompositeEffect::~CompositeEffect()
   {
     clearChildren();
+  }
+
+  void CompositeEffect::resume()
+  {
+    for(auto &effect: m_children)
+    {
+      effect->resume();
+    }
   }
 
   void CompositeEffect::updateImpl()
