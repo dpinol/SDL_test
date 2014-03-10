@@ -10,6 +10,7 @@
 #define JEWEL_BOARD
 
 #include <iostream>
+#include <utils/ValueEffect.h>
 #include "model/BoardPos.h"
 #include <model/JewelStrike.h>
 #include "GameObjectFactory.h"
@@ -115,6 +116,9 @@ private:
     JewelDrag m_drag;
     JewelStrike m_strike;
     bool m_jewelsFalling;
+    typedef dani::RangeEffect<int> ScorePopUpEffect;
+    //at most we'll need one per column
+    ScorePopUpEffect m_scoreEffects[BoardPos::NUM_COLS];
 };
 
 

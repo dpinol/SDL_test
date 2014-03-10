@@ -19,6 +19,10 @@
 namespace dani
 {
 
+  /**
+   * Update calculates and value which can be checked by get()
+   * T is required to have ordering, +, * operators
+   */
   template <class T>
   class ValueEffect : public Effect
   {
@@ -28,15 +32,6 @@ namespace dani
       return m_value;
     }
 
-    /* virtual void setPaused(bool paused = true)
-    {
-      m_value
-    }
-    void restart()
-    {
-      m_value =
-    }*/
-
     std::string toString() const override
     {
       return dani::toString(m_value);
@@ -45,11 +40,67 @@ namespace dani
     T m_value;
   };
 
+  /** Value will take interpolated values within a range during a specified time*/
   template <class T>
   class RangeEffect : public ValueEffect<T>
   {
+  protected:
+    using ValueEffect<T>::m_value;
+    T m_start;
+    T m_end;
+    int m_durationMs;
+    bool m_increasing;
+    int m_pendingUpdateCalls, m_totalUpdateCalls;
   public:
+    /**
+     * @brief setRange
+     * @param start
+     * @param end
+     * @param durationMs
+     */
+    void setRange(T start, T end, int durationMs)
+    {
+      m_increasing = end >= start;
+      m_start = std::move(start);
+      m_value = m_start;
+      m_end = std::move(end);
+      m_durationMs = durationMs;
+      m_pendingUpdateCalls = Effect::getFPS() * (durationMs / 1000.0);
+      m_totalUpdateCalls = m_pendingUpdateCalls;
+    }
 
+    bool isDone() const override
+    {
+      if (m_increasing)
+        return m_value >= m_end;
+      else
+        return m_value <= m_end;
+    }
+
+    void updateImpl() override
+    {
+      m_pendingUpdateCalls--;
+      if (m_pendingUpdateCalls == 0)
+        m_value = m_end;
+      else
+      {
+        m_value =  m_start + ((m_totalUpdateCalls - m_pendingUpdateCalls) / m_totalUpdateCalls)
+            * (m_end - m_start);
+      }
+    }
+  };
+
+  /**
+   * Effect which will is able to go on forever:
+   * eg. with random values, with sinusoidal function..
+   */
+  template <class T>
+  class LoopEffect : public ValueEffect<T>
+  {
+  protected:
+    using ValueEffect<T>::m_value;
+
+  public:
     /**
      * @brief getMapToRange
      * @param curReldisturbance 0 to 1 within available range
@@ -90,9 +141,10 @@ namespace dani
 
 
   template <class T>
-  class RandomEffect : public RangeEffect<T>
+  class RandomEffect : public LoopEffect<T>
   {
-    typedef RangeEffect<T> Parent;
+  protected:
+    using LoopEffect<T>::m_value;
   public:
 
     constexpr bool isDone() const override
@@ -102,7 +154,7 @@ namespace dani
 
     void updateImpl() override
     {
-        Parent::m_value = Parent::getMapToRange(rand() / (float) RAND_MAX);
+        m_value = LoopEffect<T>::getMapToRange(rand() / (float) RAND_MAX);
     }
   };
 
@@ -110,9 +162,11 @@ namespace dani
 
 
   template <class T>
-  class OscilleEffect : public RangeEffect<T>
+  class OscilleEffect : public LoopEffect<T>
   {
-    typedef RangeEffect<T> Parent;
+  protected:
+    using LoopEffect<T>::m_value;
+    typedef LoopEffect<T> Parent;
     //int m_periodMs;
     float m_startRadian;
     mutable float m_curRadian;
@@ -195,7 +249,7 @@ namespace dani
       else
         m_curRadian = Parent::getPhaseNormalized(m_curRadian);
 
-      Parent::m_value = Parent::getMapToRange((sin(m_curRadian) + 1) /2);
+      m_value = Parent::getMapToRange((sin(m_curRadian) + 1) /2);
     }
 
   };

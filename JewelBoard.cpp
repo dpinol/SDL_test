@@ -32,6 +32,8 @@ JewelBoard::JewelBoard(Match &match):
   m_strike(m_match.getBoard(), this),
   m_jewelsFalling(true)
 {
+  for(ScorePopUpEffect &effect: m_scoreEffects)
+    effect.setPaused();
   getModel().setCallback(this);
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels");
@@ -276,6 +278,12 @@ void JewelBoard::scoreAt(std::vector<BoardPos> const & killed, int numJewels)
                              [](BoardPos pos1, BoardPos pos2)
   {return (pos1 - pos2).length();});
 
+  ScorePopUpEffect &effect = *std::find_if(std::begin(m_scoreEffects),
+                                      std::end(m_scoreEffects),
+                                      [](ScorePopUpEffect &effect)
+  {
+      return effect.isPaused();
+  });
 }
 
 void JewelBoard::clean()
