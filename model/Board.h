@@ -10,20 +10,26 @@
 
 #include "BoardPos.h"
 #include "Jewel.h"
+#include <vector>
 
+/**
+ * @brief The BoardCallback struct is used by model to inform GUI
+ * of model changes
+ */
 struct BoardCallback
 {
   /**
    * @brief kill removes the jewel at the given position
    * @param pos
    */
-  virtual void kill(BoardPos pos) = 0;
+  virtual void kill(std::vector<BoardPos> const &pos) = 0;
   /**
    * @brief isAlive
    * @param pos
    * @return wether cell at given position is dead (or dying)
    */
   virtual bool isAlive(BoardPos pos) const = 0;
+
 };
 
 class Board //: public BoardCallback
@@ -75,7 +81,7 @@ public:
   Jewel &getJewel(BoardPos pos, bool allowFirstRow = false);
   Jewel const &getJewel(BoardPos pos, bool allowFirstRow = false) const;
 
-  //void kill(BoardPos pos) override;
+  //void kill(std::vector<BoardPos> const & killed) override;
   //bool isAlive(BoardPos pos) const override;
 
   void update();

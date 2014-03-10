@@ -15,20 +15,20 @@
 #include "GameObjectFactory.h"
 #include "GameObject.h"
 #include "JewelDrag.h"
-#include "model/Board.h"
 #include <functional>
+#include <vector>
 
 
 class JewelObject;
-class ScorePanel;
+class Match;
+class Board;
 struct SDL_MouseButtonEvent;
 
 class JewelBoard : public GameObject, public BoardCallback
 {
 public:
-    
     virtual ~JewelBoard() {}
-    JewelBoard(Board &board, ScorePanel &panel);
+    JewelBoard(Match &match);
     
     void draw() override;
     void update() override;
@@ -39,9 +39,9 @@ public:
     void load(std::unique_ptr<LoaderParams> const &pParams) override;
 
     //BoardCallback
-    void kill(BoardPos pos) override;
+    void kill(std::vector<BoardPos> const & killed) override;
     bool isAlive(BoardPos pos) const override;
-    //
+    //BoardCallback
 
     /**
      * @brief getJewel
@@ -91,7 +91,7 @@ private:
      * @param pos
      * @param score
      */
-    void scoreAt(BoardPos pos, int numJewels);
+    void scoreAt(const std::vector<BoardPos> &killed, int numJewels);
 
     /**
      * Just swap the 2 pointers to the Jewels
@@ -106,8 +106,7 @@ private:
     JewelObject* m_jewels[BoardPos::NUM_ROWS + 1][ BoardPos::NUM_COLS];
 
     void createInitialJewelsBoard();
-    Board& m_model;
-    ScorePanel& m_panel;
+    Match &m_match;
     /**
      * @brief _offset where board is painted
      */

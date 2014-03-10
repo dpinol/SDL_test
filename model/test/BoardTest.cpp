@@ -13,11 +13,11 @@ BoardTest::BoardTest()
 }
 struct DummyBoardCallback : public BoardCallback
 {
-  void kill(BoardPos )
+  void kill(BoardPos ) override
   {
     //getJewel(pos).setColor(Jewel::NO_COLOR);
   }
-  bool isAlive(BoardPos ) const
+  bool isAlive(BoardPos ) const override
   {
     //@bug
    // return getJewel(pos).getCol

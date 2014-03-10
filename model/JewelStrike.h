@@ -32,7 +32,7 @@ public:
 
   /**
    * @brief findMatch detects whether in case we move a newColor jewel into newPos, we would
-   * be creating any strike
+   * be creating any strike. If callback is not null, it also kills the matching jewels
    * @param newPos
    * @param newColor
    * @param ignorePos in case of a swap, don't check the position color, as for sure it does

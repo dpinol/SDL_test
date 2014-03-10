@@ -89,7 +89,7 @@ void Board::pureSwap(BoardPos pos, BoardPos pos2)
   std::swap( m_jewels[pos.m_row][pos.m_col], m_jewels[pos2.m_row][pos2.m_col]);
 }
 /*
-void Board::kill(BoardPos pos)
+void Board::kill(std::vector<BoardPos> const & killed)
 {
   m_callback->kill(pos);
   //getJewel(pos).setColor(Jewel::NO_COLOR);

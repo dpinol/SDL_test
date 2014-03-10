@@ -53,18 +53,17 @@ int JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos igno
     }
     if (len[0] + len[1] >= MIN_LEN)
     {
+      cur += directions[d];
+      std::vector<BoardPos> killed;
+      for (short l = 0; l < len[0] + len[1]; l++)
+      {
+        if (m_callback)
+           killed.push_back(cur);
+        strikeLen++;
         cur += directions[d];
-        for (short l = 0; l < len[0] + len[1]; l++)
-        {
-          {
-		      if (m_callback)
-		        m_callback->kill(cur);
-		      strikeLen++;
-		      
-          }
-          cur += directions[d];
-        }
-      
+      }
+      if (m_callback)
+        m_callback->kill(killed);
     }
   } //directions
   return strikeLen;

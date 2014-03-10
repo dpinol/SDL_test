@@ -37,6 +37,7 @@ struct BoardPos
     :m_col(col), m_row(row)
   {
   }
+
   BoardPos getBelow() const
   {
     assert(m_row < NUM_ROWS);
@@ -60,7 +61,12 @@ struct BoardPos
   inline BoardPos& operator-=(const BoardPos& v2) { m_col -= v2.m_col; m_row -= v2.m_row; return *this;}
   inline bool operator==(const BoardPos& v2) { return m_col == v2.m_col && m_row == v2.m_row;}
 
+  /** Useful to reverse a direction*/
   inline BoardPos operator-() const { return BoardPos(-m_col, -m_row);}
+
+  /** Useful also to calculate a distance between 2 positions*/
+  float length() const;
+
   /**
    * @brief isDirection
    * @return whether represents a single vertical or horizontal shift

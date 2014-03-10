@@ -61,7 +61,7 @@ public:
 PlayState::PlayState()
 {
   ScorePanel* panel = new ScorePanel(TheGame::Instance()->getMatch());
-  JewelBoard* board = new JewelBoard(TheGame::Instance()->getMatch().getBoard(), *panel);
+  JewelBoard* board = new JewelBoard(TheGame::Instance()->getMatch());
   m_gameObjects.push_back(board);
   m_gameObjects.push_back(new TNT);
   m_gameObjects.push_back(panel);

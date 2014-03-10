@@ -80,8 +80,9 @@ void JewelObject::draw()
 {
   //pending dying animation
   int alpha = 255;
-  //if (isDying())
-  //  alpha = 255.0 * (m_dyingTime - m_dyingCounter) / m_dyingTime;
+  //@todo migrate to m_dier
+  if (isDying())
+    alpha = 255.0 * (m_dyingTime - m_dyingCounter) / m_dyingTime;
   if(getModel().getColor() != Jewel::NO_COLOR) // && !isDead())
   {
     Uint32 x = (Uint32)m_pixel.getX() + MARGIN;
