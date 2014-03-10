@@ -65,7 +65,7 @@ SDL_test: $(OBJS)
 depend: .depend
 
 # Generate dependencies for all files in project
-# sed compatible on both OSX & linux
+# sed compatible on both OSX & linux: http://stackoverflow.com/questions/5694228/sed-in-place-flag-that-works-both-on-mac-bsd-and-linux
 %.d: $(FULL_SRCS)
 	@$(CXX) $(CPPFLAGS) -MM $*.cpp | sed -e 's@^\(.*\)\.o:@\1.d \1.o:@' > $@ ; \
 	grep "model\/[a-zA-Z]\+\.cpp" $@ > /dev/null && sed -i.bak -e "s/\([a-zA-Z]*\)\.\([od]\)/model\/\1\.\2/g" $@ ; rm -f $@.bak; \
