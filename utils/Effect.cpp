@@ -14,15 +14,21 @@
 namespace dani
 {
 
-  Effect::Effect(bool paused)
-    :m_paused(paused),
-      m_isDone(false),
+  Effect::Effect()
+    :m_paused(false),
+      m_isDone(true),
       m_slave(NULL),
       m_next(NULL),
       m_callback(NULL),
       m_verbose(false)
   {
   }
+
+  Effect::~Effect()
+  {
+
+  }
+
 #if 0
   /**
    * @brief restart
@@ -52,11 +58,11 @@ namespace dani
 
     if (isDone())
     {
-        if (m_next)
-          m_next->setPaused(false);
-        if (m_callback)
-          m_callback();
-        m_isDone = true;
+      if (m_next)
+        m_next->setPaused(false);
+      if (m_callback)
+        m_callback();
+      m_isDone = true;
     }
   }
 
@@ -118,6 +124,16 @@ namespace dani
   }
 
   /******** Composite Effect****/
+  CompositeEffect::CompositeEffect(bool ownChildren)
+    :m_ownChildren(ownChildren)
+  {
+  }
+
+  CompositeEffect::~CompositeEffect()
+  {
+    clearChildren();
+  }
+
   void CompositeEffect::updateImpl()
   {
     for(auto &effect: m_children)
@@ -136,6 +152,13 @@ namespace dani
 
   void CompositeEffect::clearChildren()
   {
+    if (m_ownChildren)
+    {
+      for(auto &effect: m_children)
+      {
+        delete effect;
+      }
+    }
     m_children.clear();
   }
 
@@ -147,8 +170,16 @@ namespace dani
   bool CompositeEffect::isDone() const
   {
     return std::all_of(m_children.begin(), m_children.end(),
-                        [](Effect* e)
+                       [](Effect* e)
     {return e->isDone();});
+  }
+
+  void CompositeEffect::restart()
+  {
+    for(auto &effect: m_children)
+    {
+      effect->restart();
+    }
   }
 
   std::string CompositeEffect::toString() const
@@ -160,7 +191,17 @@ namespace dani
     }
     return ret;
   }
-/*  void CompositeEffect::restartImpl()
+  std::vector<Effect*>::iterator CompositeEffect::begin()
+  {
+    return m_children.begin();
+  }
+
+  std::vector<Effect*>::iterator CompositeEffect::end()
+  {
+    return m_children.begin();
+  }
+
+  /*  void CompositeEffect::restartImpl()
   {
     for(auto &effect: m_children)
     {

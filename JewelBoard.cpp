@@ -21,8 +21,68 @@
 #include <numeric>
 
 
-
+#include <SDL_test_font.h>
 #include <SDL_events.h>
+
+struct RGB { int r,g,b;};
+RGB getJewelColor(Jewel::COLOR col)
+{
+  switch(col)
+  {
+  case 0:
+    return {0,0,255};
+  case 1:
+    return {0,255,0};
+  case 2:
+    return {255,255,0};
+  case 3:
+    return {255,0,255};
+  default:
+    return {255,0,0};
+  }
+}
+
+
+class ScorePopUpEffect : public dani::CompositeEffect
+{
+  JewelBoard &m_board;
+  dani::RangeEffect<Vector2D> m_mover;
+  dani::RangeEffect<int> m_fader;
+  static constexpr int DURATION_MS = 3000;
+  RGB m_rgb;
+  Vector2D m_pixel;
+  std::string m_score;
+public:
+  ScorePopUpEffect(JewelBoard &board)
+    :m_board(board)
+  {
+    addChild(m_mover);
+    addChild(m_fader);
+    m_fader.setRange(255, 0, DURATION_MS);
+  }
+
+  void trigger(BoardPos pos, int score)
+  {
+    m_score = dani::toString(score);
+    JewelObject &jo = m_board.getJewel(pos);
+    m_rgb = getJewelColor(jo.getModel().getColor());
+    //@todo get text size estimate and center
+    m_pixel = jo.getPixel() + Vector2D(JewelObject::WIDTH /2 - 8, JewelObject::HEIGHT /2 -8);
+    m_mover.setRange(m_pixel, m_pixel - Vector2D(0, - JewelObject::HEIGHT), DURATION_MS);
+    m_fader.restart();
+  }
+
+
+  void updateImpl() override
+  {
+    dani::CompositeEffect::updateImpl();
+    //get color from
+    SDL_SetRenderDrawColor(TheGame::Instance()->getRenderer(), m_rgb.r, m_rgb.g, m_rgb.b, m_fader.get());
+
+    SDLTest_DrawString(TheGame::Instance()->getRenderer(), m_mover.get().getX(), m_mover.get().getY(),
+                       m_score.c_str());
+  }
+};
 
 JewelBoard::JewelBoard(Match &match):
   m_match(match),
@@ -30,10 +90,14 @@ JewelBoard::JewelBoard(Match &match):
   m_size(JewelObject::WIDTH * BoardPos::NUM_COLS, JewelObject::HEIGHT * (BoardPos::NUM_ROWS + 1) ),
   m_drag(*this),
   m_strike(m_match.getBoard(), this),
-  m_jewelsFalling(true)
+  m_jewelsFalling(true),
+  m_scoreEffects(true)
 {
-  for(ScorePopUpEffect &effect: m_scoreEffects)
-    effect.setPaused();
+  //at most we'll need one per column
+  for (int i=0; i < BoardPos::NUM_COLS; i++)
+  {
+    m_scoreEffects.addChild(*new ScorePopUpEffect(*this));
+  }
   getModel().setCallback(this);
 
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels");
@@ -269,21 +333,24 @@ void JewelBoard::update()
 
 void JewelBoard::scoreAt(std::vector<BoardPos> const & killed, int numJewels)
 {
-  int newPoint = m_match.scoreStrike(numJewels);
+  int newPoints = m_match.scoreStrike(numJewels);
   //show popup at center roughly
   BoardPos center = std::accumulate(killed.begin(), killed.end(), BoardPos(0, 0));
   center.m_row /= killed.size();
   center.m_col /= killed.size();
-  BoardPos closest = *std::min_element(killed.begin(), killed.end(),
-                             [](BoardPos pos1, BoardPos pos2)
+  BoardPos closestPos = *std::min_element(killed.begin(), killed.end(),
+                                          [](BoardPos pos1, BoardPos pos2)
   {return (pos1 - pos2).length();});
 
-  ScorePopUpEffect &effect = *std::find_if(std::begin(m_scoreEffects),
-                                      std::end(m_scoreEffects),
-                                      [](ScorePopUpEffect &effect)
+  ScorePopUpEffect *idleEffect;
+  idleEffect = dynamic_cast<ScorePopUpEffect*>(*std::find_if(std::begin(m_scoreEffects),
+                                           std::end(m_scoreEffects),
+                                           [](dani::Effect *effect)
   {
-      return effect.isPaused();
-  });
+      return effect->isDone();
+}));
+
+  idleEffect->trigger(closestPos, newPoints);
 }
 
 void JewelBoard::clean()

@@ -27,6 +27,8 @@ namespace dani
   class ValueEffect : public Effect
   {
   public:
+    using Effect::resume;
+  public:
     inline T const &get() const
     {
       return m_value;
@@ -40,7 +42,19 @@ namespace dani
     T m_value;
   };
 
-  /** Value will take interpolated values within a range during a specified time*/
+
+#if 0
+   typename DISTANCE_FUNCTION
+  DISTANCE_FUNCTION m_distanceFunction;
+  m_distanceFunction distanceFunction
+  * @param tolerance also useful because we cannot assume that m_value==end
+  * or that T<= is defined (and we don't know either in which direction we're going)
+
+#endif
+  /** Value will take interpolated values within a range during a specified time
+   * It does not loose accuracy neither assumes that T/integer is defined
+   * (which causes some memory overhead, and hence might make sense to create another subclass which does)
+   */
   template <class T>
   class RangeEffect : public ValueEffect<T>
   {
@@ -48,6 +62,7 @@ namespace dani
     using ValueEffect<T>::m_value;
     T m_start;
     T m_end;
+    T m_tolerance;
     int m_durationMs;
     bool m_increasing;
     int m_pendingUpdateCalls, m_totalUpdateCalls;
@@ -60,7 +75,6 @@ namespace dani
      */
     void setRange(T start, T end, int durationMs)
     {
-      m_increasing = end >= start;
       m_start = std::move(start);
       m_value = m_start;
       m_end = std::move(end);
@@ -69,24 +83,27 @@ namespace dani
       m_totalUpdateCalls = m_pendingUpdateCalls;
     }
 
+    void restart() override
+    {
+      m_value = m_start;
+      m_pendingUpdateCalls = m_totalUpdateCalls;
+    }
+
     bool isDone() const override
     {
-      if (m_increasing)
-        return m_value >= m_end;
-      else
-        return m_value <= m_end;
+      return m_pendingUpdateCalls == 0;
     }
 
     void updateImpl() override
     {
-      m_pendingUpdateCalls--;
-      if (m_pendingUpdateCalls == 0)
+      if (m_pendingUpdateCalls == 1)
         m_value = m_end;
       else
       {
-        m_value =  m_start + ((m_totalUpdateCalls - m_pendingUpdateCalls) / m_totalUpdateCalls)
-            * (m_end - m_start);
+        m_value =  m_start +
+            (m_end - m_start) *((m_totalUpdateCalls - m_pendingUpdateCalls) / m_totalUpdateCalls);
       }
+      m_pendingUpdateCalls--;
     }
   };
 
@@ -115,7 +132,7 @@ namespace dani
     }
 
     /**
-     * @brief set
+     * @brief set configures and calls resume()
      * @param mean if paused, will always return this number
      * @param amplitudeRatio  mean - maxDisturbance <= val <= mean + maxDisturbance
      */
@@ -123,13 +140,20 @@ namespace dani
     {
       m_mean = std::move(mean);
       m_maxDisturbance = maxDisturbance;
+      Effect::resume();
     }
 
 
+    /**
+     * @brief setRange configures and calls resume()
+     * @param min
+     * @param max
+     */
     void setRange(T const &min, T const &max)
     {
       m_mean = (min + max) / 2.0;
       m_maxDisturbance = (max - min) / 2.0;
+      Effect::resume();
     }
 
   protected:
@@ -146,6 +170,10 @@ namespace dani
   protected:
     using LoopEffect<T>::m_value;
   public:
+    void restart() override
+    {
+      Effect::resume();
+    }
 
     constexpr bool isDone() const override
     {
@@ -156,7 +184,7 @@ namespace dani
     {
         m_value = LoopEffect<T>::getMapToRange(rand() / (float) RAND_MAX);
     }
-  };
+  }; //RandomEffect
 
 
 
@@ -198,11 +226,12 @@ namespace dani
       return m_curRadian >= m_stopRadian;
     }
 
-/*    void restart()
+    void restart() override
     {
       m_curRadian = m_startRadian;
+      Effect::resume();
     }
-*/
+
 
     /**
      * @brief setStartPhase
@@ -241,7 +270,6 @@ namespace dani
 
     void updateImpl() override
     {
-
       m_curRadian += m_incRadian;
       if(isDone())
         // we don't want to go past stop radian

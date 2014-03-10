@@ -116,9 +116,7 @@ private:
     JewelDrag m_drag;
     JewelStrike m_strike;
     bool m_jewelsFalling;
-    typedef dani::RangeEffect<int> ScorePopUpEffect;
-    //at most we'll need one per column
-    ScorePopUpEffect m_scoreEffects[BoardPos::NUM_COLS];
+    dani::CompositeEffect m_scoreEffects;
 };
 
 

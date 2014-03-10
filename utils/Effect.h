@@ -25,7 +25,15 @@ namespace dani
   class Effect
   {
   public:
-    Effect(bool paused = false);
+    /**
+     * @brief Effect
+     * Effects will start in a non paused state so that isDone() returns true
+     * (this avoid having to pause a effect until it's configure)
+     * So it's the responsibility of each Effect subclass to call
+     * resume() typically after configuring with a setXXX()
+     */
+    Effect();
+    virtual ~Effect();
 
     /**
      * @brief update if not already done or paused, it calls updateImpl()
@@ -37,6 +45,12 @@ namespace dani
     void setVerbose(bool verbose = true);
     virtual void setPaused(bool paused = true);
     bool isPaused() const;
+
+    /**
+     * @brief restart resets to initial configuration and calls resume
+     * @todo separate into restart & restartImpl ( restart would also call resume)
+     */
+    virtual void restart() = 0;
 
     /**
      * @brief isDone see nextNext, setSlave
@@ -56,7 +70,7 @@ namespace dani
     /**
      * @brief setNext to sequence effects
      * @param nextEffect when this effect isDone(), nextEffect will be unpaused
-     * (will be updated() on same or next iteration, dependening on relative order in effects list)
+     * (will be updated() on same or next iteration, depending on relative order in effects list)
      * nextEffect is automatically paused
      */
     void setNext(Effect *nextEffect);
@@ -68,8 +82,9 @@ namespace dani
     void setNext(std::function<void (void)> callback);
 
     /**
-     * @brief setSlave a master u/pauses its slaved whe it itself un/pauses
+     * @brief setSlave A master will un/pause its slave when it itself un/pauses
      * Also pauses its slaves when isDone()
+     * A master will restart its slave when restarted
      * @param slaveEffect
      */
     void setSlave(Effect *slaveEffect);
@@ -110,21 +125,32 @@ namespace dani
   {
   public:
     /**
-     * @brief clearChildren remove children
+     * @brief CompositeEffect
+     * @param ownChildren if true, clear/destructor will delete the children
+     * It calls resume on the parent but not on the children
+     */
+    CompositeEffect(bool ownChildren = false);
+    virtual  ~CompositeEffect();
+    /**
+     * @brief clearChildren removes children (and delete if owned)
      */
     void clearChildren();
     /**
      * @brief addChid
-     * @param effect ownwership is not transferred
+     * @param effect
      */
     void addChild(Effect &effect);
-    virtual void setPaused(bool paused = true) override;
-    virtual bool isDone() const override;
+    void setPaused(bool paused = true) override;
+    bool isDone() const override;
+    void restart() override;
     std::string toString() const;
+    std::vector<Effect*>::iterator begin();
+    std::vector<Effect*>::iterator end();
 
-  private:
+  protected:
     virtual void updateImpl() override;
     std::vector<Effect*> m_children;
+    bool m_ownChildren;
   };
 }
 #endif // Effect_H
