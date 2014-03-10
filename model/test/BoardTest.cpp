@@ -13,7 +13,7 @@ BoardTest::BoardTest()
 }
 struct DummyBoardCallback : public BoardCallback
 {
-  void kill(BoardPos ) override
+  void kill(std::vector<BoardPos> const& ) override
   {
     //getJewel(pos).setColor(Jewel::NO_COLOR);
   }

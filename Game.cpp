@@ -89,20 +89,17 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // add some sound effects - TODO move to better place
-  TheSoundManager::Instance()->load("assets/DST-Away.ogg", "music1", SOUND_MUSIC);
-  TheSoundManager::Instance()->load("assets/jump.wav", "jump", SOUND_SFX);
-  //TheSoundManager::Instance()->load("phaser.wav", "shoot", SOUND_SFX);
+  //TheSoundManager::Instance()->load("assets/DST-Away.ogg", "music1", SOUND_MUSIC);
+  //TheSoundManager::Instance()->load("assets/jump.wav", "jump", SOUND_SFX);
 
-  TheSoundManager::Instance()->playMusic("music1", -1);
+  //TheSoundManager::Instance()->playMusic("music1", -1);
 
 
   TheInputHandler::Instance()->initialiseJoysticks();
 
   // register the types for the game
   TheGameObjectFactory::Instance()->registerType("MenuButton", new MenuButtonCreator());
-  //  TheGameObjectFactory::Instance()->registerType("Player", new PlayerCreator());
   TheGameObjectFactory::Instance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
-  //  TheGameObjectFactory::Instance()->registerType("Snail", new SnailCreator());
 
   // start the menu state
   m_pGameStateMachine = new GameStateMachine();
