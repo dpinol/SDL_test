@@ -61,8 +61,9 @@ namespace dani
     /**
      * @brief isDone see nextNext, setSlave
      * when false is returned, updateImpl() will not be called again
-     * until resume is called
-     * @return
+     * until resume is called.
+     * Should return true when it has not been configured
+     * @return wether the effect has finished its work
      */
     virtual bool isDone() const = 0;
 
@@ -71,7 +72,7 @@ namespace dani
      * Is not required to restart from first
      * Calls resumeImpl
      */
-    virtual void resume();
+     void resume();
 
     /**
      * @brief setNext to sequence effects
@@ -142,7 +143,7 @@ namespace dani
      * @brief clearChildren removes children (and delete if owned)
      */
     void clearChildren();
-    virtual void resume();
+    void resumeImpl();
 
     /**
      * @brief addChid

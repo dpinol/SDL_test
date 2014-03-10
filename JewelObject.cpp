@@ -18,7 +18,6 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
   m_fallingStep(0)
 {
-  m_swapper.setVerbose(true);
   m_effects->addChild(m_swapper);
   m_effects->addChild(m_dier);
 

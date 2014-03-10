@@ -67,6 +67,11 @@ namespace dani
     bool m_increasing;
     int m_pendingUpdateCalls, m_totalUpdateCalls;
   public:
+    RangeEffect()
+    {
+      m_pendingUpdateCalls = 0;
+    }
+
     /**
      * @brief setRange
      * @param start
@@ -102,7 +107,7 @@ namespace dani
       else
       {
         m_value =  m_start +
-            (m_end - m_start) *((m_totalUpdateCalls - m_pendingUpdateCalls) / m_totalUpdateCalls);
+            (m_end - m_start) * (1.0 * (m_totalUpdateCalls - m_pendingUpdateCalls) / m_totalUpdateCalls);
       }
       m_pendingUpdateCalls--;
     }

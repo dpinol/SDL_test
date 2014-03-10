@@ -58,6 +58,7 @@ public:
   {
     addChild(m_mover);
     addChild(m_fader);
+    setVerbose(true);
   }
 
   void trigger(BoardPos pos, int score)
@@ -67,13 +68,16 @@ public:
     m_rgb = getJewelColor(jo.getModel().getColor());
     //@todo get text size estimate and center
     m_pixel = jo.getPixel() + Vector2D(JewelObject::WIDTH /2 - 8, JewelObject::HEIGHT /2 -8);
-    m_mover.setRange(m_pixel, m_pixel - Vector2D(0, - JewelObject::HEIGHT), DURATION_MS);
+    m_mover.setRange(m_pixel, m_pixel - Vector2D(0, 2 * JewelObject::HEIGHT), DURATION_MS);
     m_fader.setRange(255, 0, DURATION_MS);
+    resume();
   }
 
 
   void renderImpl() override
   {
+    if (m_mover.isDone())
+      return;
 //    dani::CompositeEffect::updateImpl();
     //get color from
     SDL_SetRenderDrawColor(TheGame::Instance()->getRenderer(), m_rgb.r, m_rgb.g, m_rgb.b, m_fader.get());
@@ -268,6 +272,7 @@ void JewelBoard::shiftDown(BoardPos pos)
 
 void JewelBoard::update()
 {
+  GameObject::update();
   //@todo should we block while block are falling?
   bool clicked = TheInputHandler::Instance()->getMouseButtonState(LEFT);
   if (clicked)

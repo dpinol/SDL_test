@@ -46,6 +46,7 @@ namespace dani
   void Effect::resume()
   {
     m_isDone = false;
+    resumeImpl();
   }
 
   void Effect::render()
@@ -62,10 +63,13 @@ namespace dani
       return;
     updateImpl();
     if (DANI_UNLIKELY(m_verbose))
-      LOG_DEBUG(toString());
+      LOG_INFO(std::string(typeid(*this).name())  + toString());
 
     if (isDone())
     {
+      if (DANI_UNLIKELY(m_verbose))
+        LOG_INFO(std::string(typeid(*this).name())   + "isDone() returned true!");
+
       if (m_next)
         m_next->setPaused(false);
       if (m_callback)
@@ -143,8 +147,9 @@ namespace dani
     clearChildren();
   }
 
-  void CompositeEffect::resume()
+  void CompositeEffect::resumeImpl()
   {
+   // Effect::resume();
     for(auto &effect: m_children)
     {
       effect->resume();
@@ -193,9 +198,12 @@ namespace dani
 
   bool CompositeEffect::isDone() const
   {
+    return false;
+    /*
+     * otherwise a child cannot call its parent's resume
     return std::all_of(m_children.begin(), m_children.end(),
-                       [](Effect* e)
-    {return e->isDone();});
+                       [](Effect const* e)
+    {return e->isDone();});*/
   }
 
   void CompositeEffect::restart()
