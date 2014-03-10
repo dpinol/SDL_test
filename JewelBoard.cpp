@@ -58,7 +58,6 @@ public:
   {
     addChild(m_mover);
     addChild(m_fader);
-    setVerbose(true);
   }
 
   void trigger(BoardPos pos, int score)
