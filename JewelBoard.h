@@ -13,7 +13,6 @@
 #include <utils/ValueEffect.h>
 #include "model/BoardPos.h"
 #include <model/JewelStrike.h>
-#include "GameObjectFactory.h"
 #include "GameObject.h"
 #include "JewelDrag.h"
 #include <functional>

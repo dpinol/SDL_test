@@ -24,7 +24,7 @@ CPPFLAGS:=$(CPPFLAGS) -ftrapv
 #-I$(CURDIR) would allow <utils/..> , but would override system headers. And OSX is case insenstive!
 CPPFLAGS:=$(CPPFLAGS) -std=c++0x -I$(CURDIR)
 LDFLAGS:=$(LDFLAGS)
-LDLIBS:=-lSDL2_test -lSDL2_mixer -lSDL2_image $(LDLIBS) -ltinyxml -lz
+LDLIBS:=-lSDL2_test -lSDL2_mixer -lSDL2_image $(LDLIBS)
 
 #release
 #CPPFLAGS=$(CPPFLAGS) -DNDEBUG -O3 -mssse3

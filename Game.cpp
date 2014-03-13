@@ -6,13 +6,9 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "InputHandler.h"
-#include "MainMenuState.h"
-#include "GameObjectFactory.h"
-#include "MenuButton.h"
-#include "AnimatedGraphic.h"
 #include "JewelBoard.h"
 #include "SoundManager.h"
-#include "GameOverState.h"
+#include "PlayState.h"
 #include <model/Match.h>
 #include <utils/ValueEffect.h>
 #include <iostream>
@@ -25,8 +21,7 @@ Game::Game():
   m_match(new Match),
   m_pWindow(0),
   m_pRenderer(0),
-  m_bRunning(false),
-  m_pGameStateMachine(0)
+  m_bRunning(false)
 {    
 }
 
@@ -97,14 +92,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
   TheInputHandler::Instance()->initialiseJoysticks();
 
-  // register the types for the game
-  TheGameObjectFactory::Instance()->registerType("MenuButton", new MenuButtonCreator());
-  TheGameObjectFactory::Instance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
-
-  // start the menu state
-  m_pGameStateMachine = new GameStateMachine();
-  m_pGameStateMachine->changeState(new MainMenuState());
-
+  m_playState.reset(new PlayState);
+  m_playState->onEnter();
   m_bRunning = true; // everything inited successfully, start the main loop
   return true;
 }
@@ -120,14 +109,14 @@ void Game::render()
 {
   SDL_RenderClear(m_pRenderer);
 
-  m_pGameStateMachine->render();
+  m_playState->render();
 
   SDL_RenderPresent(m_pRenderer);
 }
 
 void Game::update()
 {
-  m_pGameStateMachine->update();
+  m_playState->update();
 }
 
 void Game::handleEvents()
@@ -141,11 +130,9 @@ void Game::clean()
 
   TheInputHandler::Instance()->clean();
 
-  m_pGameStateMachine->clean();
+  m_playState->clean();
 
-  m_pGameStateMachine = 0;
-  delete m_pGameStateMachine;
-
+  m_playState.reset();
   TheTextureManager::Instance()->clearTextureMap();
 
   SDL_DestroyWindow(m_pWindow);

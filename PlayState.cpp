@@ -8,8 +8,6 @@
 
 #include <iostream>
 #include "PlayState.h"
-#include "GameOverState.h"
-#include "PauseState.h"
 #include "Game.h"
 #include "InputHandler.h"
 #include "TextureManager.h"
@@ -72,20 +70,20 @@ void PlayState::update()
 {
   if(m_loadingComplete && !m_exiting)
   {
-    if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
+    /*if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
     {
       TheGame::Instance()->getStateMachine()->pushState(new PauseState());
-    }
+    }*/
 
     //        if(TheInputHandler::Instance()->getButtonState(0, 8))
     //        {
     //            TheGame::Instance()->getStateMachine()->pushState(new PauseState());
     //        }
 
-    if(TheGame::Instance()->getMatch().getPlayerLives() == 0)
+   /* if(TheGame::Instance()->getMatch().getPlayerLives() == 0)
     {
       TheGame::Instance()->getStateMachine()->changeState(new GameOverState());
-    }
+    }*/
 
     bool keyPpressed = TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_P);
     if (keyPpressed && !m_keyPpressed)

@@ -8,13 +8,14 @@
 #define __SDL_Game_Programming_Book__Game__
 
 #include "SDL.h"
-#include "GameStateMachine.h"
 
 #include <utils/Vector2D.h>
 #include <vector>
 #include <atomic>
+#include <memory>
 
 class Match;
+class PlayState;
 
 class Game
 {
@@ -52,7 +53,6 @@ public:
 
   SDL_Renderer* getRenderer() const { return m_pRenderer; }
   SDL_Window* getWindow() const { return m_pWindow; }
-  GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
 
 
   bool running() { return m_bRunning; }
@@ -67,8 +67,7 @@ private:
   std::unique_ptr<Match> m_match;
   SDL_Window* m_pWindow;
   SDL_Renderer* m_pRenderer;
-
-  GameStateMachine* m_pGameStateMachine;
+  std::unique_ptr<PlayState> m_playState;
 
   bool m_bRunning;
 
