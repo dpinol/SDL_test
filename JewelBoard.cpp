@@ -111,14 +111,18 @@ JewelBoard::JewelBoard(Match &match):
 
 void JewelBoard::createInitialJewelsBoard()
 {
-  forAllPos([&](BoardPos const pos)
+  forAllCols([&](short col)
   {
-    Jewel &jewel = m_match.getBoard().getJewel(pos, true);
-    JewelObject *jo = new JewelObject(jewel, pos.m_row == 0);
-
-    m_jewels[pos.m_row][pos.m_col] = jo;
-    Vector2D pixel = getJewelPixel(pos);
-    jo->getPixel() = pixel;
+    Column &column = m_jewels[col];
+    BoardPos pos(col, 0);
+    for (; pos.m_row <= BoardPos::NUM_ROWS; pos.m_row++)
+    {
+      Jewel &jewel = m_match.getBoard().getJewel(pos, true);
+      JewelObject *jo = new JewelObject(jewel, pos.m_row == 0);
+      column.push_back(jo);
+      Vector2D pixel = getJewelPixel(pos);
+      jo->getPixel() = pixel;
+    }
   });
 }
 
@@ -173,13 +177,13 @@ Board &JewelBoard::getModel()
 JewelObject& JewelBoard::getJewel(BoardPos const pos)
 {
   assertBoardPos(pos);
-  return *m_jewels[pos.m_row][pos.m_col];
+  return *m_jewels[pos.m_col][pos.m_row];
 }
 
 JewelObject const& JewelBoard::getJewel(BoardPos const pos) const
 {
   assertBoardPos(pos);
-  return *m_jewels[pos.m_row][pos.m_col];
+  return *m_jewels[pos.m_col][pos.m_row];
 }
 
 
@@ -248,7 +252,11 @@ void JewelBoard::pureSwap(BoardPos fromPos, BoardPos toPos)
     LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
 
     //pureSwap(pos, next);
-    std::swap( m_jewels[fromPos.m_row][fromPos.m_col], m_jewels[toPos.m_row][toPos.m_col]);
+    //std::swap( m_jewels[fromPos.m_row][fromPos.m_col], m_jewels[toPos.m_row][toPos.m_col]);
+    JewelObject &from = getJewel(fromPos);
+    Column &column = m_jewels[fromPos.m_col];
+    column[fromPos.m_row] = column[toPos.m_row];
+    column[toPos.m_row] = &from;
 
     m_match.getBoard().pureSwap(fromPos, toPos);
     //if (pos.m_row == 0)
