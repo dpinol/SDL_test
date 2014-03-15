@@ -261,10 +261,14 @@ void JewelBoard::shiftDown(BoardPos pos)
 
     pureSwap(pos, next);
     m_match.getBoard().pureSwap(pos, next);
+    //if (pos.m_row == 0)
+    //  getJewel(pos).m_bDead = true;
 
     //it will be set to falling again if lower jewel is detected to be empty
     getJewel(next).setFalling(false);
     getJewel(pos).setFalling(false);
+    getJewel(pos).getPixel() = getJewelPixel(pos);
+    getJewel(pos).resetFall();
   }
 }
 
@@ -286,8 +290,10 @@ void JewelBoard::update()
   forAllPos([&](BoardPos pos)
   {
     JewelObject &jo = getJewel(pos);
-    if (jo.isFallDone())
+    //if (jo.isFallDone(pos))
+    if(pos.m_row < BoardPos::NUM_ROWS && !jo.isDead() && jo.getPixel().getY() >= getJewelPixel(pos.getBelow()).getY())
     {
+      jo.getPixel() = getJewelPixel(pos.getBelow());
       boardChanged = true;
       shiftDown(pos);
     }
@@ -329,6 +335,7 @@ void JewelBoard::update()
         strikesLen = m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
         totalStrikesLen += strikesLen;
       }
+      jo.resetFall();
     }, false);
     if (!m_jewelsFalling && totalStrikesLen == 0)
       TheGame::Instance()->getMatch().nextTurn();

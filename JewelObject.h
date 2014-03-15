@@ -48,9 +48,10 @@ public:
   void resurrect();
 
   bool isFalling() const;
-  bool isFallDone() const;
+  bool isFallDone(BoardPos pos) const;
   void setFalling(bool falling =true);
   void fallStep();
+  void resetFall();
 
   dani::Effect &swapWith(BoardPos relativeShift, bool andReturn);
 
@@ -71,6 +72,7 @@ protected:
   //friend class JewelBoard;
   Jewel *m_model;
   short m_fallingStep;
+  float m_fallenFrom;
 
 };
 #endif /* JEWEL_OBJECT_H */

@@ -1,7 +1,7 @@
 CC=clang
 # sanitizer works, but c++11 does not https://trac.macports.org/ticket/41033
-#CXX=g++-4.9
-CXX=clang++
+#CXX=g++-4.9 
+#CXX=clang++ -fsanitize=address -fno-omit-frame-pointer 
 RM=rm -f
 CPPFLAGS:=$(shell pkg-config --cflags sdl2)
 LDFLAGS:=-g $(shell pkg-config --libs sdl2)
@@ -27,7 +27,7 @@ LDFLAGS:=$(LDFLAGS)
 LDLIBS:=-lSDL2_test -lSDL2_mixer -lSDL2_image $(LDLIBS)
 
 #release
-#CPPFLAGS=$(CPPFLAGS) -DNDEBUG -O3 -mssse3
+#CPPFLAGS:=$(CPPFLAGS) -DNDEBUG -O3 -mssse3
 
 #debug
 CPPFLAGS:=$(CPPFLAGS) -g
@@ -60,7 +60,7 @@ SDL_test: $(OBJS)
 
 %.o: %.cpp
 	@echo "compiling $<"
-	@$(CXX) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+	$(CXX) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 depend: .depend
 

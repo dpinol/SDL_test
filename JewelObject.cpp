@@ -16,7 +16,8 @@ const short JewelObject::FALLING_STEPS = 20;
 
 JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_model(&jewel),
-  m_fallingStep(0)
+  m_fallingStep(0),
+  m_fallenFrom(-1)
 {
   m_effects->addChild(m_swapper);
   m_effects->addChild(m_dier);
@@ -132,6 +133,7 @@ void JewelObject::resurrect()
 {
   m_bDying = false;
   m_bDead = false;
+  resetFall();
   //@todo we should allow direct strike. fo
   getModel().setColor(random() % Jewel::NUM_COLORS);
 }
@@ -140,7 +142,7 @@ void JewelObject::kill()
 {
   if (!m_bDying)
   {
-   // m_model->setColor(Jewel::NO_COLOR);
+    // m_model->setColor(Jewel::NO_COLOR);
     m_bDying = true;
     m_dyingTime = 60;
     m_dyingCounter = 0;
@@ -148,11 +150,17 @@ void JewelObject::kill()
   }
 }
 
+void JewelObject::resetFall()
+{
+  m_fallenFrom = -1;
+}
 
 void JewelObject::setFalling(bool falling)
 {
   m_bfalling = falling;
   m_fallingStep = 0;
+  if (m_fallenFrom == -1)
+    m_fallenFrom = getPixel().getY();
 }
 
 bool JewelObject::isFalling() const
@@ -160,15 +168,27 @@ bool JewelObject::isFalling() const
   return m_bfalling; //m_fallingStep != 0;
 }
 
-bool JewelObject::isFallDone() const
+bool JewelObject::isFallDone(BoardPos pos) const
 {
   return m_fallingStep >= FALLING_STEPS;
+
+  /*  if (!m_bfalling)
+    return false;
+  //return m_fallingStep >= FALLING_STEPS;
+  float fallenDistance = getPixel().getY() - m_fallenFrom;
+  return fallenDistance >= HEIGHT;*/
 }
 
 void JewelObject::fallStep()
 {
   m_fallingStep++;
-  getPixel().setY(getPixel().getY() + float(HEIGHT) / FALLING_STEPS); //jo.getFallingStep() *
+  float fallenDistance = getPixel().getY() - m_fallenFrom; //3.5
+  static short maxDist = BoardPos::NUM_ROWS * HEIGHT;
+  assert(fallenDistance <= maxDist);
+
+  float factor= 1 + 2* fallenDistance / maxDist;
+  assert(factor >= 1);
+  getPixel().setY(getPixel().getY() + factor * float(HEIGHT) / FALLING_STEPS); //jo.getFallingStep() *
   //if (m_fallingStep == FALLING_STEPS)
   //  m_fallingStep = 0;
 }
