@@ -154,7 +154,7 @@ void JewelObject::resetFall()
 {
   m_fallenFrom = -1;
 }
-
+/*
 void JewelObject::setFalling(bool falling)
 {
   m_bfalling = falling;
@@ -162,7 +162,7 @@ void JewelObject::setFalling(bool falling)
   if (m_fallenFrom == -1)
     m_fallenFrom = getPixel().getY();
 }
-
+*/
 bool JewelObject::isFalling() const
 {
   return m_bfalling; //m_fallingStep != 0;
@@ -179,6 +179,12 @@ bool JewelObject::isFallDone(BoardPos pos) const
   return fallenDistance >= HEIGHT;*/
 }
 
+
+void JewelObject::fallUntil(Vector2D target)
+{
+  m_target = target;
+}
+
 void JewelObject::fallStep()
 {
   m_fallingStep++;
@@ -186,9 +192,17 @@ void JewelObject::fallStep()
   static short maxDist = BoardPos::NUM_ROWS * HEIGHT;
   assert(fallenDistance <= maxDist);
 
-  float factor= 1 + 2* fallenDistance / maxDist;
+  float factor= 1; // + 2* fallenDistance / maxDist;
   assert(factor >= 1);
-  getPixel().setY(getPixel().getY() + factor * float(HEIGHT) / FALLING_STEPS); //jo.getFallingStep() *
+  float newY = getPixel().getY() + factor * float(HEIGHT) / FALLING_STEPS;
+  if (newY >= m_target.getY())
+  {
+    newY = m_target.getY();
+    m_bfalling = false;
+    //m_targetY = -1;
+  }
+  getPixel().setY(newY); //jo.getFallingStep() *
+
   //if (m_fallingStep == FALLING_STEPS)
   //  m_fallingStep = 0;
 }

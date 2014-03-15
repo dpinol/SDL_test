@@ -24,6 +24,9 @@ class Match;
 class Board;
 struct SDL_MouseButtonEvent;
 
+/**
+ * @brief The JewelBoard class renders the jewels in the board
+ */
 class JewelBoard : public GameObject, public BoardCallback
 {
 public:
@@ -66,6 +69,14 @@ public:
           for (pos.m_col = 0 ; pos.m_col < BoardPos::BoardPos::NUM_COLS ; ++pos.m_col)
             funct(pos);
     }
+
+    template<class F>
+    void forAllCols(F const &funct)
+    {
+      for (short col = 0 ; col < BoardPos::BoardPos::NUM_COLS ; ++col)
+        funct(col);
+    }
+
     template<class F>
     inline void forAll(F const &funct, bool alsoFirstRow = true)
     {
@@ -86,6 +97,7 @@ public:
     Board const &getModel() const;
 
 private:
+    void findJustDeads(short col);
     /**
      * @brief scoreAt manages the scoring
      * @param pos

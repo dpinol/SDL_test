@@ -77,7 +77,7 @@ public:
   {
     if (m_mover.isDone())
       return;
-//    dani::CompositeEffect::updateImpl();
+    //    dani::CompositeEffect::updateImpl();
     //get color from
     SDL_SetRenderDrawColor(TheGame::Instance()->getRenderer(), m_rgb.r, m_rgb.g, m_rgb.b, m_fader.get());
 
@@ -228,11 +228,42 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
   return sw.run();
 }
 */
-void JewelBoard::pureSwap(BoardPos pos, BoardPos pos2)
+
+/*
+0|1-
+1|--
+2|-1
+3|33
+*/
+void JewelBoard::pureSwap(BoardPos fromPos, BoardPos toPos)
 {
-  /*getJewel(BoardPos(pos.m_col, pos.m_row + 1)) = jo;
-  getJewel(BoardPos(pos.m_col, pos.m_row)).resetFalling();*/
-  std::swap( m_jewels[pos.m_row][pos.m_col], m_jewels[pos2.m_row][pos2.m_col]);
+
+  //JewelObject &jo = getJewel(pos);
+ // assert(pos.m_row < BoardPos::NUM_ROWS);
+
+  {
+   // BoardPos next = pos.getBelow();
+    //@bug still would rarely fails.pending to investigate
+    //assert(getJewel(next).isDead());
+    LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
+
+    //pureSwap(pos, next);
+    std::swap( m_jewels[fromPos.m_row][fromPos.m_col], m_jewels[toPos.m_row][toPos.m_col]);
+
+    m_match.getBoard().pureSwap(fromPos, toPos);
+    //if (pos.m_row == 0)
+    //  getJewel(pos).m_bDead = true;
+
+    //it will be set to falling again if lower jewel is detected to be empty
+  /*  getJewel(next).setFalling(false);
+    getJewel(pos).setFalling(false);
+    getJewel(pos).getPixel() = getJewelPixel(pos);
+    getJewel(pos).resetFall();*/
+    getJewel(fromPos).getPixel() = getJewelPixel(fromPos);
+    getJewel(fromPos).resurrect();
+  }
+
+
 }
 /**
  * draft
@@ -250,28 +281,41 @@ void JewelBoard::pureSwap(BoardPos pos, BoardPos pos2)
  */
 void JewelBoard::shiftDown(BoardPos pos)
 {
-  //JewelObject &jo = getJewel(pos);
-  assert(pos.m_row < BoardPos::NUM_ROWS);
-
+}
+/*
+0|1,
+1|2-
+2|,1
+3|-2
+4|33
+*/
+void JewelBoard::findJustDeads(short col)
+{
+  BoardPos pos(col, BoardPos::BoardPos::NUM_ROWS);
+  //valid when already falling
+  BoardPos targetPos;
+  for (; pos.m_row >= 1  ; --pos.m_row)
   {
-    BoardPos next = pos.getBelow();
-    //@bug still would rarely fails.pending to investigate
-    //assert(getJewel(next).isDead());
-    LOG_DEBUG("jewel " << next << " popped up ");
-
-    pureSwap(pos, next);
-    m_match.getBoard().pureSwap(pos, next);
-    //if (pos.m_row == 0)
-    //  getJewel(pos).m_bDead = true;
-
-    //it will be set to falling again if lower jewel is detected to be empty
-    getJewel(next).setFalling(false);
-    getJewel(pos).setFalling(false);
-    getJewel(pos).getPixel() = getJewelPixel(pos);
-    getJewel(pos).resetFall();
+    JewelObject &jo = getJewel(pos);
+    if (targetPos.isValid())
+    {
+      if(!jo.isDead())
+      {
+        jo.fallUntil(getJewelPixel(targetPos));
+        pureSwap(targetPos, pos);
+        targetPos.m_row--;
+      }
+    }
+    else
+    {
+      JewelObject &above = getJewel(pos.getAbove());
+      if (jo.isDead() && !above.isFalling())
+      {
+        targetPos = pos;
+      }
+    }
   }
 }
-
 
 void JewelBoard::update()
 {
@@ -287,36 +331,64 @@ void JewelBoard::update()
   m_jewelsFalling = false;
   bool boardChanged = false;
   int totalStrikesLen = 0;
-  forAllPos([&](BoardPos pos)
+
+  forAllCols([&](short col)
   {
-    JewelObject &jo = getJewel(pos);
-    //if (jo.isFallDone(pos))
+    findJustDeads(col);
+  });
+
+  /*0->1
+  1->2
+  2->0*/
+  //dead jewels also fall. In this way they recycle the row 0
+  forAllCols([&](short col)
+  {
+    JewelObject &row0 = getJewel(BoardPos(col, 0));
+    BoardPos pos(col, BoardPos::BoardPos::NUM_ROWS);
+    Vector2D targetPos;
+    for (; pos.m_row >= 1  ; --pos.m_row)
+    {
+      JewelObject &jo = getJewel(pos);
+      jo.update();
+      if (jo.isFalling())
+        m_jewelsFalling = true;
+      /*if (jo.m_target.isValid() && !jo.isFalling())
+      {
+//        if (pos.m_row == BoardPos::NUM_ROWS || !getJewel(pos.getBelow()).isFalling())
+        pureSwap(jo.m_target, pos);
+      }*/
+    }
+      /*   //if (jo.isFallDone(pos))
     if(pos.m_row < BoardPos::NUM_ROWS && !jo.isDead() && jo.getPixel().getY() >= getJewelPixel(pos.getBelow()).getY())
     {
       jo.getPixel() = getJewelPixel(pos.getBelow());
       boardChanged = true;
       shiftDown(pos);
-    }
-    if (jo.isFalling() || jo.isDying())
-      m_jewelsFalling = true;
-    if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
-    {
-      m_jewelsFalling = true;
-      BoardPos const upperPos = pos.getAbove();
-      JewelObject &upper = getJewel(upperPos);
-      if (!upper.isFalling())
-      {
-        upper.setFalling();
-        //resurrect so that it will fall
-        if (pos.m_row == 1 && upper.isDead())
+    }*/
+
+      /*if (jo.isFalling() || jo.isDying())
+        m_jewelsFalling = true;
+      if ()
+
+        if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
         {
-          LOG_INFO("Resurrecting " << upperPos);
-          upper.resurrect();
-          upper.getPixel() = getJewelPixel(upperPos);
+          m_jewelsFalling = true;
+          BoardPos const upperPos = pos.getAbove();
+          JewelObject &upper = getJewel(upperPos);
+          if (!upper.isFalling())
+          {
+            upper.setFalling();
+            //resurrect so that it will fall
+            if (pos.m_row == 1 && upper.isDead())
+            {
+              LOG_INFO("Resurrecting " << upperPos);
+              upper.resurrect();
+              upper.getPixel() = getJewelPixel(upperPos);
+            }
+          }
         }
-      }
     }
-    jo.update();
+    */
   });
 
   //@todo call findMatch on falling jewels which are isStable
@@ -356,11 +428,11 @@ void JewelBoard::scoreAt(std::vector<BoardPos> const & killed, int numJewels)
 
   ScorePopUpEffect *idleEffect;
   idleEffect = dynamic_cast<ScorePopUpEffect*>(*std::find_if(std::begin(m_scoreEffects),
-                                           std::end(m_scoreEffects),
-                                           [](dani::Effect *effect)
+                                                             std::end(m_scoreEffects),
+                                                             [](dani::Effect *effect)
   {
-      return effect->isDone();
-}));
+                                                 return effect->isDone();
+                                               }));
 
   idleEffect->trigger(closestPos, newPoints);
 }

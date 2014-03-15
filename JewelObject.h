@@ -19,6 +19,10 @@
 
 class JewelBoard;
 
+/**
+ * @brief The JewelObject class renders a jewel. To make it lightweight, it
+ * has no knowedge about its position (neither about the board)
+ */
 class JewelObject : public GameObject
 {
 public:
@@ -49,7 +53,13 @@ public:
 
   bool isFalling() const;
   bool isFallDone(BoardPos pos) const;
-  void setFalling(bool falling =true);
+
+
+  /**
+   * @brief fallUntil set that it will fall until specified position
+   * @param targetPos
+   */
+  void fallUntil(Vector2D target);
   void fallStep();
   void resetFall();
 
@@ -73,6 +83,7 @@ protected:
   Jewel *m_model;
   short m_fallingStep;
   float m_fallenFrom;
+  Vector2D m_target;
 
 };
 #endif /* JEWEL_OBJECT_H */
