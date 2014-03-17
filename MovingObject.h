@@ -55,7 +55,7 @@ public:
   virtual void draw() override;
 
   // do update stuff
-  virtual void update() override;
+  virtual bool update() override;
 
   // remove anything that needs to be deleted
   virtual void clean() override;

@@ -345,7 +345,7 @@ bool JewelBoard::findJustDeads(short col)
   return changed;
 }
 
-void JewelBoard::update()
+bool JewelBoard::update()
 {
   GameObject::update();
   //@todo should we block while block are falling?
@@ -368,11 +368,13 @@ void JewelBoard::update()
   });
   if (changed)
     LOG_INFO(*this << std::endl);
+  changed = false;
 
   /*0->1
   1->2
   2->0*/
   //dead jewels also fall. In this way they recycle the row 0
+  bool changed2 = false;
   forAllCols([&](short col)
   {
     JewelObject &row0 = getJewel(BoardPos(col, 0));
@@ -381,7 +383,7 @@ void JewelBoard::update()
     for (; pos.m_row >= 0  ; --pos.m_row)
     {
       JewelObject &jo = getJewel(pos);
-      jo.update();
+      changed2 = jo.update() || changed2;
       if (jo.isFalling())
         m_jewelsFalling = true;
       /*if (jo.m_target.isValid() && !jo.isFalling())
@@ -390,6 +392,7 @@ void JewelBoard::update()
         pureSwap(jo.m_target, pos);
       }*/
     }
+
     /*   //if (jo.isFallDone(pos))
     if(pos.m_row < BoardPos::NUM_ROWS && !jo.isDead() && jo.getPixel().getY() >= getJewelPixel(pos.getBelow()).getY())
     {
@@ -422,6 +425,11 @@ void JewelBoard::update()
     }
     */
   });
+  if (changed2)
+    LOG_INFO(*this << std::endl);
+
+
+  bool changed3 = false;
 
   //@todo call findMatch on falling jewels which are isStable
   //(and all jewels in strike also isStable). And then m_jewelsFalling can be removed
@@ -438,12 +446,17 @@ void JewelBoard::update()
         int strikesLen;
         strikesLen = m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
         totalStrikesLen += strikesLen;
+        if (strikesLen > 0)
+          changed3 = true;
       }
       jo.resetFall();
     }, false);
     if (!m_jewelsFalling && totalStrikesLen == 0)
       TheGame::Instance()->getMatch().nextTurn();
   }
+  if (changed3)
+    LOG_INFO(*this << std::endl);
+  return changed|| changed2 || changed3;
 }
 
 

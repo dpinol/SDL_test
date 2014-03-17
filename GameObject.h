@@ -35,8 +35,11 @@ public:
     // draw the object
     virtual void draw();
     
-    // do update stuff
-    virtual void update();
+  /**
+     * @brief update
+     * @return wether the state changed
+     */
+    virtual bool update();
     
     // remove anything that needs to be deleted
     virtual void clean();

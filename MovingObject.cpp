@@ -108,10 +108,10 @@ void MovingObject::draw()
 }
 
 // do update stuff
-void MovingObject::update()
+bool MovingObject::update()
 {
   if (m_done)
-    return;
+    return false;
   m_effects->update();
   float dist = (m_pixel - m_trajectory[m_trajectoryIndex]).length();
   if (dist < 2)
@@ -120,7 +120,7 @@ void MovingObject::update()
     if (m_trajectoryIndex == m_trajectory.size())
     {
       m_done = true;
-      return;
+      return true;
     }
     m_stepSpeed = (m_trajectory[m_trajectoryIndex] - m_trajectory[m_trajectoryIndex - 1]);
     m_angle = m_stepSpeed.angle() * 180.0 / M_PI;
@@ -154,6 +154,7 @@ void MovingObject::update()
   {
     dist->run();
   }*/
+  return true;
 }
 
 // remove anything that needs to be deleted

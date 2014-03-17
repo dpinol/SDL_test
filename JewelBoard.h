@@ -35,7 +35,7 @@ public:
   JewelBoard(Match &match);
 
   void draw() override;
-  void update() override;
+  bool update() override;
   void clean() override;
   std::string type() override { return "JewelBoard";}
 

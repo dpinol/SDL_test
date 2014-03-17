@@ -105,8 +105,9 @@ void JewelObject::draw()
 }
 
 // apply velocity to current position
-void JewelObject::update()
+bool JewelObject::update()
 {
+  bool changed = false;
   m_effects->update();
   if (isDying())
   {
@@ -115,12 +116,13 @@ void JewelObject::update()
     {
       m_bDead = true;
       m_bDying = false;
+      changed = true;
     }
   } else if (isFalling())
   {
-    fallStep();
+    changed = fallStep() || changed;
   }
-
+  return changed;
 }
 
 
@@ -187,7 +189,7 @@ void JewelObject::fallUntil(Vector2D target)
   m_bfalling = true;
 }
 
-void JewelObject::fallStep()
+bool JewelObject::fallStep()
 {
   m_fallingStep++;
   float fallenDistance = getPixel().getY() - m_fallenFrom; //3.5
@@ -207,6 +209,7 @@ void JewelObject::fallStep()
 
   //if (m_fallingStep == FALLING_STEPS)
   //  m_fallingStep = 0;
+  return !m_bfalling;
 }
 
 

@@ -35,9 +35,10 @@ void GameObject::draw()
   m_effects->render();
 }
 
-void GameObject::update()
+bool GameObject::update()
 {
   m_effects->update();
+  return false;
 }
 
 void GameObject::clean()

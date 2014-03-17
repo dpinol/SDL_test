@@ -19,7 +19,7 @@ public:
   void draw() override;
 
   // do update stuff
-  virtual void update();
+  virtual bool update();
 
   // get the type of the object
   std::string type() override { return "scorePanel";}

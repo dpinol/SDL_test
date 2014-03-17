@@ -33,7 +33,7 @@ void ScorePanel::draw()
   SDLTest_DrawString(renderer, 80, 80, ("Score: " + dani::toString(m_match.getScore())).c_str());
 }
 
-void ScorePanel::update()
+bool ScorePanel::update()
 {
-
+  return false;
 }

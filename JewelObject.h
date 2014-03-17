@@ -44,7 +44,7 @@ public:
 
   virtual void draw() override;
   /** manages dying and dead states*/
-  virtual void update() override;
+  virtual bool update() override;
 
   virtual void clean() override {}
 
@@ -63,7 +63,11 @@ public:
    * @param targetPos
    */
   void fallUntil(Vector2D target);
-  void fallStep();
+  /**
+   * @brief fallStep
+   * @return whether it stopped falling
+   */
+  bool fallStep();
   void resetFall();
 
   dani::Effect &swapWith(BoardPos relativeShift, bool andReturn);
