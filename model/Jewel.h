@@ -8,6 +8,7 @@
 #ifndef JEWEL_H
 #define JEWEL_H
 #include "BoardPos.h"
+#include <iosfwd>
 
 class Board;
 
@@ -33,5 +34,7 @@ private:
 //  BoardPos m_boardPos;
 
 };
+
+std::ostream & operator<<(std::ostream & strm, Jewel &j);
 
 #endif // JEWEL_H

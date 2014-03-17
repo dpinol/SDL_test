@@ -9,12 +9,15 @@
 #ifndef JEWEL_OBJECT_H
 #define JEWEL_OBJECT_H
 
-#include <SDL.h>
 #include "GameObject.h"
+#include "JewelMove.h"
+
 #include <utils/ValueEffect.h>
 #include "model/Jewel.h"
-#include "JewelMove.h"
+
 #include <SDL_timer.h>
+#include <SDL.h>
+#include <iosfwd>
 
 
 class JewelBoard;
@@ -87,3 +90,5 @@ protected:
 
 };
 #endif /* JEWEL_OBJECT_H */
+
+std::ostream & operator<<(std::ostream & strm, JewelObject &j);

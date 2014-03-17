@@ -102,7 +102,12 @@ public:
   Board const &getModel() const;
 
 private:
-  void findJustDeads(short col);
+  /**
+   * @brief findJustDeads
+   * @param col
+   * @return wether something changed
+   */
+  bool findJustDeads(short col);
   /**
      * @brief scoreAt manages the scoring
      * @param pos
@@ -135,6 +140,7 @@ private:
   JewelStrike m_strike;
   bool m_jewelsFalling;
   dani::CompositeEffect m_scoreEffects;
+  std::string m_lastDump;
 };
 
 std::ostream & operator<<(std::ostream & strm, JewelBoard &board);

@@ -106,6 +106,9 @@ JewelBoard::JewelBoard(Match &match):
   TheTextureManager::Instance()->load("assets/jewels.png", "jewels");
 
   createInitialJewelsBoard();
+
+  LOG_INFO(*this << std::endl);
+
 }
 
 
@@ -241,7 +244,7 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
 4|33
 */
 
-void JewelBoard::pureSwap(BoardPos fromPos, BoardPos toPos)
+void JewelBoard::pureSwap(BoardPos toPos, BoardPos fromPos)
 {
   assert(fromPos.m_col == toPos.m_col);
       //JewelObject &jo = getJewel(pos);
@@ -261,12 +264,13 @@ void JewelBoard::pureSwap(BoardPos fromPos, BoardPos toPos)
     column[toPos.m_row] = &from;*/
   Column &column = m_jewels[fromPos.m_col];
   int numKilled = toPos.m_row - fromPos.m_row;
-  Column::iterator fromIt = column.begin() + fromPos.m_row;
-  Column::iterator middleIt = fromIt + numKilled;
-  Column::iterator toIt = middleIt + numKilled;
+  Column::iterator fromIt = column.begin();
+  Column::iterator middleIt = column.begin() + fromPos.m_row + 1;
+  Column::iterator toIt = column.begin() + toPos.m_row + 1;
 
   //create unit test!
   std::rotate(fromIt, middleIt, toIt);
+
   /* for(; fromPos < toPos; fromPos += BoardPos(0,1))
     {
       JewelObject
@@ -309,33 +313,36 @@ void JewelBoard::shiftDown(BoardPos pos)
 3|-2
 4|33
 */
-void JewelBoard::findJustDeads(short col)
+bool JewelBoard::findJustDeads(short col)
 {
+  bool changed = false;
   BoardPos pos(col, BoardPos::BoardPos::NUM_ROWS);
   //valid when already falling
   BoardPos targetPos;
-  for (; pos.m_row >= 1  ; --pos.m_row)
+  for (; pos.m_row >= 0  ; --pos.m_row)
   {
     JewelObject &jo = getJewel(pos);
     if (targetPos.isValid())
     {
-      if(!jo.isDead())
+      if(!jo.isDead() || pos.m_row == 0)
       {
-        BoardPos fallDist = targetPos - pos;
         jo.fallUntil(getJewelPixel(targetPos));
         pureSwap(targetPos, pos);
         targetPos.m_row--;
       }
     }
-    else
+    else if (pos.m_row >= 1)
     {
       JewelObject &above = getJewel(pos.getAbove());
       if (jo.isDead() && !above.isFalling())
       {
         targetPos = pos;
+        LOG_INFO("Falling to " << pos);
+        changed = true;
       }
     }
   }
+  return changed;
 }
 
 void JewelBoard::update()
@@ -353,10 +360,14 @@ void JewelBoard::update()
   bool boardChanged = false;
   int totalStrikesLen = 0;
 
+  bool changed = false;
+
   forAllCols([&](short col)
   {
-    findJustDeads(col);
+    changed = findJustDeads(col) || changed;
   });
+  if (changed)
+    LOG_INFO(*this << std::endl);
 
   /*0->1
   1->2
@@ -367,7 +378,7 @@ void JewelBoard::update()
     JewelObject &row0 = getJewel(BoardPos(col, 0));
     BoardPos pos(col, BoardPos::BoardPos::NUM_ROWS);
     Vector2D targetPos;
-    for (; pos.m_row >= 1  ; --pos.m_row)
+    for (; pos.m_row >= 0  ; --pos.m_row)
     {
       JewelObject &jo = getJewel(pos);
       jo.update();
@@ -470,11 +481,11 @@ void JewelBoard::clean()
 
 std::ostream & operator<<(std::ostream & strm, JewelBoard &board)
 {
-  BoardPos pos(0, 0);
-  for (; pos.m_row <= BoardPos::BoardPos::NUM_ROWS  ; ++pos.m_row)
+  BoardPos pos;
+  for (pos.m_row = 0; pos.m_row <= BoardPos::BoardPos::NUM_ROWS  ; ++pos.m_row)
   {
-    for (; pos.m_col < BoardPos::BoardPos::NUM_COLS ; ++pos.m_col)
-      strm << board.getJewel(pos).getModel().getColor();
+    for (pos.m_col = 0; pos.m_col < BoardPos::BoardPos::NUM_COLS ; ++pos.m_col)
+      strm << board.getJewel(pos);
     strm << std::endl;
   }
   return strm;

@@ -11,6 +11,7 @@
 #include "Game.h"
 #include <utils/ValueEffect.h>
 #include <utils/log.h>
+#include <utils/utils.h>
 
 const short JewelObject::FALLING_STEPS = 20;
 
@@ -183,6 +184,7 @@ bool JewelObject::isFallDone(BoardPos pos) const
 void JewelObject::fallUntil(Vector2D target)
 {
   m_target = target;
+  m_bfalling = true;
 }
 
 void JewelObject::fallStep()
@@ -205,5 +207,23 @@ void JewelObject::fallStep()
 
   //if (m_fallingStep == FALLING_STEPS)
   //  m_fallingStep = 0;
+}
+
+
+std::ostream & operator<<(std::ostream & strm, JewelObject &j)
+{
+  char c;
+  if (j.isFalling())
+    c = 'f';
+  else if (j.isDying())
+    c = 'z';
+  else if (j.isDead())
+    c = 'd';
+  else if (j.getModel().getColor() == Jewel::NO_COLOR)
+    c = 'n';
+  else
+    c = '0' + (j.getModel().getColor());
+  strm << c;
+  return strm;
 }
 
