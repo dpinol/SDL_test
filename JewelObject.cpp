@@ -28,8 +28,8 @@ JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
   m_dier.setPaused(true);
 
   m_bfalling = false;
-  if (firstRow)
-    m_bDead = true;
+  //if (firstRow)
+  //  m_bDead = true;
   m_pixel = Vector2D(0,0);
   m_currentRow = 0;
   //we don't use it so far
@@ -156,6 +156,7 @@ void JewelObject::kill()
 void JewelObject::resetFall()
 {
   m_fallenFrom = -1;
+  m_bfalling = false;
 }
 /*
 void JewelObject::setFalling(bool falling)
@@ -217,15 +218,21 @@ std::ostream & operator<<(std::ostream & strm, JewelObject &j)
 {
   char c;
   if (j.isFalling())
-    c = 'f';
+    c = 'F';
   else if (j.isDying())
-    c = 'z';
-  else if (j.isDead())
-    c = 'd';
+    c = 'Z';
   else if (j.getModel().getColor() == Jewel::NO_COLOR)
-    c = 'n';
+    c = 'N';
   else
     c = '0' + (j.getModel().getColor());
+  if (j.isDead())
+  {
+    if (c >= 'A' && c <= 'Z')
+      c -= 'A' - 'a';
+    else
+      c += 5;
+  }
+
   strm << c;
   return strm;
 }

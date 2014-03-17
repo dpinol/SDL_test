@@ -236,59 +236,6 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
 }
 */
 
-/*
-0|1,
-1|2-
-2|,1
-3|-2
-4|33
-*/
-
-void JewelBoard::pureSwap(BoardPos toPos, BoardPos fromPos)
-{
-  assert(fromPos.m_col == toPos.m_col);
-      //JewelObject &jo = getJewel(pos);
-      // assert(pos.m_row < BoardPos::NUM_ROWS);
-
-      //  {
-      // BoardPos next = pos.getBelow();
-      //@bug still would rarely fails.pending to investigate
-      //assert(getJewel(next).isDead());
-      LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
-
-  //pureSwap(pos, next);
-  //std::swap( m_jewels[fromPos.m_row][fromPos.m_col], m_jewels[toPos.m_row][toPos.m_col]);
-  /*JewelObject &from = getJewel(fromPos);
-    Column &column = m_jewels[fromPos.m_col];
-    column[fromPos.m_row] = column[toPos.m_row];
-    column[toPos.m_row] = &from;*/
-  Column &column = m_jewels[fromPos.m_col];
-  int numKilled = toPos.m_row - fromPos.m_row;
-  Column::iterator fromIt = column.begin();
-  Column::iterator middleIt = column.begin() + fromPos.m_row + 1;
-  Column::iterator toIt = column.begin() + toPos.m_row + 1;
-
-  //create unit test!
-  std::rotate(fromIt, middleIt, toIt);
-
-  /* for(; fromPos < toPos; fromPos += BoardPos(0,1))
-    {
-      JewelObject
-      column.erase(column.begin() + fromPos.m_row)
-      m_match.getBoard().pureSwap(fromPos, toPos);*/
-  //if (pos.m_row == 0)
-  //  getJewel(pos).m_bDead = true;
-
-  //it will be set to falling again if lower jewel is detected to be empty
-  /*  getJewel(next).setFalling(false);
-    getJewel(pos).setFalling(false);
-    getJewel(pos).getPixel() = getJewelPixel(pos);
-    getJewel(pos).resetFall();*/
-  BoardPos first(fromPos.m_col, fromPos.m_row);
-  for (int i=0;i < numKilled; i++)
-    column[i]->getPixel() = getJewelPixel(first);
-  getJewel(first).resurrect();
-}
 /**
  * draft
  * bool isStable(BoardPos pos)
@@ -303,6 +250,48 @@ void JewelBoard::pureSwap(BoardPos toPos, BoardPos fromPos)
     return true;
   }
  */
+
+
+/*
+0|1,
+1|2-
+2|,1
+3|-2
+4|33
+*/
+/*
+0|2,
+1|,2
+2|1
+*/
+
+void JewelBoard::pureSwap(BoardPos toPos, BoardPos fromPos)
+{
+  assert(fromPos.m_col == toPos.m_col);
+
+  LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
+
+  Column &column = m_jewels[fromPos.m_col];
+  int numKilled = toPos.m_row - fromPos.m_row;
+  Column::iterator fromIt = column.begin();
+  Column::iterator middleIt = column.begin() + fromPos.m_row + 1;
+  Column::iterator toIt = column.begin() + toPos.m_row + 1;
+
+  //create unit test!
+  std::rotate(fromIt, middleIt, toIt);
+
+
+  BoardPos first(fromPos.m_col, fromPos.m_row);
+  for (int i=0;i < numKilled; i++)
+  {
+    column[i]->getPixel() = getJewelPixel(first);
+    if (i == numKilled - 1)
+    {
+      column[i]->resurrect();
+      column[i]->fallUntil(getJewelPixel(toPos));
+    }
+  }
+}
 void JewelBoard::shiftDown(BoardPos pos)
 {
 }
@@ -313,6 +302,13 @@ void JewelBoard::shiftDown(BoardPos pos)
 3|-2
 4|33
 */
+
+/*
+0|2,
+1|,2
+2|1
+*/
+
 bool JewelBoard::findJustDeads(short col)
 {
   bool changed = false;
@@ -326,7 +322,6 @@ bool JewelBoard::findJustDeads(short col)
     {
       if(!jo.isDead() || pos.m_row == 0)
       {
-        jo.fallUntil(getJewelPixel(targetPos));
         pureSwap(targetPos, pos);
         targetPos.m_row--;
       }
@@ -357,7 +352,6 @@ bool JewelBoard::update()
 
   m_match.getBoard().update();
   m_jewelsFalling = false;
-  bool boardChanged = false;
   int totalStrikesLen = 0;
 
   bool changed = false;
@@ -385,7 +379,10 @@ bool JewelBoard::update()
       JewelObject &jo = getJewel(pos);
       changed2 = jo.update() || changed2;
       if (jo.isFalling())
+      {
+        LOG_DEBUG(pos << " falling");
         m_jewelsFalling = true;
+      }
       /*if (jo.m_target.isValid() && !jo.isFalling())
       {
 //        if (pos.m_row == BoardPos::NUM_ROWS || !getJewel(pos.getBelow()).isFalling())
