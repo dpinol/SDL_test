@@ -17,8 +17,8 @@
 #include "JewelDrag.h"
 #include <functional>
 #include <vector>
-#include <deque>
-
+#include <list>
+#include <iosfwd>
 
 class JewelObject;
 class Match;
@@ -120,7 +120,8 @@ private:
   void shiftDown(BoardPos pos);
 
   //extra row is for falling new jewels
-  typedef std::deque<JewelObject*> Column;
+  //@todo convert again to static array
+  typedef std::vector<JewelObject*> Column;
   Column m_jewels[ BoardPos::NUM_COLS];
 
   void createInitialJewelsBoard();
@@ -136,5 +137,6 @@ private:
   dani::CompositeEffect m_scoreEffects;
 };
 
+std::ostream & operator<<(std::ostream & strm, JewelBoard &board);
 
 #endif /* JEWEL_BOARD */

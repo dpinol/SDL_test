@@ -234,44 +234,56 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
 */
 
 /*
-0|1-
-1|--
-2|-1
-3|33
+0|1,
+1|2-
+2|,1
+3|-2
+4|33
 */
+
 void JewelBoard::pureSwap(BoardPos fromPos, BoardPos toPos)
 {
+  assert(fromPos.m_col == toPos.m_col);
+      //JewelObject &jo = getJewel(pos);
+      // assert(pos.m_row < BoardPos::NUM_ROWS);
 
-  //JewelObject &jo = getJewel(pos);
- // assert(pos.m_row < BoardPos::NUM_ROWS);
+      //  {
+      // BoardPos next = pos.getBelow();
+      //@bug still would rarely fails.pending to investigate
+      //assert(getJewel(next).isDead());
+      LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
 
-  {
-   // BoardPos next = pos.getBelow();
-    //@bug still would rarely fails.pending to investigate
-    //assert(getJewel(next).isDead());
-    LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
-
-    //pureSwap(pos, next);
-    //std::swap( m_jewels[fromPos.m_row][fromPos.m_col], m_jewels[toPos.m_row][toPos.m_col]);
-    JewelObject &from = getJewel(fromPos);
+  //pureSwap(pos, next);
+  //std::swap( m_jewels[fromPos.m_row][fromPos.m_col], m_jewels[toPos.m_row][toPos.m_col]);
+  /*JewelObject &from = getJewel(fromPos);
     Column &column = m_jewels[fromPos.m_col];
     column[fromPos.m_row] = column[toPos.m_row];
-    column[toPos.m_row] = &from;
+    column[toPos.m_row] = &from;*/
+  Column &column = m_jewels[fromPos.m_col];
+  int numKilled = toPos.m_row - fromPos.m_row;
+  Column::iterator fromIt = column.begin() + fromPos.m_row;
+  Column::iterator middleIt = fromIt + numKilled;
+  Column::iterator toIt = middleIt + numKilled;
 
-    m_match.getBoard().pureSwap(fromPos, toPos);
-    //if (pos.m_row == 0)
-    //  getJewel(pos).m_bDead = true;
+  //create unit test!
+  std::rotate(fromIt, middleIt, toIt);
+  /* for(; fromPos < toPos; fromPos += BoardPos(0,1))
+    {
+      JewelObject
+      column.erase(column.begin() + fromPos.m_row)
+      m_match.getBoard().pureSwap(fromPos, toPos);*/
+  //if (pos.m_row == 0)
+  //  getJewel(pos).m_bDead = true;
 
-    //it will be set to falling again if lower jewel is detected to be empty
+  //it will be set to falling again if lower jewel is detected to be empty
   /*  getJewel(next).setFalling(false);
     getJewel(pos).setFalling(false);
     getJewel(pos).getPixel() = getJewelPixel(pos);
     getJewel(pos).resetFall();*/
-    getJewel(fromPos).getPixel() = getJewelPixel(fromPos);
-    getJewel(fromPos).resurrect();
-  }
-
-
+  BoardPos first(fromPos.m_col, fromPos.m_row);
+  for (int i=0;i < numKilled; i++)
+    column[i]->getPixel() = getJewelPixel(first);
+  getJewel(first).resurrect();
 }
 /**
  * draft
@@ -309,6 +321,7 @@ void JewelBoard::findJustDeads(short col)
     {
       if(!jo.isDead())
       {
+        BoardPos fallDist = targetPos - pos;
         jo.fallUntil(getJewelPixel(targetPos));
         pureSwap(targetPos, pos);
         targetPos.m_row--;
@@ -366,7 +379,7 @@ void JewelBoard::update()
         pureSwap(jo.m_target, pos);
       }*/
     }
-      /*   //if (jo.isFallDone(pos))
+    /*   //if (jo.isFallDone(pos))
     if(pos.m_row < BoardPos::NUM_ROWS && !jo.isDead() && jo.getPixel().getY() >= getJewelPixel(pos.getBelow()).getY())
     {
       jo.getPixel() = getJewelPixel(pos.getBelow());
@@ -374,7 +387,7 @@ void JewelBoard::update()
       shiftDown(pos);
     }*/
 
-      /*if (jo.isFalling() || jo.isDying())
+    /*if (jo.isFalling() || jo.isDying())
         m_jewelsFalling = true;
       if ()
 
@@ -454,3 +467,16 @@ void JewelBoard::clean()
 
   GameObject::clean();
 }
+
+std::ostream & operator<<(std::ostream & strm, JewelBoard &board)
+{
+  BoardPos pos(0, 0);
+  for (; pos.m_row <= BoardPos::BoardPos::NUM_ROWS  ; ++pos.m_row)
+  {
+    for (; pos.m_col < BoardPos::BoardPos::NUM_COLS ; ++pos.m_col)
+      strm << board.getJewel(pos).getModel().getColor();
+    strm << std::endl;
+  }
+  return strm;
+}
+
