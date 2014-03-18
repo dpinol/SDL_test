@@ -198,8 +198,9 @@ void JewelBoard::draw()
   forAllPos([&](BoardPos const &pos)
   {
     JewelObject &jewel = getJewel(pos);
-    //if (jewel.getPixel().getY() +  jewel.getHeight() >= m_offset.getY())
-    if (!jewel.isDead())
+    //will never show ROW0
+    if (jewel.getPixel().getY() > m_offset.getY())
+      //if (!jewel.isDead())
       jewel.draw();
   });
   GameObject::draw();
@@ -281,8 +282,10 @@ void JewelBoard::rotate(BoardPos toPos, BoardPos fromPos)
 
   Column::iterator next = n_first;
   while (first != next) {
-    std::iter_swap(first++, next++);
+    std::iter_swap(first, next);
     getModel().pureSwap(itToRow(toPos, first, column.begin()), itToRow(toPos, next, column.begin()));
+    first++;
+    next++;
     if (next == last) {
       next = n_first;
     } else if (first == n_first) {
@@ -294,24 +297,30 @@ void JewelBoard::pureSwap(BoardPos toPos, BoardPos fromPos)
 {
   assert(fromPos.m_col == toPos.m_col);
 
-  LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
+  LOG_INFO("jewel " << fromPos << " falling until " << toPos);
 
   int numKilled = toPos.m_row - fromPos.m_row;
 
   //create unit test!
   rotate(toPos, fromPos);
+  //55522
 
   Column &column = m_jewels[fromPos.m_col];
 
-  BoardPos first(fromPos.m_col, fromPos.m_row);
-  for (int i=0;i < numKilled; i++)
+  BoardPos fallFrom(fromPos.m_col, 0);
+  BoardPos fallUntil(toPos);
+
+  column[0]->getPixel() = getJewelPixel(fallFrom);
+  column[0]->resurrect();
+
+  for (int i = 1; i <= numKilled; i++)
   {
-    column[i]->getPixel() = getJewelPixel(first);
-    if (i == numKilled - 1)
-    {
-      column[i]->resurrect();
-      column[i]->fallUntil(getJewelPixel(toPos));
-    }
+    column[i]->getPixel() = getJewelPixel(fallFrom);
+    column[i]->resurrect();
+
+    column[i]->fallUntil(getJewelPixel(fallUntil));
+    fallUntil.m_row--;
+
   }
 }
 void JewelBoard::shiftDown(BoardPos pos)
@@ -345,7 +354,8 @@ bool JewelBoard::findJustDeads(short col)
       if(!jo.isDead() || pos.m_row == 0)
       {
         pureSwap(targetPos, pos);
-        targetPos.m_row--;
+        //targetPos.m_row--;
+        break;
       }
     }
     else if (pos.m_row >= 1)

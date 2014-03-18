@@ -216,6 +216,7 @@ bool JewelObject::fallStep()
 
 std::ostream & operator<<(std::ostream & strm, JewelObject &j)
 {
+  /*
   char c;
   if (j.isFalling())
     c = 'F';
@@ -226,6 +227,8 @@ std::ostream & operator<<(std::ostream & strm, JewelObject &j)
   else
     c = '0' + (j.getModel().getColor());
   if (j.isDead())
+    c = 'u' + (j.getModel().getColor());
+  if (j.isFalling())
   {
     if (c >= 'A' && c <= 'Z')
       c -= 'A' - 'a';
@@ -233,6 +236,36 @@ std::ostream & operator<<(std::ostream & strm, JewelObject &j)
       c += 5;
   }
 
+  strm << c;
+*/
+  short jc = j.getModel().getColor();
+  switch(jc)
+  {
+  case Jewel::NO_COLOR:
+    strm << 'N'; break;
+  case 0:
+    strm << 'B'; break;
+  case 1:
+    strm << 'G'; break;
+  case 2:
+    strm << 'Y'; break;
+  case 3:
+    strm << 'P'; break;
+  case 4:
+    strm << 'R'; break;
+  }
+  //strm << (char) ('0' + (j.getModel().getColor()));
+  char c;
+  if (j.isFalling() && j.isDead())
+    c = '*';
+  else if (j.isFalling())
+    c = 'f';
+  else if (j.isDying())
+    c = 'z';
+  else if (j.isDead())
+    c = 'd';
+  else
+    c = ' ';
   strm << c;
   return strm;
 }
