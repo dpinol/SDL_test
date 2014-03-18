@@ -193,13 +193,13 @@ void JewelObject::fallUntil(Vector2D target)
 }
 bool JewelObject::isVisible() const
 {
-  return getPixel().getY() > m_board.getJewelPixel(BoardPos(0, 0)).getY();
+  return getPixel().getY() > m_board.getFirstPixel().getY();
 }
 
 bool JewelObject::fallStep()
 {
   m_fallingStep++;
-  bool visible = isVisible();
+  bool wasVisible = isVisible();
   float fallenDistance = getPixel().getY() - m_fallenFrom; //3.5
   static short maxDist = BoardPos::NUM_ROWS * HEIGHT;
   //assert(fallenDistance <= maxDist);
@@ -214,6 +214,12 @@ bool JewelObject::fallStep()
     //m_targetY = -1;
   }
   getPixel().setY(newY); //jo.getFallingStep() *
+  if (!wasVisible && isVisible())
+  {
+    //behave as if falling from first raw (basic acceleration)
+    m_fallenFrom = m_board.getFirstPixel().getY() + 1;
+    getPixel().setY(m_fallenFrom);
+  }
 
   //if (m_fallingStep == FALLING_STEPS)
   //  m_fallingStep = 0;

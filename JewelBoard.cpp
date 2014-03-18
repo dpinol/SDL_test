@@ -110,7 +110,10 @@ JewelBoard::JewelBoard(Match &match):
   LOG_INFO(*this << std::endl);
 
 }
-
+Vector2D JewelBoard::getFirstPixel() const
+{
+  return m_offset;
+}
 
 void JewelBoard::createInitialJewelsBoard()
 {

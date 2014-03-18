@@ -100,7 +100,7 @@ public:
 
   Board &getModel();
   Board const &getModel() const;
-
+  Vector2D getFirstPixel() const;
 private:
   /**
    * @brief findJustDeads
@@ -131,6 +131,7 @@ private:
   Column m_jewels[ BoardPos::NUM_COLS];
   void rotate(BoardPos toPos, BoardPos fromPos);
   BoardPos itToRow(BoardPos forCol, Column::iterator it, Column::iterator first);
+  bool isVisible(BoardPos pos) const;
 
   void createInitialJewelsBoard();
   Match &m_match;
