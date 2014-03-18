@@ -144,9 +144,10 @@ void JewelBoard::kill(std::vector<BoardPos> const & killed)
   scoreAt(killed, newKilled);
 }
 
-bool JewelBoard::isAlive(BoardPos pos) const
+bool JewelBoard::isStable(BoardPos pos) const
 {
-  return !getJewel(pos).isDead() && !getJewel(pos).isDying();
+  JewelObject const &jo = getJewel(pos);
+  return !jo.isDead() && !jo.isDying() && !jo.isFalling();
 }
 
 void JewelBoard::load(std::unique_ptr<LoaderParams> const &pParams)
@@ -440,21 +441,21 @@ bool JewelBoard::update()
   //(and all jewels in strike also isStable). And then m_jewelsFalling can be removed
   //we cannot only check when boardChnaged because we would miss when new jewell from row 0
   //directly forms a vertical strike
-  if ( !m_jewelsFalling)
+  //if ( !m_jewelsFalling)
   {
     //@todo move to model
     forAllPos([&](BoardPos pos)
     {
-      JewelObject &jo = getJewel(pos);
-      if (!jo.isFalling())
+      if (isStable(pos))
       {
+        //JewelObject &jo = getJewel(pos);
         int strikesLen;
         strikesLen = m_strike.findMatch(pos, getJewel(pos).getModel().getColor());
         totalStrikesLen += strikesLen;
         if (strikesLen > 0)
           changed3 = true;
       }
-      jo.resetFall();
+      //jo.resetFall();
     }, false);
     if (!m_jewelsFalling && totalStrikesLen == 0)
       TheGame::Instance()->getMatch().nextTurn();

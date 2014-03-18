@@ -26,9 +26,9 @@ struct BoardCallback
   /**
    * @brief isAlive
    * @param pos
-   * @return wether cell at given position is dead (or dying)
+   * @return wether cell at given position is not dead, dying nor falling
    */
-  virtual bool isAlive(BoardPos pos) const = 0;
+  virtual bool isStable(BoardPos pos) const = 0;
 
 };
 

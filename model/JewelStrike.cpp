@@ -40,7 +40,7 @@ int JewelStrike::findMatch(BoardPos newPos, Jewel::COLOR newColor, BoardPos igno
       cur = newPos + dir;
       while (cur.isValid() )
       {
-        if (m_callback && !m_callback->isAlive(cur))
+        if (m_callback && !m_callback->isStable(cur))
           break;
         if (ignorePos.isValid() && ignorePos == cur)
           break;

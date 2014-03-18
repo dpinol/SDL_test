@@ -36,6 +36,8 @@ public:
    */
   JewelObject(Jewel &jewel, bool firstRow);
   virtual ~JewelObject() {}
+  JewelObject& operator=(JewelObject&) = delete;
+  JewelObject& operator=(JewelObject&&) = delete;
 
   Jewel& getModel();
   Jewel const& getModel() const;

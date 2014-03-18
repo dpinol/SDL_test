@@ -17,7 +17,7 @@ struct DummyBoardCallback : public BoardCallback
   {
     //getJewel(pos).setColor(Jewel::NO_COLOR);
   }
-  bool isAlive(BoardPos ) const override
+  bool isStable(BoardPos ) const override
   {
     //@bug
    // return getJewel(pos).getCol

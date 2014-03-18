@@ -44,7 +44,7 @@ public:
 
   //BoardCallback
   void kill(std::vector<BoardPos> const & killed) override;
-  bool isAlive(BoardPos pos) const override;
+  bool isStable(BoardPos pos) const override;
   //BoardCallback
 
   /**
