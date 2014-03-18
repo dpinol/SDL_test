@@ -195,7 +195,7 @@ bool JewelObject::fallStep()
   m_fallingStep++;
   float fallenDistance = getPixel().getY() - m_fallenFrom; //3.5
   static short maxDist = BoardPos::NUM_ROWS * HEIGHT;
-  assert(fallenDistance <= maxDist);
+  //assert(fallenDistance <= maxDist);
 
   float factor= 1; // + 2* fallenDistance / maxDist;
   assert(factor >= 1);
