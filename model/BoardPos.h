@@ -17,8 +17,8 @@
  */
 struct BoardPos
 {
-  constexpr static short NUM_COLS = 5;
-  constexpr static short NUM_ROWS = 5;
+  constexpr static short NUM_COLS = 8;
+  constexpr static short NUM_ROWS = 8;
   /** unsigned are evil*/
   typedef short COL;
   typedef short ROW;

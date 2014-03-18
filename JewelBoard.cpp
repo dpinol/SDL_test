@@ -192,16 +192,22 @@ JewelObject const& JewelBoard::getJewel(BoardPos const pos) const
 
 /******* Model *******/
 
+bool JewelBoard::isVisible(BoardPos pos) const
+{
+  return getJewel(pos).getPixel().getY() > m_offset.getY();
+}
 
 void JewelBoard::draw()
 {
   forAllPos([&](BoardPos const &pos)
   {
-    JewelObject &jewel = getJewel(pos);
     //will never show ROW0
-    if (jewel.getPixel().getY() > m_offset.getY())
+    if (isVisible(pos))
+    {
+      JewelObject &jewel = getJewel(pos);
       //if (!jewel.isDead())
       jewel.draw();
+    }
   });
   GameObject::draw();
 }
@@ -421,44 +427,8 @@ bool JewelBoard::update()
         LOG_DEBUG(pos << " falling");
         m_jewelsFalling = true;
       }
-      /*if (jo.m_target.isValid() && !jo.isFalling())
-      {
-//        if (pos.m_row == BoardPos::NUM_ROWS || !getJewel(pos.getBelow()).isFalling())
-        pureSwap(jo.m_target, pos);
-      }*/
     }
 
-    /*   //if (jo.isFallDone(pos))
-    if(pos.m_row < BoardPos::NUM_ROWS && !jo.isDead() && jo.getPixel().getY() >= getJewelPixel(pos.getBelow()).getY())
-    {
-      jo.getPixel() = getJewelPixel(pos.getBelow());
-      boardChanged = true;
-      shiftDown(pos);
-    }*/
-
-    /*if (jo.isFalling() || jo.isDying())
-        m_jewelsFalling = true;
-      if ()
-
-        if (pos.m_row > 0 && !jo.isDying() && (jo.isFalling() || jo.isDead()))
-        {
-          m_jewelsFalling = true;
-          BoardPos const upperPos = pos.getAbove();
-          JewelObject &upper = getJewel(upperPos);
-          if (!upper.isFalling())
-          {
-            upper.setFalling();
-            //resurrect so that it will fall
-            if (pos.m_row == 1 && upper.isDead())
-            {
-              LOG_INFO("Resurrecting " << upperPos);
-              upper.resurrect();
-              upper.getPixel() = getJewelPixel(upperPos);
-            }
-          }
-        }
-    }
-    */
   });
   if (changed2)
     LOG_INFO(*this << std::endl);
