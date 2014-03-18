@@ -124,10 +124,14 @@ private:
      */
   void shiftDown(BoardPos pos);
 
+
   //extra row is for falling new jewels
   //@todo convert again to static array
   typedef std::vector<JewelObject*> Column;
   Column m_jewels[ BoardPos::NUM_COLS];
+  void rotate(BoardPos toPos, BoardPos fromPos);
+  BoardPos itToRow(BoardPos forCol, Column::iterator it, Column::iterator first);
+
 
   void createInitialJewelsBoard();
   Match &m_match;

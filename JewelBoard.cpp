@@ -265,21 +265,43 @@ bool JewelBoard::swap(BoardPos const pos1, BoardPos const pos2)
 2|1
 */
 
+
+inline BoardPos JewelBoard::itToRow(BoardPos forCol, Column::iterator it, Column::iterator first)
+{
+  return BoardPos(forCol.m_col, it -first);
+}
+
+//from http://en.cppreference.com/w/cpp/algorithm/rotate
+void JewelBoard::rotate(BoardPos toPos, BoardPos fromPos)
+{
+  Column &column = m_jewels[fromPos.m_col];
+  Column::iterator first = column.begin();
+  Column::iterator n_first = column.begin() + fromPos.m_row + 1;
+  Column::iterator last = column.begin() + toPos.m_row + 1;
+
+  Column::iterator next = n_first;
+  while (first != next) {
+    std::iter_swap(first++, next++);
+    getModel().pureSwap(itToRow(toPos, first, column.begin()), itToRow(toPos, next, column.begin()));
+    if (next == last) {
+      next = n_first;
+    } else if (first == n_first) {
+      n_first = next;
+    }
+  }
+}
 void JewelBoard::pureSwap(BoardPos toPos, BoardPos fromPos)
 {
   assert(fromPos.m_col == toPos.m_col);
 
   LOG_DEBUG("jewel " << fromPos << " falling until " << toPos);
 
-  Column &column = m_jewels[fromPos.m_col];
   int numKilled = toPos.m_row - fromPos.m_row;
-  Column::iterator fromIt = column.begin();
-  Column::iterator middleIt = column.begin() + fromPos.m_row + 1;
-  Column::iterator toIt = column.begin() + toPos.m_row + 1;
 
   //create unit test!
-  std::rotate(fromIt, middleIt, toIt);
+  rotate(toPos, fromPos);
 
+  Column &column = m_jewels[fromPos.m_col];
 
   BoardPos first(fromPos.m_col, fromPos.m_row);
   for (int i=0;i < numKilled; i++)
