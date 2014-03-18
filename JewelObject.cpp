@@ -188,6 +188,7 @@ bool JewelObject::isFallDone(BoardPos pos) const
 
 void JewelObject::fallUntil(Vector2D target)
 {
+  m_fallenFrom = getPixel().getY();
   m_target = target;
   m_bfalling = true;
 }
