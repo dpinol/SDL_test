@@ -121,7 +121,7 @@ void JewelBoard::createInitialJewelsBoard()
     for (; pos.m_row <= BoardPos::NUM_ROWS; pos.m_row++)
     {
       Jewel &jewel = m_match.getBoard().getJewel(pos, true);
-      JewelObject *jo = new JewelObject(jewel, pos.m_row == 0);
+      JewelObject *jo = new JewelObject(jewel, *this);
       column.push_back(jo);
       Vector2D pixel = getJewelPixel(pos);
       jo->getPixel() = pixel;

@@ -15,8 +15,9 @@
 
 const short JewelObject::FALLING_STEPS = 20;
 
-JewelObject::JewelObject(Jewel &jewel, bool firstRow) :
+JewelObject::JewelObject(Jewel &jewel, JewelBoard &board) :
   m_model(&jewel),
+  m_board(board),
   m_fallingStep(0),
   m_fallenFrom(-1)
 {

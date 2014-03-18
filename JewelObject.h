@@ -34,7 +34,7 @@ public:
    * @param jewel
    * @param firstRow if true, it will be marked as dead
    */
-  JewelObject(Jewel &jewel, bool firstRow);
+  JewelObject(Jewel &jewel, JewelBoard &board);
   virtual ~JewelObject() {}
   JewelObject& operator=(JewelObject&) = delete;
   JewelObject& operator=(JewelObject&&) = delete;
@@ -90,6 +90,7 @@ protected:
   bool m_bfalling;
   //friend class JewelBoard;
   Jewel *m_model;
+  JewelBoard &m_board;
   short m_fallingStep;
   float m_fallenFrom;
   Vector2D m_target;
