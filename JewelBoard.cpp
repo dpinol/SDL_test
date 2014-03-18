@@ -313,10 +313,11 @@ void JewelBoard::pureSwap(BoardPos toPos, BoardPos fromPos)
   column[0]->getPixel() = getJewelPixel(fallFrom);
   column[0]->resurrect();
 
-  for (int i = 1; i <= numKilled; i++)
+  for (int i = 1; i <= toPos.m_row; i++)
   {
-    column[i]->getPixel() = getJewelPixel(fallFrom);
-    column[i]->resurrect();
+    //column[i]->getPixel() = getJewelPixel(fallFrom);
+    if (column[i]->isDead())
+      column[i]->resurrect();
 
     column[i]->fallUntil(getJewelPixel(fallUntil));
     fallUntil.m_row--;

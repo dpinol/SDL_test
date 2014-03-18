@@ -47,12 +47,12 @@ void Board::randomize()
   forAllPos([&](BoardPos const &pos)
   {
     Jewel& jewel = getJewel(pos, true);
-    if (pos.m_row == 0)
+    /*if (pos.m_row == 0)
     {
       //it will reset anyway (without findMatch) when it starts falling
       jewel.setColor(Jewel::NO_COLOR);
       return;
-    }
+    }*/
     do
     {
       jewel.setColor(random() % Jewel::NUM_COLORS);
