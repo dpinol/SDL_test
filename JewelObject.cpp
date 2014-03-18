@@ -7,6 +7,7 @@
 //
 
 #include "JewelObject.h"
+#include "JewelBoard.h"
 #include "TextureManager.h"
 #include "Game.h"
 #include <utils/ValueEffect.h>
@@ -190,10 +191,15 @@ void JewelObject::fallUntil(Vector2D target)
   m_target = target;
   m_bfalling = true;
 }
+bool JewelObject::isVisible() const
+{
+  return getPixel().getY() > m_board.getJewelPixel(BoardPos(0, 0)).getY();
+}
 
 bool JewelObject::fallStep()
 {
   m_fallingStep++;
+  bool visible = isVisible();
   float fallenDistance = getPixel().getY() - m_fallenFrom; //3.5
   static short maxDist = BoardPos::NUM_ROWS * HEIGHT;
   //assert(fallenDistance <= maxDist);

@@ -193,19 +193,15 @@ JewelObject const& JewelBoard::getJewel(BoardPos const pos) const
 
 /******* Model *******/
 
-bool JewelBoard::isVisible(BoardPos pos) const
-{
-  return getJewel(pos).getPixel().getY() > m_offset.getY();
-}
 
 void JewelBoard::draw()
 {
   forAllPos([&](BoardPos const &pos)
   {
+    JewelObject &jewel = getJewel(pos);
     //will never show ROW0
-    if (isVisible(pos))
+    if (jewel.isVisible())
     {
-      JewelObject &jewel = getJewel(pos);
       //if (!jewel.isDead())
       jewel.draw();
     }

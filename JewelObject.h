@@ -59,6 +59,8 @@ public:
   bool isFalling() const;
   bool isFallDone(BoardPos pos) const;
 
+  bool isVisible() const;
+
 
   /**
    * @brief fallUntil set that it will fall until specified position
